@@ -12,13 +12,11 @@ import android.widget.TextView;
 
 import com.example.recharge2me.R;
 
+public class signin_crearte_account extends Fragment {
 
-public class login_EnterEmailAndPassword extends Fragment {
-
-    TextView tvLogIn_SignIn;
-    View  view;
-
-    public login_EnterEmailAndPassword() {
+    View view;
+    TextView tvSignIn_LogIn;
+    public signin_crearte_account() {
         // Required empty public constructor
     }
 
@@ -26,22 +24,21 @@ public class login_EnterEmailAndPassword extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_login__enter_email_and_password, container, false);
+        view = inflater.inflate(R.layout.fragment_signin_crearte_account, container, false);
 
-        tvLogIn_SignIn = view.findViewById(R.id.tvlogIn_SignIn);
+        tvSignIn_LogIn = view.findViewById(R.id.tvSignIn_LogIn);
 
-        tvLogIn_SignIn.setOnClickListener(new View.OnClickListener() {
+        tvSignIn_LogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoSignPage();
+                gotoLoginPage();
             }
         });
-
 
         return view;
     }
 
-    private void gotoSignPage() {
-        Navigation.findNavController(view).navigate(R.id.action_login_EnterEmailAndPassword_to_signin_crearte_account);
+    private void gotoLoginPage() {
+        Navigation.findNavController(view).navigate(R.id.action_signin_crearte_account_to_login_EnterEmailAndPassword);
     }
 }

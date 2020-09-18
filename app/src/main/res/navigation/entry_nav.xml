@@ -10,38 +10,28 @@
         android:label="fragment_login_sign_in"
         tools:layout="@layout/fragment_login_sign_in" >
         <action
-            android:id="@+id/action_loginSignIn_to_signIn_EnterName"
-            app:destination="@id/signIn_EnterName" />
-        <action
             android:id="@+id/action_loginSignIn_to_login_EnterEmailAndPassword"
             app:destination="@id/login_EnterEmailAndPassword" />
+        <action
+            android:id="@+id/action_loginSignIn_to_signin_crearte_account"
+            app:destination="@id/signin_crearte_account" />
     </fragment>
     <fragment
         android:id="@+id/login_EnterEmailAndPassword"
         android:name="LogInSignIn_Entry.login_EnterEmailAndPassword"
         android:label="fragment_login__enter_email_and_password"
-        tools:layout="@layout/fragment_login__enter_email_and_password" />
-    <fragment
-        android:id="@+id/signIn_EnterName"
-        android:name="LogInSignIn_Entry.signIn_EnterName"
-        android:label="fragment_sign_in__enter_name"
-        tools:layout="@layout/fragment_sign_in__enter_name" >
+        tools:layout="@layout/fragment_login__enter_email_and_password" >
         <action
-            android:id="@+id/action_signIn_EnterName_to_signIn_EnterEmail"
-            app:destination="@id/signIn_EnterEmail" />
+            android:id="@+id/action_login_EnterEmailAndPassword_to_signin_crearte_account"
+            app:destination="@id/signin_crearte_account" />
     </fragment>
     <fragment
-        android:id="@+id/signIn_EnterEmail"
-        android:name="LogInSignIn_Entry.signIn_EnterEmail"
-        android:label="fragment_sign_in__enter_email"
-        tools:layout="@layout/fragment_sign_in__enter_email" >
+        android:id="@+id/signin_crearte_account"
+        android:name="LogInSignIn_Entry.signin_crearte_account"
+        android:label="fragment_signin_crearte_account"
+        tools:layout="@layout/fragment_signin_crearte_account" >
         <action
-            android:id="@+id/action_signIn_EnterEmail_to_signIn_EnterPassword"
-            app:destination="@id/signIn_EnterPassword" />
+            android:id="@+id/action_signin_crearte_account_to_login_EnterEmailAndPassword"
+            app:destination="@id/login_EnterEmailAndPassword" />
     </fragment>
-    <fragment
-        android:id="@+id/signIn_EnterPassword"
-        android:name="LogInSignIn_Entry.signIn_EnterPassword"
-        android:label="fragment_sign_in__enter_password"
-        tools:layout="@layout/fragment_sign_in__enter_password" />
 </navigation>
