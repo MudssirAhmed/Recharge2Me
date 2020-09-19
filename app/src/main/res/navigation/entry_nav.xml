@@ -23,8 +23,14 @@
         tools:layout="@layout/fragment_login__enter_email_and_password" >
         <action
             android:id="@+id/action_login_EnterEmailAndPassword_to_signin_crearte_account"
-            app:destination="@id/signin_crearte_account" />
+            app:destination="@id/signin_crearte_account"
+            app:popUpTo="@id/loginSignIn"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_loginSignIn"
+            app:destination="@id/loginSignIn" />
     </fragment>
+
     <fragment
         android:id="@+id/signin_crearte_account"
         android:name="LogInSignIn_Entry.signin_crearte_account"
@@ -32,6 +38,11 @@
         tools:layout="@layout/fragment_signin_crearte_account" >
         <action
             android:id="@+id/action_signin_crearte_account_to_login_EnterEmailAndPassword"
-            app:destination="@id/login_EnterEmailAndPassword" />
+            app:destination="@id/login_EnterEmailAndPassword"
+            app:popUpTo="@id/loginSignIn"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_signin_crearte_account_to_loginSignIn"
+            app:destination="@id/loginSignIn" />
     </fragment>
 </navigation>

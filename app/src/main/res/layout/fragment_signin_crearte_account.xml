@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/regular"
+        android:fontFamily="@font/light"
         android:text="You need to Signin or create an account"
         android:textColor="@color/whiteText"
         app:layout_constraintEnd_toEndOf="parent"

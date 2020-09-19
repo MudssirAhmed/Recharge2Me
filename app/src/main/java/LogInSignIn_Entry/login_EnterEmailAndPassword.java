@@ -2,12 +2,14 @@ package LogInSignIn_Entry;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.recharge2me.R;
@@ -36,6 +38,14 @@ public class login_EnterEmailAndPassword extends Fragment {
                 gotoSignPage();
             }
         });
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(view).navigate(R.id.action_login_EnterEmailAndPassword_to_loginSignIn);
+            }
+        };
+
 
 
         return view;

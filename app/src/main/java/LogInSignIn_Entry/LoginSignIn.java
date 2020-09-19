@@ -56,6 +56,8 @@ public class LoginSignIn extends Fragment {
             }
         });
 
+
+
         return view;
     }
 
