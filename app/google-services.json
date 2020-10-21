@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "113636748987",
+    "firebase_url": "https://recharge2me-f9f79.firebaseio.com",
+    "project_id": "recharge2me-f9f79",
+    "storage_bucket": "recharge2me-f9f79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113636748987:android:e599c0d5557a0edbd5439e",
+        "android_client_info": {
+          "package_name": "com.example.recharge2me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113636748987-fvndtbqf6ucrl6bum82lopmnmlb0afp9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recharge2me",
+            "certificate_hash": "e076966cec498070f3282141f12b66d56eebf121"
+          }
+        },
+        {
+          "client_id": "113636748987-re8ht9630pre4ham9lragbtesi2jm5i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQG7elPAQ-v5i__WlRRKp3TcffhAtm7EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113636748987-re8ht9630pre4ham9lragbtesi2jm5i2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

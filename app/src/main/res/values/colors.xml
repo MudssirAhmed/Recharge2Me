@@ -12,4 +12,7 @@
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#757575</color>
     <color name="buttons_color">#8F4EFF</color>
+    <color name="perple">#8F4EFF</color>
+    <color name="perpleSecondary">#B18CF2</color>
+    <color name="Warning_text">#FD1100</color>
 </resources>

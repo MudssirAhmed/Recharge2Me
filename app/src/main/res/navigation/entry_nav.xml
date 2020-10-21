@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_loginSignIn_to_signin_crearte_account"
             app:destination="@id/signin_crearte_account" />
+        <action
+            android:id="@+id/action_loginSignIn_to_main_UserInterface"
+            app:destination="@id/main_UserInterface" />
     </fragment>
     <fragment
         android:id="@+id/login_EnterEmailAndPassword"
@@ -29,6 +32,10 @@
         <action
             android:id="@+id/action_login_EnterEmailAndPassword_to_loginSignIn"
             app:destination="@id/loginSignIn" />
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_main_UserInterface"
+            app:destination="@id/main_UserInterface"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -44,5 +51,14 @@
         <action
             android:id="@+id/action_signin_crearte_account_to_loginSignIn"
             app:destination="@id/loginSignIn" />
+        <action
+            android:id="@+id/action_signin_crearte_account_to_main_UserInterface"
+            app:destination="@id/main_UserInterface"
+            app:popUpToInclusive="false" />
     </fragment>
+    <activity
+        android:id="@+id/main_UserInterface"
+        android:name="Ui_Front_and_Back_end.Main_UserInterface"
+        android:label="activity_main__user_interface"
+        tools:layout="@layout/activity_main__user_interface" />
 </navigation>

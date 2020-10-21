@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_ui"
+    app:startDestination="@id/ui_Home">
+
+    <fragment
+        android:id="@+id/ui_Home"
+        android:name="Ui_Front_and_Back_end.Ui_Home"
+        android:label="fragment_ui__home"
+        tools:layout="@layout/fragment_ui__home" />
+
+    <fragment
+        android:id="@+id/ui_Profile"
+        android:name="Ui_Front_and_Back_end.Ui_Profile"
+        android:label="fragment_ui__profile"
+        tools:layout="@layout/fragment_ui__profile" />
+    <fragment
+        android:id="@+id/ui_Transactions"
+        android:name="Ui_Front_and_Back_end.Ui_Transactions"
+        android:label="fragment_ui__transactions"
+        tools:layout="@layout/fragment_ui__transactions" />
+</navigation>

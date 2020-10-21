@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/back_g"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +109,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <EditText
-            android:id="@+id/editTextTextPersonName3"
+            android:id="@+id/et_createAccount_Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -122,7 +122,7 @@
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/et_LogIn_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -130,12 +130,12 @@
             android:ems="10"
             android:fontFamily="@font/regular"
             android:hint="Email"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/et_LogIn_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -148,15 +148,22 @@
             android:textSize="12sp" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btn_Signin_CreateAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:backgroundTint="#8F4EFF"
-            android:fontFamily="@font/regular"
-            android:text="Sign in"
+            android:fontFamily="@font/bold"
+            android:text="Create Account"
             android:textAllCaps="false"
             android:textColor="@color/whiteText" />
+
+        <TextView
+            android:id="@+id/tv_createAccount_excaption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textColor="@color/Warning_text"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
