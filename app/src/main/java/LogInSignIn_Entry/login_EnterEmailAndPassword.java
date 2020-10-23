@@ -1,5 +1,6 @@
 package LogInSignIn_Entry;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -28,7 +29,7 @@ import custom_Loading_Dialog.LoadingDialog;
 
 public class login_EnterEmailAndPassword extends Fragment {
 
-    TextView tvLogIn_SignIn;
+    TextView tvLogIn_SignIn,tv_Login_Reset,tv_LogIn_warning;
     View  view;
     Button btn_Login_Login;
     EditText et_LogIn_Email,et_LogIn_Pasword;
@@ -49,10 +50,17 @@ public class login_EnterEmailAndPassword extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_login__enter_email_and_password, container, false);
 
+        tv_Login_Reset = view.findViewById(R.id.tv_LogIn_Reset);
+        tv_LogIn_warning = view.findViewById(R.id.tv_LogIn_warning);
         tvLogIn_SignIn = view.findViewById(R.id.tvlogIn_SignIn);
         btn_Login_Login = view.findViewById(R.id.btn_Login_Login);
         et_LogIn_Email = view.findViewById(R.id.et_LogIn_email);
         et_LogIn_Pasword = view.findViewById(R.id.et_LogIn_password);
+
+
+        // First set Null in Email and Password fields
+        et_LogIn_Email.setText(null);
+        et_LogIn_Pasword.setText(null);
 
 
         loadingDialog = new LoadingDialog((EntryActivity) requireActivity());
@@ -69,25 +77,51 @@ public class login_EnterEmailAndPassword extends Fragment {
         });
 
         btn_Login_Login.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
 
-                loadingDialog.startLoading();
-                Login_Existing_user();
-
+                if(et_LogIn_Email.getText().toString().isEmpty() || et_LogIn_Pasword.getText().toString().isEmpty()){
+                    tv_LogIn_warning.setText("Please Enter All Fields!...");
+                }
+                else{
+                    loadingDialog.startLoading();
+                    Login_Existing_user();
+                }
 
             }
         });
 
 
+        tv_Login_Reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Reset_Fields();
+            }
+        });
+
 
         return view;
+    }// End OnCreate()
+
+
+
+
+
+
+    // This is Reset/Erase Email and Password fields
+    private void Reset_Fields() {
+        et_LogIn_Email.setText(null);
+        et_LogIn_Pasword.setText(null);
     }
 
+
+    // Login Existing User
     private void Login_Existing_user() {
 
         mAuth.signInWithEmailAndPassword(et_LogIn_Email.getText().toString(),et_LogIn_Pasword.getText().toString())
                 .addOnCompleteListener((EntryActivity) requireActivity(), new OnCompleteListener<AuthResult>() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -96,6 +130,7 @@ public class login_EnterEmailAndPassword extends Fragment {
                             gotoUiPage();
                         } else {
                             Toast.makeText((EntryActivity) requireActivity(), "Error! try again...", Toast.LENGTH_SHORT).show();
+                            tv_LogIn_warning.setText("Enter Carefully!...");
                             loadingDialog.stopLoading();
                         }
                     }

@@ -32,7 +32,7 @@ import custom_Loading_Dialog.LoadingDialog;
 public class signin_crearte_account extends Fragment {
 
     View view;
-    TextView tvSignIn_LogIn,tv_createAccount_exception;
+    TextView tvSignIn_LogIn,tv_createAccount_exception,tv_CreateAccount_Reset;
     Button btn_Signin_CreateAccount;
     EditText et_createAccount_Name,et_createAccount_Email,et_createAccount_Password;
 
@@ -54,6 +54,7 @@ public class signin_crearte_account extends Fragment {
         view = inflater.inflate(R.layout.fragment_signin_crearte_account, container, false);
 
         tvSignIn_LogIn = view.findViewById(R.id.tvSignIn_LogIn);
+        tv_CreateAccount_Reset = view.findViewById(R.id.tv_CreateAccount_Reset);
         btn_Signin_CreateAccount = view.findViewById(R.id.btn_Signin_CreateAccount);
 
        //Loading Dialog
@@ -85,17 +86,37 @@ public class signin_crearte_account extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if(et_createAccount_Name.getText().toString().isEmpty() || et_createAccount_Email.getText().toString().isEmpty()
+                        || et_createAccount_Password.getText().toString().isEmpty()){
+                    tv_createAccount_exception.setText("Please Enter All Fields!...");
+                }else{
                     loadingDialog.startLoading();
                     createAccount();
+                }
+
 
             }
         });
 
+        tv_CreateAccount_Reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Reset_fields();
+            }
+
+
+        });
+
         return view;
+    } // End of onCreate()
+
+
+    // This Function Reset Name, Email and Password fields:-
+    private void Reset_fields() {
+        et_createAccount_Name.setText(null);
+        et_createAccount_Email.setText(null);
+        et_createAccount_Password.setText(null);
     }
-
-
-
 
 
 
@@ -156,6 +177,7 @@ public class signin_crearte_account extends Fragment {
 
 
 
+    // This will go to login Page from create Acc. page.
     private void gotoLoginPage() {
         Navigation.findNavController(view).navigate(R.id.action_signin_crearte_account_to_login_EnterEmailAndPassword);
 
