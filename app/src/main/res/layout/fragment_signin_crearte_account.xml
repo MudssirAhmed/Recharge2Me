@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/bold"
+        android:fontFamily="@font/comfortaa_bold"
         android:text="Hello"
         android:textColor="@color/whiteText"
         android:textSize="30sp"
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/light"
+        android:fontFamily="@font/comfortaa_light"
         android:text="You need to Signin or create an account"
         android:textColor="@color/whiteText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:fontFamily="@font/light"
+            android:fontFamily="@font/comfortaa_light"
             android:text="Log in"
             android:textColor="@color/primaryText" />
 
@@ -91,7 +91,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:clickable="true"
-            android:fontFamily="@font/bold"
+            android:fontFamily="@font/comfortaa_bold"
             android:text="Sign in"
             android:textColor="@color/primaryText" />
 
@@ -102,7 +102,7 @@
             android:layout_marginLeft="150dp"
             android:layout_weight="4"
             android:clickable="true"
-            android:fontFamily="@font/regular"
+            android:fontFamily="@font/comfortaa_regular"
             android:text="Reset"
             android:textColor="@color/colorPrimaryDark" />
 
@@ -125,7 +125,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/sign_in_indicator"
             android:ems="10"
-            android:fontFamily="@font/regular"
+            android:fontFamily="@font/comfortaa_regular"
             android:hint="Full name"
             android:inputType="textPersonName"
             android:paddingLeft="20dp"
@@ -138,7 +138,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/group_10"
             android:ems="10"
-            android:fontFamily="@font/regular"
+            android:fontFamily="@font/comfortaa_regular"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:paddingLeft="20dp"
@@ -151,7 +151,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/group_10"
             android:ems="10"
-            android:fontFamily="@font/regular"
+            android:fontFamily="@font/comfortaa_regular"
             android:hint="password"
             android:inputType="textPassword"
             android:paddingLeft="20dp"
@@ -161,11 +161,24 @@
             android:id="@+id/btn_Signin_CreateAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:backgroundTint="#8F4EFF"
             android:fontFamily="@font/bold"
             android:text="Create Account"
             android:textAllCaps="false"
             android:textColor="@color/whiteText" />
+
+        <CheckBox
+            android:id="@+id/cb_crearreAcc_showPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:backgroundTint="#8F4EFF"
+            android:buttonTint="#8F4EFF"
+            android:fontFamily="@font/comfortaa_regular"
+            android:text="Show password"
+            android:textColor="#8F4EFF"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_createAccount_excaption"
@@ -173,18 +186,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:textColor="@color/Warning_text"
-            android:textSize="12sp" />
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#8F4EFF"
-            android:buttonTint="#8F4EFF"
-            android:fontFamily="@font/regular"
-            android:text="Remmber me"
-            android:textColor="#8F4EFF"
             android:textSize="12sp" />
 
     </LinearLayout>

@@ -15,10 +15,13 @@ buildscript {
         // in the individual module build.gradle files
 
         // It is Firebase 1st dependencies.
-        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.google.gms:google-services:4.3.4'
 
         //Kotlin:-
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        def nav_version = "2.3.1"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
     }
 }

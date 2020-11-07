@@ -5,10 +5,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ public class Ui_Home extends Fragment {
 
     View view;
     TextView tv_Home_Transacyion;
+    ImageView iv_prePaid, iv_postPaid;
 
     public Ui_Home() {
         // Required empty public constructor
@@ -40,10 +43,27 @@ public class Ui_Home extends Fragment {
 
         tv_Home_Transacyion = view.findViewById(R.id.tv_Home_Transactions);
 
+        iv_postPaid = view.findViewById(R.id.iv_postPaid);
+        iv_prePaid = view.findViewById(R.id.iv_prePaid);
+
         tv_Home_Transacyion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOutFromGoogle();
+            }
+        });
+
+        iv_prePaid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                prepaid();
+            }
+        });
+
+        iv_postPaid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postpaid();
             }
         });
 
@@ -74,5 +94,14 @@ public class Ui_Home extends Fragment {
                 });
 
 
-    }
+    } // End of signOutFromGoogle method;
+
+    private void prepaid(){
+        Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
+
+    }// End of prePaid method;
+
+    private void postpaid(){
+        Toast.makeText((Main_UserInterface) requireActivity(), "Postpaid", Toast.LENGTH_SHORT).show();
+    } // End of postpaid method;
 }

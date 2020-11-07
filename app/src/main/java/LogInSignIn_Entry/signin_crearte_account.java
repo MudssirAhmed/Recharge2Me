@@ -7,10 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +39,7 @@ public class signin_crearte_account extends Fragment {
     TextView tvSignIn_LogIn,tv_createAccount_exception,tv_CreateAccount_Reset;
     Button btn_Signin_CreateAccount;
     EditText et_createAccount_Name,et_createAccount_Email,et_createAccount_Password;
+    CheckBox cb_createAcc_showPassword;
 
     // Loading Dialog
     LoadingDialog loadingDialog;
@@ -56,6 +61,7 @@ public class signin_crearte_account extends Fragment {
         tvSignIn_LogIn = view.findViewById(R.id.tvSignIn_LogIn);
         tv_CreateAccount_Reset = view.findViewById(R.id.tv_CreateAccount_Reset);
         btn_Signin_CreateAccount = view.findViewById(R.id.btn_Signin_CreateAccount);
+        cb_createAcc_showPassword = view.findViewById(R.id.cb_crearreAcc_showPassword);
 
        //Loading Dialog
         loadingDialog = new LoadingDialog((EntryActivity) requireActivity());
@@ -83,9 +89,9 @@ public class signin_crearte_account extends Fragment {
         });
 
         btn_Signin_CreateAccount.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-
                 if(et_createAccount_Name.getText().toString().isEmpty() || et_createAccount_Email.getText().toString().isEmpty()
                         || et_createAccount_Password.getText().toString().isEmpty()){
                     tv_createAccount_exception.setText("Please Enter All Fields!...");
@@ -93,8 +99,6 @@ public class signin_crearte_account extends Fragment {
                     loadingDialog.startLoading();
                     createAccount();
                 }
-
-
             }
         });
 
@@ -105,6 +109,20 @@ public class signin_crearte_account extends Fragment {
             }
 
 
+        });
+
+
+
+        cb_createAcc_showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cb_createAcc_showPassword.isChecked()){
+                    et_createAccount_Password.setInputType(InputType.TYPE_CLASS_TEXT);
+                }
+                else {
+                    et_createAccount_Password.setInputType( InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
         });
 
         return view;
@@ -140,8 +158,13 @@ public class signin_crearte_account extends Fragment {
                             CreateAccount_userDetails userDetails =
                                     new CreateAccount_userDetails(Name,Email);
 
+                            // update Google info as null bco'z user can't signIn with Google
+                            Google_User_Details google = new Google_User_Details("UID", "PROFILE");
+
+
                             Map<String,Object> data = new HashMap<>();
-                            data.put("user_details",userDetails);
+                            data.put("user_details", userDetails);
+                            data.put("Google", google);
 
                             // This method can Add userData in firstore.
                             db.collection("USERS")

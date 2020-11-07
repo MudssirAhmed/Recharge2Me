@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -106,6 +107,7 @@ public class LoginSignIn extends Fragment {
                 goToLoginPage_FromGooleSignIn();
             }
         });
+
 
         return view;
     }
@@ -217,8 +219,16 @@ public class LoginSignIn extends Fragment {
     }
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        FirebaseUser user = mAuth.getCurrentUser();
 
+        if(!user.equals(null)){
+            Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
+        }
+    }
 
     private void goToSignPage() {
         Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_signin_crearte_account);

@@ -9,7 +9,11 @@
         android:id="@+id/ui_Home"
         android:name="Ui_Front_and_Back_end.Ui_Home"
         android:label="fragment_ui__home"
-        tools:layout="@layout/fragment_ui__home" />
+        tools:layout="@layout/fragment_ui__home" >
+        <action
+            android:id="@+id/action_ui_Home_to_recahrge_ui"
+            app:destination="@id/recahrge_ui" />
+    </fragment>
 
     <fragment
         android:id="@+id/ui_Profile"
@@ -21,4 +25,9 @@
         android:name="Ui_Front_and_Back_end.Ui_Transactions"
         android:label="fragment_ui__transactions"
         tools:layout="@layout/fragment_ui__transactions" />
+    <activity
+        android:id="@+id/recahrge_ui"
+        android:name="recahrge.recahrge_ui"
+        android:label="activity_recahrge_ui"
+        tools:layout="@layout/activity_recahrge_ui" />
 </navigation>

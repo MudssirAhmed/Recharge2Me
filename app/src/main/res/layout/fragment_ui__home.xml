@@ -27,11 +27,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/iv_prePaid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="95dp"
+        android:clickable="true"
         android:src="@drawable/prepaid"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
@@ -39,11 +40,12 @@
         app:layout_constraintVertical_bias="0.451" />
 
     <ImageView
-        android:id="@+id/imageView7"
+        android:id="@+id/iv_postPaid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="95dp"
         android:layout_marginEnd="50dp"
+        android:clickable="true"
         android:src="@drawable/postpaid"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,13 +58,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:fontFamily="@font/regular"
+        android:fontFamily="@font/comfortaa_regular"
         android:text="Postpaid"
         android:textColor="@color/perple"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-        app:layout_constraintStart_toStartOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_postPaid"
+        app:layout_constraintStart_toStartOf="@+id/iv_postPaid"
+        app:layout_constraintTop_toTopOf="@+id/iv_postPaid"
         app:layout_constraintVertical_bias="0.863" />
 
     <TextView
@@ -71,13 +73,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:fontFamily="@font/regular"
+        android:fontFamily="@font/comfortaa_regular"
         android:text="Prepaid"
         android:textColor="@color/perple"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-        app:layout_constraintStart_toStartOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_prePaid"
+        app:layout_constraintStart_toStartOf="@+id/iv_prePaid"
+        app:layout_constraintTop_toTopOf="@+id/iv_prePaid"
         app:layout_constraintVertical_bias="0.863" />
 
     <TextView
@@ -85,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
-        android:fontFamily="@font/light"
+        android:fontFamily="@font/comfortaa_light"
         android:text="Your Ballance"
         android:textColor="@color/perpleSecondary"
         android:textSize="18sp"
@@ -99,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/regular"
+        android:fontFamily="@font/comfortaa_bold"
         android:text="₹  10000.00"
         android:textColor="@color/whiteText"
         android:textSize="30sp"
@@ -113,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:fontFamily="@font/regular"
+        android:fontFamily="@font/comfortaa_bold"
         android:text="Transcations"
         android:textColor="@color/perple"
         android:textSize="30sp"

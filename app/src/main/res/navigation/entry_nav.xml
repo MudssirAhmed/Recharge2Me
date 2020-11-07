@@ -36,6 +36,9 @@
             android:id="@+id/action_login_EnterEmailAndPassword_to_main_UserInterface"
             app:destination="@id/main_UserInterface"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_forgot_Password"
+            app:destination="@id/forgot_Password" />
     </fragment>
 
     <fragment
@@ -61,4 +64,9 @@
         android:name="Ui_Front_and_Back_end.Main_UserInterface"
         android:label="activity_main__user_interface"
         tools:layout="@layout/activity_main__user_interface" />
+    <fragment
+        android:id="@+id/forgot_Password"
+        android:name="LogInSignIn_Entry.Forgot_Password"
+        android:label="fragment_forgot__password"
+        tools:layout="@layout/fragment_forgot__password" />
 </navigation>
