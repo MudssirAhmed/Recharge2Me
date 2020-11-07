@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">Recharge2Me</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="item">Item</string>
+    <string name="user">user</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="enter_the_email_address">Enter the email address</string>
+    <string name="associated_with_your_account">associated with your account.</string>
+    <string name="your_password">your password</string>
+    <string name="we_will_email_you_a_link_to_reset">we will email you a link to reset</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="send_reset_link">Send Reset Link</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+
+
+
+    <string-array name="circle">
+        <item>Andhra Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar &amp; Jharkhand</item>
+        <item>Chennai</item>
+        <item>Delhi NCR</item>
+        <item>Gujrat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Kolkata</item>
+        <item>Madhya Pradesh Chhattisgarh</item>
+        <item>Maharashtra</item>
+        <item>Mumbai</item>
+        <item>North East</item>
+        <item>Orissa</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Tamil Nadu</item>
+        <item>UP East</item>
+        <item>UP West Uttrakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
 </resources>

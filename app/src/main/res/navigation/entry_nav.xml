@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/entry_nav"
+    app:startDestination="@id/loginSignIn">
+    <fragment
+        android:id="@+id/loginSignIn"
+        android:name="LogInSignIn_Entry.LoginSignIn"
+        android:label="fragment_login_sign_in"
+        tools:layout="@layout/fragment_login_sign_in" >
+        <action
+            android:id="@+id/action_loginSignIn_to_login_EnterEmailAndPassword"
+            app:destination="@id/login_EnterEmailAndPassword" />
+        <action
+            android:id="@+id/action_loginSignIn_to_signin_crearte_account"
+            app:destination="@id/signin_crearte_account" />
+        <action
+            android:id="@+id/action_loginSignIn_to_main_UserInterface"
+            app:destination="@id/main_UserInterface" />
+    </fragment>
+    <fragment
+        android:id="@+id/login_EnterEmailAndPassword"
+        android:name="LogInSignIn_Entry.login_EnterEmailAndPassword"
+        android:label="fragment_login__enter_email_and_password"
+        tools:layout="@layout/fragment_login__enter_email_and_password" >
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_signin_crearte_account"
+            app:destination="@id/signin_crearte_account"
+            app:popUpTo="@id/loginSignIn"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_loginSignIn"
+            app:destination="@id/loginSignIn" />
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_main_UserInterface"
+            app:destination="@id/main_UserInterface"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_EnterEmailAndPassword_to_forgot_Password"
+            app:destination="@id/forgot_Password" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signin_crearte_account"
+        android:name="LogInSignIn_Entry.signin_crearte_account"
+        android:label="fragment_signin_crearte_account"
+        tools:layout="@layout/fragment_signin_crearte_account" >
+        <action
+            android:id="@+id/action_signin_crearte_account_to_login_EnterEmailAndPassword"
+            app:destination="@id/login_EnterEmailAndPassword"
+            app:popUpTo="@id/loginSignIn"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_signin_crearte_account_to_loginSignIn"
+            app:destination="@id/loginSignIn" />
+        <action
+            android:id="@+id/action_signin_crearte_account_to_main_UserInterface"
+            app:destination="@id/main_UserInterface"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <activity
+        android:id="@+id/main_UserInterface"
+        android:name="Ui_Front_and_Back_end.Main_UserInterface"
+        android:label="activity_main__user_interface"
+        tools:layout="@layout/activity_main__user_interface" />
+    <fragment
+        android:id="@+id/forgot_Password"
+        android:name="LogInSignIn_Entry.Forgot_Password"
+        android:label="fragment_forgot__password"
+        tools:layout="@layout/fragment_forgot__password" />
+</navigation>

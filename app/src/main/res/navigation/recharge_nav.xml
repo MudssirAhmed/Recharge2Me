@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recharge_nav"
+    app:startDestination="@id/prePaid3">
+    <fragment
+        android:id="@+id/prePaid3"
+        android:name="recahrge.prePaid"
+        android:label="fragment_pre_paid"
+        tools:layout="@layout/fragment_pre_paid" >
+        <action
+            android:id="@+id/action_prePaid3_to_mobileDetailsFinder"
+            app:destination="@id/mobileDetailsFinder" />
+    </fragment>
+    <fragment
+        android:id="@+id/mobileDetailsFinder"
+        android:name="recahrge.MobileDetailsFinder"
+        android:label="fragment_mobile_details_finder"
+        tools:layout="@layout/fragment_mobile_details_finder" >
+        <argument
+            android:name="Number"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_mobileDetailsFinder_to_recharge_circle"
+            app:destination="@id/recharge_circle" />
+        <argument
+            android:name="recahrgeType"
+            app:argType="string"
+            android:defaultValue="Prepaid" />
+    </fragment>
+    <fragment
+        android:id="@+id/recharge_circle"
+        android:name="recahrge.recharge_circle"
+        android:label="fragment_recharge_circle"
+        tools:layout="@layout/fragment_recharge_circle" />
+</navigation>

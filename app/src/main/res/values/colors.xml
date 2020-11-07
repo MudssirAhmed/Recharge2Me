@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#344955</color>
+    <color name="colorPrimaryDark">#8F4EFF
+    </color>
+    <color name="secondaryColor">#F9AA33</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="backgroundcolor">#FAF7F7</color>
+
+<!--    Text colors:- -->
+    <color name="whiteText">#ffffff</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#757575</color>
+    <color name="buttons_color">#8F4EFF</color>
+    <color name="perple">#8F4EFF</color>
+    <color name="perpleSecondary">#B18CF2</color>
+    <color name="Warning_text">#FD1100</color>
 </resources>
