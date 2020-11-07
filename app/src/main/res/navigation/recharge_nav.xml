@@ -28,10 +28,18 @@
             android:name="recahrgeType"
             app:argType="string"
             android:defaultValue="Prepaid" />
+        <action
+            android:id="@+id/action_mobileDetailsFinder_to_recharge_selectOperator"
+            app:destination="@id/recharge_selectOperator" />
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"
         android:name="recahrge.recharge_circle"
         android:label="fragment_recharge_circle"
         tools:layout="@layout/fragment_recharge_circle" />
+    <fragment
+        android:id="@+id/recharge_selectOperator"
+        android:name="recahrge.recharge_selectOperator"
+        android:label="fragment_recharge_select_operator"
+        tools:layout="@layout/fragment_recharge_select_operator" />
 </navigation>

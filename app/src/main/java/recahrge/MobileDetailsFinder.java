@@ -10,7 +10,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.recharge2me.R;
 
@@ -27,12 +29,13 @@ import Retrofit.MobileDetailsFinder_Data;
 
 public class MobileDetailsFinder extends Fragment {
 
-    TextView tv_Cicle,
-            tv_Operator,
-            tv_rechargePlan,
-            tv_mobileNumber,
-            tv_socWarningText,
-            tv_recahargeType;
+    TextView tv_mobileNumber,
+             tv_socWarningText,
+             tv_recahargeType;
+
+    Button  btn_circle,
+            btn_operator,
+            btn_recahargeAmount;
 
 
     // Loading Dialog
@@ -69,12 +72,14 @@ public class MobileDetailsFinder extends Fragment {
         view = inflater.inflate(R.layout.fragment_mobile_details_finder, container, false);
 
         // TextView
-        tv_Cicle = view.findViewById(R.id.tv_Circle);
-        tv_Operator = view.findViewById(R.id.tv_operator);
-        tv_rechargePlan = view.findViewById(R.id.tv_rechargePlan);
         tv_mobileNumber = view.findViewById(R.id.tv_mobileNumber);
         tv_socWarningText = view.findViewById(R.id.tv_socWarningText);
         tv_recahargeType = view.findViewById(R.id.tv_recahrgeType);
+
+        btn_circle = view.findViewById(R.id.btn_rechargeCircle);
+        btn_operator = view.findViewById(R.id.btn_operator);
+        btn_recahargeAmount = view.findViewById(R.id.btn_rechargeAmount);
+
 
 
         // Init Retrofit
@@ -85,12 +90,33 @@ public class MobileDetailsFinder extends Fragment {
         // Init JsonConverter Interface
         jsonConvertor = retrofit.create(JsonConvertor.class);
 
+        btn_circle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoCircleUi();
+            }
+        });
+
+        btn_operator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoOperatorUi();
+            }
+        });
+
 
         String number = MobileDetailsFinderArgs.fromBundle(getArguments()).getNumber();
         String type = MobileDetailsFinderArgs.fromBundle(getArguments()).getRecahrgeType();
         getMobileDetails(number, type);
 
         return view;
+    }
+
+    private void gotoOperatorUi(){
+        Navigation.findNavController(view).navigate(R.id.action_mobileDetailsFinder_to_recharge_selectOperator);
+    }
+    private void gotoCircleUi(){
+        Navigation.findNavController(view).navigate(R.id.action_mobileDetailsFinder_to_recharge_circle);
     }
 
     private String getRmaning(String str){
@@ -106,7 +132,6 @@ public class MobileDetailsFinder extends Fragment {
         return s;
 
     }
-
     private void getMobileDetails(String number, String type){
 
         String remaning = getRmaning(number);
@@ -135,16 +160,10 @@ public class MobileDetailsFinder extends Fragment {
 
                 tv_mobileNumber.setText(number);
                 tv_recahargeType.setText(type);
-                tv_Cicle.setText(data.getLocation());
-                tv_Operator.setText(data.getService());
+                btn_circle.setText(data.getLocation());
+                btn_operator.setText(data.getService());
                 loadingDialog.stopLoading();
 
-                tv_Cicle.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Navigation.findNavController(view).navigate(R.id.action_mobileDetailsFinder_to_recharge_circle);
-                    }
-                });
 
             }
 
