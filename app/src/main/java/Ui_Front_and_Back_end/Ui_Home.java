@@ -1,5 +1,6 @@
 package Ui_Front_and_Back_end;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +11,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +34,7 @@ public class Ui_Home extends Fragment {
     View view;
     TextView tv_Home_Transacyion;
     ImageView iv_prePaid, iv_postPaid;
+    Animation animation;
 
     public Ui_Home() {
         // Required empty public constructor
@@ -45,6 +50,10 @@ public class Ui_Home extends Fragment {
 
         iv_postPaid = view.findViewById(R.id.iv_postPaid);
         iv_prePaid = view.findViewById(R.id.iv_prePaid);
+
+        // Init onClick Animation
+        animation = AnimationUtils.loadAnimation((Main_UserInterface) requireActivity(), R.anim.click);
+
 
         tv_Home_Transacyion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +106,17 @@ public class Ui_Home extends Fragment {
     } // End of signOutFromGoogle method;
 
     private void prepaid(){
-        Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
 
+        iv_prePaid.startAnimation(animation);
+
+
+        Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
     }// End of prePaid method;
 
     private void postpaid(){
-        Toast.makeText((Main_UserInterface) requireActivity(), "Postpaid", Toast.LENGTH_SHORT).show();
+
+        iv_postPaid.startAnimation(animation);
+        Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
+
     } // End of postpaid method;
 }

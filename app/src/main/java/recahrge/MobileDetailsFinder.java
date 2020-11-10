@@ -10,7 +10,10 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,10 @@ public class MobileDetailsFinder extends Fragment {
     Button  btn_circle,
             btn_operator,
             btn_recahargeAmount;
+
+    ImageView iv_rechargeOperator;
+
+    Animation animation;
 
 
     // Loading Dialog
@@ -76,10 +83,16 @@ public class MobileDetailsFinder extends Fragment {
         tv_socWarningText = view.findViewById(R.id.tv_socWarningText);
         tv_recahargeType = view.findViewById(R.id.tv_recahrgeType);
 
+        // Buttons
         btn_circle = view.findViewById(R.id.btn_rechargeCircle);
         btn_operator = view.findViewById(R.id.btn_operator);
         btn_recahargeAmount = view.findViewById(R.id.btn_rechargeAmount);
 
+        // ImageView
+        iv_rechargeOperator = view.findViewById(R.id.iv_proceedRechareOperator);
+
+        // Init onClick Animation
+        animation = AnimationUtils.loadAnimation((recahrge_ui) requireActivity(), R.anim.click);
 
 
         // Init Retrofit
@@ -105,21 +118,21 @@ public class MobileDetailsFinder extends Fragment {
         });
 
 
-        String number = MobileDetailsFinderArgs.fromBundle(getArguments()).getNumber();
+        String number_fromPrePaid = MobileDetailsFinderArgs.fromBundle(getArguments()).getNumber();
         String type = MobileDetailsFinderArgs.fromBundle(getArguments()).getRecahrgeType();
-        getMobileDetails(number, type);
+        String userCircle = MobileDetailsFinderArgs.fromBundle(getArguments()).getUserCircle();
+        String userNumber_fromCircle = MobileDetailsFinderArgs.fromBundle(getArguments()).getUserNumberFromCircle();
+
+
+        String num = getNumber(number_fromPrePaid, userNumber_fromCircle);
+
+        getMobileDetails(num, type, userCircle);
 
         return view;
     }
 
-    private void gotoOperatorUi(){
-        Navigation.findNavController(view).navigate(R.id.action_mobileDetailsFinder_to_recharge_selectOperator);
-    }
-    private void gotoCircleUi(){
-        Navigation.findNavController(view).navigate(R.id.action_mobileDetailsFinder_to_recharge_circle);
-    }
-
-    private String getRmaning(String str){
+    // This function returns a number having 4 digits/length
+    private String getRemaning(String str){
 
         char[] chars = str.toCharArray();
 
@@ -132,11 +145,11 @@ public class MobileDetailsFinder extends Fragment {
         return s;
 
     }
-    private void getMobileDetails(String number, String type){
+    private void getMobileDetails(String number, String type, String userCircle){
 
-        String remaning = getRmaning(number);
+        String remaning = getRemaning(number);
 
-        Call<MobileDetailsFinder_Data> call = jsonConvertor.getMobileF("json", "rQYwTkpTDVkurPtyGQc7oD7CUaoGbA",remaning);
+        Call<MobileDetailsFinder_Data> call = jsonConvertor.getMobileF("json", "rQYwTkpTDVkurPtyGQc7oD7CUaoGbA", remaning);
 
         call.enqueue(new Callback<MobileDetailsFinder_Data>() {
             @Override
@@ -151,19 +164,24 @@ public class MobileDetailsFinder extends Fragment {
 
                 MobileDetailsFinder_Data.mobileData data = mobileDetailsFinder_data.getData();
 
-                String content = "";
-                content += "service: " + data.getService() + "\n";
-                content += "Location: " + data.getLocation() + "\n";
-                content += "Circele Id: " + data.getCircleId() + "\n";
-                content += "Operator Id: " + data.getOpId() + "\n";
-                content += "resText: " + data.getResText();
-
                 tv_mobileNumber.setText(number);
                 tv_recahargeType.setText(type);
-                btn_circle.setText(data.getLocation());
-                btn_operator.setText(data.getService());
+                btn_circle.setText(getUserLocation(data, userCircle));
+                btn_operator.setText(getUserOperator(data));
                 loadingDialog.stopLoading();
 
+                switch(data.getService()){
+                    case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
+                                     break;
+                    case "Reliance Jio" : iv_rechargeOperator.setImageResource(R.drawable.jio);
+                                     break;
+                    case "Airtel" : iv_rechargeOperator.setImageResource(R.drawable.airtel);
+                                     break;
+                    case "Bsnl" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
+                                     break;
+                    default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
+                                     break;
+                }
 
             }
 
@@ -176,4 +194,59 @@ public class MobileDetailsFinder extends Fragment {
         });
 
     }// End of getMobileDetails Method;
+
+    public String getUserLocation(MobileDetailsFinder_Data.mobileData data, String fromCircle){
+
+        if(fromCircle.equals("Your Circle"))
+            return data.getLocation();
+        else{
+            if(fromCircle.equals("Madhya Pradesh Chhattisgarh")) {
+                btn_circle.setTextSize(14);
+            }
+            return fromCircle;
+        }
+
+    }
+    public String getUserOperator(MobileDetailsFinder_Data.mobileData data){
+
+        String operator = MobileDetailsFinderArgs.fromBundle(getArguments()).getOperator();
+
+        if(operator.equals("Your Operator"))
+            return data.getService();
+        else
+            return operator;
+    }
+
+    // getNumber from prePaid UI or recharge_circle UI
+    public String getNumber(String fromPrePaid, String fromCircle){
+
+        if(fromCircle.equals("from_prePaid"))
+            return fromPrePaid;
+        else
+            return fromCircle;
+
+    }
+
+
+    private void gotoOperatorUi(){
+
+        btn_operator.startAnimation(animation);
+
+        MobileDetailsFinderDirections.ActionMobileDetailsFinderToRechargeSelectOperator
+                        action = MobileDetailsFinderDirections.actionMobileDetailsFinderToRechargeSelectOperator();
+
+        action.setUserNoForOp(tv_mobileNumber.getText().toString().trim());
+
+        Navigation.findNavController(view).navigate(action);
+    }
+    private void gotoCircleUi(){
+
+        btn_circle.startAnimation(animation);
+
+        MobileDetailsFinderDirections.ActionMobileDetailsFinderToRechargeCircle
+                        action = MobileDetailsFinderDirections.actionMobileDetailsFinderToRechargeCircle(tv_mobileNumber.getText().toString().trim());
+
+        Navigation.findNavController(view).navigate(action);
+
+    }
 }

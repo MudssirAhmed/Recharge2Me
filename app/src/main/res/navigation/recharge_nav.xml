@@ -11,7 +11,12 @@
         tools:layout="@layout/fragment_pre_paid" >
         <action
             android:id="@+id/action_prePaid3_to_mobileDetailsFinder"
-            app:destination="@id/mobileDetailsFinder" />
+            app:destination="@id/mobileDetailsFinder"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
+        <argument android:name="recType" />
     </fragment>
     <fragment
         android:id="@+id/mobileDetailsFinder"
@@ -23,23 +28,60 @@
             app:argType="string" />
         <action
             android:id="@+id/action_mobileDetailsFinder_to_recharge_circle"
-            app:destination="@id/recharge_circle" />
+            app:destination="@id/recharge_circle"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
         <argument
             android:name="recahrgeType"
             app:argType="string"
             android:defaultValue="Prepaid" />
         <action
             android:id="@+id/action_mobileDetailsFinder_to_recharge_selectOperator"
-            app:destination="@id/recharge_selectOperator" />
+            app:destination="@id/recharge_selectOperator"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
+        <argument
+            android:name="userCircle"
+            app:argType="string"
+            android:defaultValue="Your Circle" />
+        <argument
+            android:name="userNumberFromCircle"
+            app:argType="string" />
+        <argument
+            android:name="operator"
+            app:argType="string"
+            android:defaultValue="Your Operator" />
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"
         android:name="recahrge.recharge_circle"
         android:label="fragment_recharge_circle"
-        tools:layout="@layout/fragment_recharge_circle" />
+        tools:layout="@layout/fragment_recharge_circle" >
+        <action
+            android:id="@+id/action_recharge_circle_to_mobileDetailsFinder"
+            app:destination="@id/mobileDetailsFinder"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop" />
+        <argument android:name="userNumber"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/recharge_selectOperator"
         android:name="recahrge.recharge_selectOperator"
         android:label="fragment_recharge_select_operator"
-        tools:layout="@layout/fragment_recharge_select_operator" />
+        tools:layout="@layout/fragment_recharge_select_operator" >
+        <action
+            android:id="@+id/action_recharge_selectOperator_to_mobileDetailsFinder"
+            app:destination="@id/mobileDetailsFinder"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop" />
+        <argument
+            android:name="userNoForOp"
+            app:argType="string"
+            android:defaultValue="userNoForOp" />
+    </fragment>
 </navigation>

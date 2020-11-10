@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -38,6 +40,8 @@ public class prePaid extends Fragment {
     final int DRAWABLE_RIGHT = 2;
     final int DRAWABLE_BOTTOM = 3;
 
+    Animation animation;
+
 
     public prePaid() {
         // Required empty public constructor
@@ -57,12 +61,25 @@ public class prePaid extends Fragment {
         radioButton_prePaid = view.findViewById(R.id.radioButton_prePaid);
         radioButton_postPaid = view.findViewById(R.id.radioButton_postPaid);
 
+
         radioButton_prePaid.setChecked(true);
 
+        // Init onClick Animation
+        animation = AnimationUtils.loadAnimation((recahrge_ui) requireActivity(), R.anim.click);
+
+        et_EnterMobileNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                et_EnterMobileNumber.startAnimation(animation);
+            }
+        });
 
         btn_fetchMobileDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                btn_fetchMobileDetails.startAnimation(animation);
+
                 if(et_EnterMobileNumber.length() != 10 || et_EnterMobileNumber.length() > 10){
                     Toast.makeText((recahrge_ui) requireActivity(), "Please Enter 10 digits Mobile No.", Toast.LENGTH_SHORT).show();
                     tv_rechargeWarningText.setText("Please Enter 10 digits Mobile no.");
@@ -82,6 +99,7 @@ public class prePaid extends Fragment {
                     if(event.getRawX() >= (et_EnterMobileNumber.getRight() - et_EnterMobileNumber.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         // your action here
 
+                        v.startAnimation(animation);
                         Toast.makeText((recahrge_ui) requireActivity(), "contactList", Toast.LENGTH_SHORT).show();
 
                         return true;
@@ -97,11 +115,11 @@ public class prePaid extends Fragment {
     private void gotoMobileDetailsFinder(String num){
 
 
-        prePaidDirections.ActionPrePaid3ToMobileDetailsFinder action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder(num);
+        prePaidDirections.ActionPrePaid3ToMobileDetailsFinder
+                action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder(num, "from_prePaid");
 
         if(radioButton_prePaid.isChecked()){
             action.setRecahrgeType("Prepaid");
-
         }
         else if(radioButton_postPaid.isChecked()){
             action.setRecahrgeType("Postpaid");

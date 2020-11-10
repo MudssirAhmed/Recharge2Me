@@ -126,6 +126,7 @@
         tools:ignore="OnClick" />
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
