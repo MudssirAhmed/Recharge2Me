@@ -96,7 +96,9 @@ public class prePaid extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (et_EnterMobileNumber.getRight() - et_EnterMobileNumber.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                    if(event.getRawX() >= (et_EnterMobileNumber.getRight() -
+                            et_EnterMobileNumber.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         // your action here
 
                         v.startAnimation(animation);

@@ -82,7 +82,6 @@ public class recharge_circle extends Fragment {
         }));
 
 
-
         return view;
     }
 }

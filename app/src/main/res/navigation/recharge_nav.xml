@@ -55,6 +55,9 @@
             android:name="operator"
             app:argType="string"
             android:defaultValue="Your Operator" />
+        <action
+            android:id="@+id/action_mobileDetailsFinder_to_recharge_Plan"
+            app:destination="@id/recharge_Plan" />
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"
@@ -84,4 +87,9 @@
             app:argType="string"
             android:defaultValue="userNoForOp" />
     </fragment>
+    <fragment
+        android:id="@+id/recharge_Plan"
+        android:name="recahrge.recharge_Plan"
+        android:label="fragment_recharge__plan"
+        tools:layout="@layout/fragment_recharge__plan" />
 </navigation>

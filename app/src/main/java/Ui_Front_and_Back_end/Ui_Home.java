@@ -48,6 +48,7 @@ public class Ui_Home extends Fragment {
 
         tv_Home_Transacyion = view.findViewById(R.id.tv_Home_Transactions);
 
+
         iv_postPaid = view.findViewById(R.id.iv_postPaid);
         iv_prePaid = view.findViewById(R.id.iv_prePaid);
 

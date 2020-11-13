@@ -7,4 +7,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
+            <item name="fontFamily">@font/comfortaa_bold</item>
+    </style>
+
 </resources>

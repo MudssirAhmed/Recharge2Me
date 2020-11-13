@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="recahrge.MobileDetailsFinder">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
@@ -107,7 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
-        android:id="@+id/textView24"
+        android:id="@+id/tv_BrowsePlans"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginTop="12dp"
