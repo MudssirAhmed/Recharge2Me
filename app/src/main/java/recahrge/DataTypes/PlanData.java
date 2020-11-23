@@ -8,14 +8,14 @@ public class PlanData {
     private Data data;
 
     public PlanData(Data data) {
-        data = data;
+        this.data = data;
     }
 
     public Data getData() {
         return data;
     }
 
-    public class Data {
+    public static class Data {
 
         // SPL , DATA , FTT , TUP , RMG
         private List<recType_SPL> SPL;
@@ -27,6 +27,7 @@ public class PlanData {
         private String resCode;
         private String resText;
 
+        // Constructor
         public Data(List<recType_SPL> SPL, List<recType_Data> DATA, List<recType_FTT> FTT, List<recType_TUP> TUP,
                     List<recType_RMG> RMG, String resCode, String resText) {
             this.SPL = SPL;

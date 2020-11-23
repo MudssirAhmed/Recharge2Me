@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
 
 import com.example.recharge2me.R;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 import recahrge.DataTypes.PlanData;
 import recahrge.DataTypes.recType_SPL;
-import recahrge.myAdapters.planAdapter;
+import recahrge.myAdapters.PlanAdapter_SPL;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,14 +30,13 @@ public class Spl_Fragment extends Fragment {
 
     View v;
     RecyclerView rv_Plan;
-    planAdapter planAdapter;
+    PlanAdapter_SPL planAdapter_SPL;
     TextView tv_spl_warning;
 
     Retrofit retrofit;
     JsonConvertor jsonConvertor;
 
     public Spl_Fragment() {
-
     }
 
     @Nullable
@@ -47,7 +45,7 @@ public class Spl_Fragment extends Fragment {
 
         v = inflater.inflate(R.layout.spl_fragment, container, false);
 
-        rv_Plan = v.findViewById(R.id.rv_Plan);
+        rv_Plan = v.findViewById(R.id.rv_Plan_SPL);
         tv_spl_warning = v.findViewById(R.id.tv_spl_warning);
 
 
@@ -102,9 +100,9 @@ public class Spl_Fragment extends Fragment {
 
     public void setRecyclerView(List<recType_SPL> spls){
 
-        planAdapter = new planAdapter(spls, (getRecahrgePlan) requireActivity());
+        planAdapter_SPL = new PlanAdapter_SPL(spls, (getRecahrgePlan) requireActivity());
 
-        rv_Plan.setAdapter(planAdapter);
+        rv_Plan.setAdapter(planAdapter_SPL);
         rv_Plan.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }

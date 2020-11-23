@@ -13,53 +13,51 @@ import com.example.recharge2me.R;
 
 import java.util.List;
 
+import recahrge.DataTypes.recType_Data;
 import recahrge.DataTypes.recType_SPL;
 
-public class planAdapter extends RecyclerView.Adapter<planAdapter.myViewHolder> {
+public class PlanAdapter_DATA extends RecyclerView.Adapter<PlanAdapter_DATA.myViewHolder> {
 
-    List<recType_SPL> spl;
+    List<recType_Data> data;
     Context context;
 
-    public planAdapter(List<recType_SPL> spl, Context context) {
-        this.spl = spl;
+    public PlanAdapter_DATA (List<recType_Data> data, Context context){
+        this.data = data;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public myViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.plan_card, parent, false);
+        View view = layoutInflater.inflate(R.layout.plan_card, viewGroup, false);
 
         return new myViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull myViewHolder holder, int i) {
 
-//        recType_SPL spl1 = spl[position];
-//        holder.tv_planDetails.setText(spl);
 
         String amount = "";
         String validity = "";
         String details = "";
 
-        recType_SPL data = spl.get(position);
+        recType_Data data1 = data.get(i);
 
-        holder.tv_planAmount.setText("₹" + data.getAmount());
-        holder.tv_panValidity.setText("Validity: " + data.getValidity());
-        holder.tv_planDetails.setText(data.getDetail());
-
+        holder.tv_planAmount.setText("₹" + data1.getAmount());
+        holder.tv_panValidity.setText("Validity: " + data1.getValidity());
+        holder.tv_planDetails.setText(data1.getDetail());
 
     }
 
     @Override
     public int getItemCount() {
-        return spl.size();
+        return data.size();
     }
 
-    public class myViewHolder extends RecyclerView.ViewHolder {
+    public static class myViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_planDetails;
         TextView tv_planAmount;
@@ -73,6 +71,5 @@ public class planAdapter extends RecyclerView.Adapter<planAdapter.myViewHolder> 
             tv_panValidity = itemView.findViewById(R.id.tv_planValidity);
 
         }
-
     }
 }

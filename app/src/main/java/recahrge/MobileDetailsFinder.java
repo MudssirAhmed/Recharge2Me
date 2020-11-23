@@ -111,26 +111,25 @@ public class MobileDetailsFinder extends Fragment {
 
 
         // Init onClick Listeners
+        // This is for chose Circl :-
         btn_circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoCircleUi();
             }
         });
+        // This is for chose operator :-
         btn_operator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoOperatorUi();
             }
         });
-
+        // This is for BrowsePlan :-
         tv_browsePlans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv_browsePlans.startAnimation(animation);
-                Intent intent = new Intent((recahrge_ui) requireActivity(), recahrge.getRecahrgePlan.class );
-                startActivityForResult(intent, 8477);
-
+                gotoRecargePlanUi();
             }
         });
 
@@ -286,4 +285,9 @@ public class MobileDetailsFinder extends Fragment {
         Navigation.findNavController(view).navigate(action);
 
     }
+    private void gotoRecargePlanUi(){
+        tv_browsePlans.startAnimation(animation);
+        Intent intent = new Intent((recahrge_ui) requireActivity(), recahrge.getRecahrgePlan.class );
+        startActivityForResult(intent, 8477);
+    }// This fun. help to going to getRecahrgePlan(Activity).
 }

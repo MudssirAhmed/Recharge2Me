@@ -126,6 +126,7 @@ public class LoginSignIn extends Fragment {
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient((EntryActivity) requireActivity(), gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
@@ -142,16 +143,15 @@ public class LoginSignIn extends Fragment {
         }
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
 
+        try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             loadingDialog.startLoading();
             FirebaseGoogleAuth(account);
-
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText((EntryActivity) requireActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText((EntryActivity) requireActivity(), "errf" + e.getStatusCode(), Toast.LENGTH_SHORT).show();
         }
     }
     private void FirebaseGoogleAuth(GoogleSignInAccount account) {
@@ -163,10 +163,7 @@ public class LoginSignIn extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
                             addSignInDataInFireStore();
-
-
                         } else {
                             Toast.makeText((EntryActivity) requireActivity(), "error! try Again...", Toast.LENGTH_SHORT).show();
                             loadingDialog.stopLoading();
@@ -175,8 +172,6 @@ public class LoginSignIn extends Fragment {
                 });
     }
     private void addSignInDataInFireStore(){
-
-
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (acct != null) {
@@ -225,9 +220,13 @@ public class LoginSignIn extends Fragment {
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if(!user.equals(null)){
+        if(user != null){
             Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
         }
+        else{
+            Toast.makeText((EntryActivity)requireActivity(), "", Toast.LENGTH_SHORT).show();
+        }
+        
     }
 
     private void goToSignPage() {
