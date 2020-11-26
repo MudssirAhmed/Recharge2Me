@@ -13,15 +13,29 @@ import com.example.recharge2me.R;
 
 import java.util.List;
 
+import recahrge.DataTypes.recType_Data;
+import recahrge.DataTypes.recType_FTT;
+import recahrge.DataTypes.recType_RMG;
 import recahrge.DataTypes.recType_SPL;
+import recahrge.DataTypes.recType_TUP;
 
 public class PlanAdapter_SPL extends RecyclerView.Adapter<PlanAdapter_SPL.myViewHolder> {
 
     List<recType_SPL> spl;
+    List <recType_Data> data;
+    List<recType_FTT> ftt;
+    List<recType_TUP> tup;
+    List<recType_RMG> rmg;
+
     Context context;
 
-    public PlanAdapter_SPL(List<recType_SPL> spl, Context context) {
+    public PlanAdapter_SPL(List<recType_SPL> spl, List<recType_Data> data, List<recType_FTT> ftt, List<recType_TUP> tup, List<recType_RMG> rmg, Context context) {
         this.spl = spl;
+        this.data = data;
+        this.ftt = ftt;
+        this.tup = tup;
+        this.rmg = rmg;
+
         this.context = context;
     }
 
@@ -45,19 +59,67 @@ public class PlanAdapter_SPL extends RecyclerView.Adapter<PlanAdapter_SPL.myView
         String validity = "";
         String details = "";
 
-        recType_SPL data = spl.get(position);
+        recType_SPL splData;
+        recType_Data dataData;
+        recType_FTT fttData;
+        recType_TUP tupData;
+        recType_RMG rmgData;
 
-        holder.tv_planAmount.setText("₹" + data.getAmount());
-        holder.tv_panValidity.setText("Validity: " + data.getValidity());
-        holder.tv_planDetails.setText(data.getDetail());
 
+        if(spl != null){
+            splData = spl.get(position);
 
+            holder.tv_planAmount.setText("₹" + splData.getAmount());
+            holder.tv_panValidity.setText("Validity: " + splData.getValidity());
+            holder.tv_planDetails.setText(splData.getDetail());
+        }
+        else if(data != null){
+            dataData = data.get(position);
+
+            holder.tv_planAmount.setText("₹" + dataData.getAmount());
+            holder.tv_panValidity.setText("Validity: " + dataData.getValidity());
+            holder.tv_planDetails.setText(dataData.getDetail());
+        }
+        else if(ftt != null){
+            fttData = ftt.get(position);
+
+            holder.tv_planAmount.setText("₹" + fttData.getAmount());
+            holder.tv_panValidity.setText("Validity: " + fttData.getValidity());
+            holder.tv_planDetails.setText(fttData.getDetail());
+        }
+        else if(tup != null){
+            tupData = tup.get(position);
+
+            holder.tv_planAmount.setText("₹" + tupData.getAmount());
+            holder.tv_panValidity.setText("Validity: " + tupData.getValidity());
+            holder.tv_planDetails.setText(tupData.getDetail());
+        }
+        else if(rmg != null){
+            rmgData = rmg.get(position);
+
+            holder.tv_planAmount.setText("₹" + rmgData.getAmount());
+            holder.tv_panValidity.setText("Validity: " + rmgData.getValidity());
+            holder.tv_planDetails.setText(rmgData.getDetail());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return spl.size();
+
+        if(spl != null)
+            return spl.size();
+        else if(data != null)
+            return data.size();
+        else if(ftt != null)
+            return ftt.size();
+        else if(tup != null)
+            return tup.size();
+        else if(rmg != null)
+            return rmg.size();
+        else
+            return 0;
     }
+
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 

@@ -34,7 +34,7 @@ public class Data_Fragment extends Fragment {
 
     View v;
     RecyclerView rv_planData;
-    PlanAdapter_DATA planAdapter_Data;
+
     PlanAdapter_SPL planAdapter_spl;
     TextView tv_planData_Warning;
 
@@ -57,7 +57,7 @@ public class Data_Fragment extends Fragment {
 
         // Init Retroifit
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.rechapi.com/")
+                .baseUrl(getString(R.string.baseUrl_rechApi))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -83,12 +83,18 @@ public class Data_Fragment extends Fragment {
                 }
 
                 PlanData planData = response.body();
+                String resText = planData.getResText();
 
                 PlanData.Data data = planData.getData();
 
                 List<recType_Data> recType_data = data.getDATA();
 
-                setOnRecyclerView(recType_data);
+//                tv_planData_Warning.setText(resText);
+
+                if (recType_data == null)
+                    tv_planData_Warning.setText(resText);
+                else
+                    setOnRecyclerView(recType_data);
             }
 
             @Override
@@ -101,19 +107,11 @@ public class Data_Fragment extends Fragment {
 
     private void setOnRecyclerView(List<recType_Data> data){
 
-        List<recType_SPL> spls = new ArrayList<>();
 
-        for(recType_Data dats : data){
+        planAdapter_spl = new
+                PlanAdapter_SPL(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
 
-            recType_SPL spl = new recType_SPL(dats.getAmount(), dats.getDetail(), dats.getValidity(), dats.getTalktime());
-
-            spls.add(spl);
-
-        }
-
-        planAdapter_spl = new PlanAdapter_SPL(spls, (getRecahrgePlan) requireActivity());
-        planAdapter_Data = new PlanAdapter_DATA(data, (getRecahrgePlan) requireActivity());
-        rv_planData.setAdapter(planAdapter_Data);
+        rv_planData.setAdapter(planAdapter_spl);
         rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }// End of setOnRecyclerView method;

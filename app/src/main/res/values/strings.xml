@@ -14,6 +14,7 @@
     <string name="enter_mobile_number">Enter Mobile Number</string>
 
     <string name="token">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
+    <string name="baseUrl_rechApi">http://api.rechapi.com/</string>
 
     <string-array name="circle">
         <item>Andhra Pradesh</item>

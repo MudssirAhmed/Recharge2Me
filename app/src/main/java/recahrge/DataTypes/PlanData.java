@@ -6,13 +6,24 @@ public class PlanData {
 
     // {"data":{"SPL":[{"amount":"12","detail":"SMS: 120 SMS","validity":"10 Days","talktime":"NA"},
     private Data data;
+    private String resText;
+    private String resCode;
 
-    public PlanData(Data data) {
+    public PlanData(Data data, String resText) {
         this.data = data;
+        this.resText = resText;
     }
 
     public Data getData() {
         return data;
+    }
+
+    public String getResText() {
+        return resText;
+    }
+
+    public String getResCode() {
+        return resCode;
     }
 
     public static class Data {
@@ -24,19 +35,14 @@ public class PlanData {
         private List<recType_TUP> TUP;
         private List<recType_RMG> RMG;
 
-        private String resCode;
-        private String resText;
-
         // Constructor
         public Data(List<recType_SPL> SPL, List<recType_Data> DATA, List<recType_FTT> FTT, List<recType_TUP> TUP,
-                    List<recType_RMG> RMG, String resCode, String resText) {
+                    List<recType_RMG> RMG) {
             this.SPL = SPL;
             this.DATA = DATA;
             this.FTT = FTT;
             this.TUP = TUP;
             this.RMG = RMG;
-            this.resCode = resCode;
-            this.resText = resText;
         }
 
         public List<recType_SPL> getSPL() {
@@ -57,14 +63,6 @@ public class PlanData {
 
         public List<recType_RMG> getRMG() {
             return RMG;
-        }
-
-        public String getResCode() {
-            return resCode;
-        }
-
-        public String getResText() {
-            return resText;
         }
     }
 }

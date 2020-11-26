@@ -17,6 +17,7 @@ import com.example.recharge2me.R;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
+import recahrge.DataTypes.recType_Data;
 import recahrge.DataTypes.recType_SPL;
 import recahrge.myAdapters.PlanAdapter_SPL;
 import retrofit2.Call;
@@ -51,7 +52,7 @@ public class Spl_Fragment extends Fragment {
 
         // Init Retrofit
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.rechapi.com/")
+                .baseUrl(getString(R.string.baseUrl_rechApi))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -78,12 +79,16 @@ public class Spl_Fragment extends Fragment {
                 }
 
                 PlanData planData1 = response.body();
+                String resText = planData1.getResText();
 
                 PlanData.Data data = planData1.getData();
 
                 List<recType_SPL> spl = data.getSPL();
 
-                setRecyclerView(spl);
+                if(spl == null)
+                    tv_spl_warning.setText(resText);
+                else
+                    setRecyclerView(spl);
 
             }
 
@@ -94,13 +99,11 @@ public class Spl_Fragment extends Fragment {
             }
         });
 
-
-
     }
 
     public void setRecyclerView(List<recType_SPL> spls){
 
-        planAdapter_SPL = new PlanAdapter_SPL(spls, (getRecahrgePlan) requireActivity());
+        planAdapter_SPL = new PlanAdapter_SPL(spls,null, null, null, null, (getRecahrgePlan) requireActivity());
 
         rv_Plan.setAdapter(planAdapter_SPL);
         rv_Plan.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));

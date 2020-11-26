@@ -9,6 +9,7 @@
         android:id="@+id/tv_planData_Warning"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/comfortaa_bold"
         android:gravity="center_horizontal"
         android:textColor="@color/Warning_text"
