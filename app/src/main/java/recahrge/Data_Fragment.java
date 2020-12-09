@@ -1,10 +1,14 @@
 package recahrge;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recharge2me.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
 import recahrge.DataTypes.recType_Data;
-import recahrge.DataTypes.recType_SPL;
-import recahrge.myAdapters.PlanAdapter_DATA;
-import recahrge.myAdapters.PlanAdapter_SPL;
+import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +36,7 @@ public class Data_Fragment extends Fragment {
     View v;
     RecyclerView rv_planData;
 
-    PlanAdapter_SPL planAdapter_spl;
+    PlanAdapter planAdapter_;
     TextView tv_planData_Warning;
 
     private Retrofit retrofit;
@@ -70,8 +71,10 @@ public class Data_Fragment extends Fragment {
 
     private void getDataPlanDetails(){
 
+        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+
         Call<PlanData> call = jsonConvertor
-                    .getRechargePlan("json", getString(R.string.token), "DATA", "11", "10");
+                    .getRechargePlan("json", getString(R.string.token), "DATA", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
@@ -95,6 +98,23 @@ public class Data_Fragment extends Fragment {
                     tv_planData_Warning.setText(resText);
                 else
                     setOnRecyclerView(recType_data);
+                
+                rv_planData.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(), 
+                        rv_planData, new PlanAdapter.planClickListner() {
+                    @Override
+                    public void onPlanClick(View view, int position, View btn) {
+                        Context context;
+                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                        view.startAnimation(animation);
+
+                        recType_Data sendData = recType_data.get(position);
+
+                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                        activity.getRecahrgePlan(sendData.getAmount(), sendData.getValidity(), sendData.getDetail());
+                        activity.sendPlanData();
+
+                    }
+                }));
             }
 
             @Override
@@ -106,12 +126,11 @@ public class Data_Fragment extends Fragment {
     } // End of getDataPlanDetails method;
 
     private void setOnRecyclerView(List<recType_Data> data){
+        
+        planAdapter_ = new
+                PlanAdapter(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
 
-
-        planAdapter_spl = new
-                PlanAdapter_SPL(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
-
-        rv_planData.setAdapter(planAdapter_spl);
+        rv_planData.setAdapter(planAdapter_);
         rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }// End of setOnRecyclerView method;

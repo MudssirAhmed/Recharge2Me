@@ -1,9 +1,12 @@
 package recahrge;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,8 +20,9 @@ import com.example.recharge2me.R;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
+import recahrge.DataTypes.recType_Data;
 import recahrge.DataTypes.recType_FTT;
-import recahrge.myAdapters.PlanAdapter_SPL;
+import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,8 +67,10 @@ public class Ftt_Fragment extends Fragment {
 
     private void getPlansFTT(){
 
+        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+
         Call<PlanData> call = jsonConvertor
-                .getRechargePlan("json", getString(R.string.token),"FTT", "11", "10");
+                .getRechargePlan("json", getString(R.string.token),"FTT", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
@@ -86,6 +92,23 @@ public class Ftt_Fragment extends Fragment {
                     tv_planFtt_WarningText.setText(resText);
                 else
                     setFttDataOnRecyclerView(ftt);
+
+                rv_planFtt.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                        rv_planFtt, new PlanAdapter.planClickListner() {
+                    @Override
+                    public void onPlanClick(View view, int position, View btn) {
+                        Context context;
+                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                        view.startAnimation(animation);
+
+                        recType_FTT sendFtt = ftt.get(position);
+
+                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                        activity.getRecahrgePlan(sendFtt.getAmount(), sendFtt.getValidity(), sendFtt.getDetail());
+                        activity.sendPlanData();
+
+                    }
+                }));
             }
 
             @Override
@@ -97,10 +120,10 @@ public class Ftt_Fragment extends Fragment {
 
     private void setFttDataOnRecyclerView(List<recType_FTT> ftt){
 
-        PlanAdapter_SPL planAdapter_spl = new
-                PlanAdapter_SPL(null, null, ftt, null, null, (getRecahrgePlan) requireActivity());
+        PlanAdapter planAdapter_ = new
+                PlanAdapter(null, null, ftt, null, null, (getRecahrgePlan) requireActivity());
 
-        rv_planFtt.setAdapter(planAdapter_spl);
+        rv_planFtt.setAdapter(planAdapter_);
         rv_planFtt.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }

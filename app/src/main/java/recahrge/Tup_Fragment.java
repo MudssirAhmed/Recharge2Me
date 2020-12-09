@@ -1,9 +1,12 @@
 package recahrge;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +21,7 @@ import java.util.List;
 
 import recahrge.DataTypes.PlanData;
 import recahrge.DataTypes.recType_TUP;
-import recahrge.myAdapters.PlanAdapter_SPL;
+import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,8 +65,10 @@ public class Tup_Fragment extends Fragment {
 
     private void getPlanTup(){
 
+        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+
         Call<PlanData> call = jsonConvertor
-                .getRechargePlan("json", getString(R.string.token), "TUP", "11", "10");
+                .getRechargePlan("json", getString(R.string.token), "TUP", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
@@ -91,6 +96,23 @@ public class Tup_Fragment extends Fragment {
                 else
                     setDataOnRecyclerView(tup);
 
+                rv_planTup.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                        rv_planTup, new PlanAdapter.planClickListner() {
+                    @Override
+                    public void onPlanClick(View view, int position, View btn) {
+                        Context context;
+                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                        view.startAnimation(animation);
+
+                        recType_TUP sendTup = tup.get(position);
+
+                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                        activity.getRecahrgePlan(sendTup.getAmount(), sendTup.getValidity(), sendTup.getDetail());
+                        activity.sendPlanData();
+
+                    }
+                }));
+
             }
 
             @Override
@@ -103,10 +125,10 @@ public class Tup_Fragment extends Fragment {
 
     private void setDataOnRecyclerView(List<recType_TUP> tup){
 
-        PlanAdapter_SPL planAdapter_spl = new
-                PlanAdapter_SPL(null, null, null, tup, null, (getRecahrgePlan) requireActivity());
+        PlanAdapter planAdapter_ = new
+                PlanAdapter(null, null, null, tup, null, (getRecahrgePlan) requireActivity());
 
-        rv_planTup.setAdapter(planAdapter_spl);
+        rv_planTup.setAdapter(planAdapter_);
         rv_planTup.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }// End of setDataOnRecyclerView

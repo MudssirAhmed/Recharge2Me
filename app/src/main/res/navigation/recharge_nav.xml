@@ -57,7 +57,11 @@
             android:defaultValue="Your Operator" />
         <action
             android:id="@+id/action_mobileDetailsFinder_to_recharge_Plan"
-            app:destination="@id/recharge_Plan" />
+            app:destination="@id/recharge_Plan"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"
@@ -68,7 +72,10 @@
             android:id="@+id/action_recharge_circle_to_mobileDetailsFinder"
             app:destination="@id/mobileDetailsFinder"
             app:enterAnim="@anim/to_left_pop"
-            app:exitAnim="@anim/from_right_pop" />
+            app:exitAnim="@anim/from_right_pop"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/recharge_circle"
+            app:popUpToInclusive="true" />
         <argument android:name="userNumber"
             app:argType="string" />
     </fragment>
@@ -81,7 +88,10 @@
             android:id="@+id/action_recharge_selectOperator_to_mobileDetailsFinder"
             app:destination="@id/mobileDetailsFinder"
             app:enterAnim="@anim/to_left_pop"
-            app:exitAnim="@anim/from_right_pop" />
+            app:exitAnim="@anim/from_right_pop"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/recharge_selectOperator"
+            app:popUpToInclusive="true" />
         <argument
             android:name="userNoForOp"
             app:argType="string"

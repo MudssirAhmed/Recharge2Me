@@ -1,9 +1,12 @@
 package recahrge;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recharge2me.R;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
 import recahrge.DataTypes.recType_RMG;
-import recahrge.myAdapters.PlanAdapter_SPL;
+import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,8 +65,10 @@ public class Rmg_Fragment extends Fragment  {
 
     private void getRmgData(){
 
+        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+
         Call<PlanData> call = jsonConvertor
-                .getRechargePlan("json", getString(R.string.token), "RMG", "11", "10");
+                .getRechargePlan("json", getString(R.string.token), "RMG", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
@@ -95,6 +98,23 @@ public class Rmg_Fragment extends Fragment  {
                 else
                     setDataOnRecyclerView(rmg);
 
+                rv_Rmg.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                        rv_Rmg, new PlanAdapter.planClickListner() {
+                    @Override
+                    public void onPlanClick(View view, int position, View btn) {
+                        Context context;
+                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                        view.startAnimation(animation);
+
+                        recType_RMG sendRmg = rmg.get(position);
+
+                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                        activity.getRecahrgePlan(sendRmg.getAmount(), sendRmg.getValidity(), sendRmg.getDetail());
+                        activity.sendPlanData();
+
+                    }
+                }));
+
             }
 
             @Override
@@ -107,10 +127,10 @@ public class Rmg_Fragment extends Fragment  {
 
     private void setDataOnRecyclerView(List<recType_RMG> rmg){
 
-        PlanAdapter_SPL planAdapter_spl = new
-                PlanAdapter_SPL(null, null, null, null,rmg, (getRecahrgePlan) requireActivity());
+        PlanAdapter planAdapter_ = new
+                PlanAdapter(null, null, null, null,rmg, (getRecahrgePlan) requireActivity());
 
-        rv_Rmg.setAdapter(planAdapter_spl);
+        rv_Rmg.setAdapter(planAdapter_);
         rv_Rmg.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }// end of setDatOnRecyclerView

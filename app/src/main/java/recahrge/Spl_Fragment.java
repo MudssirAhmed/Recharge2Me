@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,9 +19,8 @@ import com.example.recharge2me.R;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_Data;
 import recahrge.DataTypes.recType_SPL;
-import recahrge.myAdapters.PlanAdapter_SPL;
+import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +32,7 @@ public class Spl_Fragment extends Fragment {
 
     View v;
     RecyclerView rv_Plan;
-    PlanAdapter_SPL planAdapter_SPL;
+    PlanAdapter planAdapter_;
     TextView tv_spl_warning;
 
     Retrofit retrofit;
@@ -59,6 +60,8 @@ public class Spl_Fragment extends Fragment {
         // Init jsonConverter
         jsonConvertor = retrofit.create(JsonConvertor.class);
 
+
+
         getRecahrgePlanDetails();
 
         return v;
@@ -67,8 +70,11 @@ public class Spl_Fragment extends Fragment {
 
     public void getRecahrgePlanDetails(){
 
+        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+//        tv_spl_warning.setText("abc: "+activity.getCircleId());
+
         Call<PlanData> call = jsonConvertor.getRechargePlan(
-                "json", getString(R.string.token), "SPL", "11", "10");
+                "json", getString(R.string.token), "SPL", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
@@ -90,6 +96,22 @@ public class Spl_Fragment extends Fragment {
                 else
                     setRecyclerView(spl);
 
+                rv_Plan.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                        rv_Plan, new PlanAdapter.planClickListner() {
+                    @Override
+                    public void onPlanClick(View view, int position, View v) {
+
+                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click);
+                        view.startAnimation(animation);
+
+                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                        recType_SPL sendSpl = spl.get(position);
+                        activity.getRecahrgePlan(sendSpl.getAmount(), sendSpl.getValidity(), sendSpl.getDetail());
+
+                        activity.sendPlanData();
+                    }
+                }));
+
             }
 
             @Override
@@ -103,9 +125,9 @@ public class Spl_Fragment extends Fragment {
 
     public void setRecyclerView(List<recType_SPL> spls){
 
-        planAdapter_SPL = new PlanAdapter_SPL(spls,null, null, null, null, (getRecahrgePlan) requireActivity());
+        planAdapter_ = new PlanAdapter(spls,null, null, null, null, (getRecahrgePlan) requireActivity());
 
-        rv_Plan.setAdapter(planAdapter_SPL);
+        rv_Plan.setAdapter(planAdapter_);
         rv_Plan.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
     }

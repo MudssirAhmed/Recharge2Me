@@ -31,7 +31,7 @@
         tools:layout="@layout/fragment_ui__transactions" />
     <activity
         android:id="@+id/recahrge_ui"
-        android:name="recahrge.recahrge_ui"
+        android:name="recahrge.recharge_ui"
         android:label="activity_recahrge_ui"
         tools:layout="@layout/activity_recahrge_ui" />
 </navigation>

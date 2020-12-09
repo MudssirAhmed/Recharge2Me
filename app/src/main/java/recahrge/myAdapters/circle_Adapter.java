@@ -67,7 +67,7 @@ public class circle_Adapter extends RecyclerView.Adapter<circle_Adapter.myViewHo
 
 
     // custom Interface
-
+    // Click Listner
     public interface ClickListener{
         public void onClick(View view, int position);
 //        public void onLongPress(View view, int position);
@@ -109,11 +109,8 @@ public class circle_Adapter extends RecyclerView.Adapter<circle_Adapter.myViewHo
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
             View child = rv.findChildViewUnder(e.getX(), e.getY());
-
             if(child!=null && clicklistener!=null && gestureDetector.onTouchEvent(e)){
-
                 clicklistener.onClick(child,rv.getChildAdapterPosition(child));
-
             }
 
             return false;

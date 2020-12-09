@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
     package="com.example.recharge2me">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,16 +16,25 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity android:name="recahrge.getRecahrgePlan"></activity>
-        <activity android:name="recahrge.recahrge_ui" />
+        <activity android:name="recahrge.recharge_ui" />
         <activity android:name="Ui_Front_and_Back_end.Main_UserInterface" />
         <activity android:name="LogInSignIn_Entry.EntryActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.recharge2me.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Keep it false in production environment-->
+        <meta-data
+            android:name="com.phonepe.android.sdk.Debuggable"
+            android:value="false"/>
+        <!-- Keep it false in production environment-->
+        <meta-data
+            android:name="com.phonepe.android.sdk.isUAT"
+            android:value="false"/>
     </application>
 
 </manifest>

@@ -1,8 +1,6 @@
 package recahrge;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -65,7 +63,7 @@ public class prePaid extends Fragment {
         radioButton_prePaid.setChecked(true);
 
         // Init onClick Animation
-        animation = AnimationUtils.loadAnimation((recahrge_ui) requireActivity(), R.anim.click);
+        animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
 
         et_EnterMobileNumber.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +79,7 @@ public class prePaid extends Fragment {
                 btn_fetchMobileDetails.startAnimation(animation);
 
                 if(et_EnterMobileNumber.length() != 10 || et_EnterMobileNumber.length() > 10){
-                    Toast.makeText((recahrge_ui) requireActivity(), "Please Enter 10 digits Mobile No.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText((recharge_ui) requireActivity(), "Please Enter 10 digits Mobile No.", Toast.LENGTH_SHORT).show();
                     tv_rechargeWarningText.setText("Please Enter 10 digits Mobile no.");
                 }
                 else {
@@ -102,7 +100,7 @@ public class prePaid extends Fragment {
                         // your action here
 
                         v.startAnimation(animation);
-                        Toast.makeText((recahrge_ui) requireActivity(), "contactList", Toast.LENGTH_SHORT).show();
+                        Toast.makeText((recharge_ui) requireActivity(), "contactList", Toast.LENGTH_SHORT).show();
 
                         return true;
                     }
