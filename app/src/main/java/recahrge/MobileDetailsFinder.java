@@ -21,18 +21,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.recharge2me.R;
-import com.google.firestore.v1.StructuredQuery;
+import com.recharge2mePlay.recharge2me.R;
 import com.google.gson.JsonObject;
-import com.phonepe.intent.sdk.api.PhonePe;
-import com.phonepe.intent.sdk.api.PhonePeInitException;
-import com.phonepe.intent.sdk.api.ShowPhonePeCallback;
-import com.phonepe.intent.sdk.api.TransactionRequest;
-import com.phonepe.intent.sdk.api.TransactionRequestBuilder;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,11 +38,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import Retrofit.MobileDetailsFinder_Data;
 
-import static com.google.common.hash.Hashing.sha256;
 
-
-
-public class MobileDetailsFinder extends Fragment implements PaymentResultListener {
+public class MobileDetailsFinder extends Fragment {
 
     TextView tv_mF_planDetails,
              tv_mobileNumber,
@@ -157,20 +146,8 @@ public class MobileDetailsFinder extends Fragment implements PaymentResultListen
         btn_mobileDefinder_proceed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getPayments();
-
-
-//                try {
-//                    JSONObject orderRequest = new JSONObject();
-//                    orderRequest.put("amount", 50000); // amount in the smallest currency unit
-//                    orderRequest.put("currency", "INR");
-//                    orderRequest.put("receipt", "order_rcptid_11");
-//
-//                    StructuredQuery.Order order = razorpay.Orders.create(orderRequest);
-//                } catch (RazorpayException e) {
-//                    // Handle Exception
-//                    System.out.println(e.getMessage());
-//                }
+//                getPayments();
+                setDataofUser();
             }
         });
         // This is for BrowsePlan :-
@@ -386,6 +363,9 @@ public class MobileDetailsFinder extends Fragment implements PaymentResultListen
 
 
 
+    private void setDataofUser(){
+
+    }
 
 
 
@@ -434,20 +414,6 @@ public class MobileDetailsFinder extends Fragment implements PaymentResultListen
 
     }// This fun. help to going to getRecahrgePlan(Activity).
     private void getPayments(){
-
-        // Init Razorpay(checKout)
-        checkout = new Checkout();
-        checkout.setKeyID("<rzp_test_iNCngJxtoDwyj2>");
-
-        try{
-
-            JsonObject object = new JsonObject();
-//            object.Add();
-
-        }
-        catch (Exception e){
-
-        }
 
     }
 
@@ -546,15 +512,5 @@ public class MobileDetailsFinder extends Fragment implements PaymentResultListen
 
 
         return cd.get(key);
-    }
-
-    @Override
-    public void onPaymentSuccess(String s) {
-
-    }
-
-    @Override
-    public void onPaymentError(int i, String s) {
-
     }
 }

@@ -5,7 +5,7 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 public class LoadingDialog {
 

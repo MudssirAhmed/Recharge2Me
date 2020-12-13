@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.recharge2me",
+  "applicationId": "com.recharge2mePlay.recharge2me",
   "variantName": "processReleaseResources",
   "elements": [
     {

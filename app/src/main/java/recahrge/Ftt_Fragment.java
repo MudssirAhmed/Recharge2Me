@@ -15,12 +15,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_Data;
 import recahrge.DataTypes.recType_FTT;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;

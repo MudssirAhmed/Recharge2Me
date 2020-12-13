@@ -7,15 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recharge2me.R;
-
-import recahrge.recharge_circle;
+import com.recharge2mePlay.recharge2me.R;
 
 public class circle_Adapter extends RecyclerView.Adapter<circle_Adapter.myViewHolder> {
 

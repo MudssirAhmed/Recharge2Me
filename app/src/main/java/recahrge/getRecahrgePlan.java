@@ -6,14 +6,10 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class getRecahrgePlan extends AppCompatActivity {
 

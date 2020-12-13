@@ -2,12 +2,10 @@ package Ui_Front_and_Back_end
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.recharge2me.R
+import com.recharge2mePlay.recharge2me.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Main_UserInterface : AppCompatActivity() {

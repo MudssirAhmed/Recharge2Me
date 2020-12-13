@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="com.example.recharge2me">
+    package="com.recharge2mePlay.recharge2me">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,7 +19,7 @@
         <activity android:name="recahrge.recharge_ui" />
         <activity android:name="Ui_Front_and_Back_end.Main_UserInterface" />
         <activity android:name="LogInSignIn_Entry.EntryActivity" />
-        <activity android:name="com.example.recharge2me.MainActivity">
+        <activity android:name="com.recharge2mePlay.recharge2me.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

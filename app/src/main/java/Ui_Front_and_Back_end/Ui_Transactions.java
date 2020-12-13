@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 
 public class Ui_Transactions extends Fragment {

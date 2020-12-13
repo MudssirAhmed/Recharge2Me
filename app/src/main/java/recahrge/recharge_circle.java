@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 import recahrge.myAdapters.circle_Adapter;
 
 public class recharge_circle extends Fragment {

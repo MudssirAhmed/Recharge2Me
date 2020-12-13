@@ -14,7 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 import recahrge.myAdapters.operatorAdapter;
 

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 public class recharge_ui extends AppCompatActivity {
 

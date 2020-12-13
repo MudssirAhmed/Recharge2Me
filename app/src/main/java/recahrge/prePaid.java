@@ -19,7 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 public class prePaid extends Fragment {
 

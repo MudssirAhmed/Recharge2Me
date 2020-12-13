@@ -9,12 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
 import recahrge.DataTypes.recType_Data;
-import recahrge.DataTypes.recType_SPL;
 
 public class PlanAdapter_DATA extends RecyclerView.Adapter<PlanAdapter_DATA.myViewHolder> {
 
