@@ -40,10 +40,11 @@ class dbNumberDetails_adapter: RecyclerView.Adapter<dbNumberDetails_adapter.myVi
             else -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.mtnl)
         }
 
-//        holder.itemView.db_card_numberDetails.setOnClickListener {
-////            val action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder( "", "", currentItem)
-////            holder.itemView.findNavController().navigate(action)
-//        }
+        holder.itemView.db_card_numberDetails.setOnClickListener {
+            val action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder( "null", "null")
+            action.setNumberData(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
 
     }
 

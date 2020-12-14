@@ -62,6 +62,11 @@
             app:exitAnim="@anim/from_left"
             app:popEnterAnim="@anim/to_left_pop"
             app:popExitAnim="@anim/from_right_pop" />
+        <argument
+            android:name="numberData"
+            app:argType="local_Databasse.entity_numberDetails"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"

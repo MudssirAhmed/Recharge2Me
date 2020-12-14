@@ -173,11 +173,44 @@ public class MobileDetailsFinder extends Fragment {
 
         String num = getNumber(number_fromPrePaid, userNumber_fromCircle);
 
-        getMobileDetails(num, type, userCircle);
+        if(isNullOrNot(number_fromPrePaid, userNumber_fromCircle)){
+            entity_numberDetails numberDetails = MobileDetailsFinderArgs.fromBundle(getArguments()).getNumberData();
+
+            tv_mobileNumber.setText(numberDetails.getNumber());
+            btn_operator.setText(numberDetails.getOperator());
+            btn_circle.setText(numberDetails.getCircle());
+            setImageViewOnOperatorImageView(numberDetails.getOperator());
+
+            loadingDialog.stopLoading();
+        }else
+            getMobileDetails(num, type, userCircle);
 //        loadingDialog.stopLoading();
 
         return view;
     } // End of OnCreteView method;
+
+    private void setImageViewOnOperatorImageView(String operator){
+        switch(operator){
+            case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
+                break;
+            case "Vodafone" : iv_rechargeOperator.setImageResource(R.drawable.idea);
+                break;
+            case "Reliance Jio" : iv_rechargeOperator.setImageResource(R.drawable.jio);
+                break;
+            case "Airtel" : iv_rechargeOperator.setImageResource(R.drawable.airtel);
+                break;
+            case "Bsnl" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
+                break;
+            default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
+                break;
+        }
+    }
+    private boolean isNullOrNot(String number, String fromCircle){
+
+        if(number.equals("null") && fromCircle.equals("null"))
+            return true;
+        return false;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -248,28 +281,12 @@ public class MobileDetailsFinder extends Fragment {
                 edit.putString("Operator", data.getService());
                 edit.apply();
 
-                switch(data.getService()){
-                    case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
-                        break;
-                    case "Vodafone" : iv_rechargeOperator.setImageResource(R.drawable.idea);
-                        break;
-                    case "Reliance Jio" : iv_rechargeOperator.setImageResource(R.drawable.jio);
-                        break;
-                    case "Airtel" : iv_rechargeOperator.setImageResource(R.drawable.airtel);
-                        break;
-                    case "Bsnl" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
-                        break;
-                    default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
-                        break;
-                }
+                setImageViewOnOperatorImageView(data.getService());
 
                 tv_mobileNumber.setText(number);
                 tv_recahargeType.setText(type);
                 btn_circle.setText(getUserLocation(data, userCircle));
                 btn_operator.setText(getUserOperator(data));
-
-//                edit.putBoolean("checkCircle", false);
-//                edit.apply();
 
                 circleId = data.getCircleId();
 
