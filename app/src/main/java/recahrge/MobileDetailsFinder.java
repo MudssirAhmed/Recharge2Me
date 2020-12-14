@@ -152,7 +152,8 @@ public class MobileDetailsFinder extends Fragment {
             @Override
             public void onClick(View view) {
 //                getPayments();
-                setNumberDataInDatabase();
+//                setNumberDataInDatabase();
+                updateNumberDataInDatabase();
             }
         });
         // This is for BrowsePlan :-
@@ -189,6 +190,15 @@ public class MobileDetailsFinder extends Fragment {
         return view;
     } // End of OnCreteView method;
 
+    private void updateNumberDataInDatabase(){
+        String Number = tv_mobileNumber.getText().toString();
+        String operator = btn_operator.getText().toString();
+        String circle = btn_circle.getText().toString();
+
+        entity_numberDetails numberDetails = new entity_numberDetails(Number, circle, operator);
+
+        numberViewModel.updateNumberData(numberDetails);
+    }
     private void setImageViewOnOperatorImageView(String operator){
         switch(operator){
             case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
@@ -201,6 +211,8 @@ public class MobileDetailsFinder extends Fragment {
                 break;
             case "Bsnl" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
                 break;
+            case "BSNL" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
+                break;
             default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
                 break;
         }
@@ -211,6 +223,7 @@ public class MobileDetailsFinder extends Fragment {
             return true;
         return false;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

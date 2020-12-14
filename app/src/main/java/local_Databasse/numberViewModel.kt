@@ -25,4 +25,10 @@ class numberViewModel(application: Application): AndroidViewModel(application) {
                 repository.addNumberData(entityNumberdetails)
             }
     }
+
+    fun updateNumberData(entityNumberdetails: entity_numberDetails){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateNumberData(entityNumberdetails)
+        }
+    }
 }

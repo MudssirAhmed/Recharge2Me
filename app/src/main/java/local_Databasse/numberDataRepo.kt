@@ -10,4 +10,7 @@ class numberDataRepo(private val numberDao: Dao_numberDetails) {
         numberDao.add_numberDetails(numberData)
     }
 
+    suspend fun updateNumberData(numberData: entity_numberDetails){
+        numberDao.updateNumberData(numberData)
+    }
 }
