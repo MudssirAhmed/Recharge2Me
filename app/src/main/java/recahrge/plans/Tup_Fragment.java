@@ -1,4 +1,4 @@
-package recahrge;
+package recahrge.plans;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import com.recharge2mePlay.recharge2me.R;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_Data;
+import recahrge.DataTypes.recType_TUP;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,33 +29,28 @@ import retrofit2.Retrofit;
 import Retrofit.JsonConvertor;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+public class Tup_Fragment extends Fragment {
 
-public class Data_Fragment extends Fragment {
+    View view;
 
-    View v;
-    RecyclerView rv_planData;
+    TextView tv_planTup_warningText;
+    RecyclerView rv_planTup;
 
-    PlanAdapter planAdapter_;
-    TextView tv_planData_Warning;
+    Retrofit retrofit;
+    JsonConvertor jsonConvertor;
 
-    private Retrofit retrofit;
-    JsonConvertor  jsonConvertor;
-
-
-    public Data_Fragment() {
+    public Tup_Fragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.data_fragment, container, false);
+        view = inflater.inflate(R.layout.tup_fragment, container, false);
 
-        rv_planData = v.findViewById(R.id.rv_PlanData);
-        tv_planData_Warning = v.findViewById(R.id.tv_planData_Warning);
+        tv_planTup_warningText = view.findViewById(R.id.tv_planTup_WarningText);
+        rv_planTup = view.findViewById(R.id.rv_planTup);
 
-
-        // Init Retroifit
         retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.baseUrl_rechApi))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -63,74 +58,78 @@ public class Data_Fragment extends Fragment {
 
         jsonConvertor = retrofit.create(JsonConvertor.class);
 
-        getDataPlanDetails();
+        getPlanTup();
 
-        return v;
-    }
+        return view;
+    }// End of onCreteView;
 
-    private void getDataPlanDetails(){
+    private void getPlanTup(){
 
         getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
-                    .getRechargePlan("json", getString(R.string.token), "DATA", activity.getCircleId(), activity.getOpCode());
+                .getRechargePlan("json", getString(R.string.token), "TUP", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
             public void onResponse(Call<PlanData> call, Response<PlanData> response) {
-
                 if(!response.isSuccessful()){
-                    tv_planData_Warning.setText(response.code());
+                    tv_planTup_warningText.setText(response.code());
                     return;
                 }
-
                 PlanData planData = response.body();
                 String resText = planData.getResText();
 
                 PlanData.Data data = planData.getData();
 
-                List<recType_Data> recType_data = data.getDATA();
+                List<recType_TUP> tup = data.getTUP();
 
-//                tv_planData_Warning.setText(resText);
+                // Testing
+//                String s = "";
+//                for (recType_TUP type_tup : tup){
+//                    s += type_tup.getAmount() + "\n";
+//                }
+//                tv_planTup_warningText.setText(s);
 
-                if (recType_data == null)
-                    tv_planData_Warning.setText(resText);
+                if (tup == null)
+                    tv_planTup_warningText.setText(resText);
                 else
-                    setOnRecyclerView(recType_data);
-                
-                rv_planData.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(), 
-                        rv_planData, new PlanAdapter.planClickListner() {
+                    setDataOnRecyclerView(tup);
+
+                rv_planTup.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                        rv_planTup, new PlanAdapter.planClickListner() {
                     @Override
                     public void onPlanClick(View view, int position, View btn) {
                         Context context;
                         Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
                         view.startAnimation(animation);
 
-                        recType_Data sendData = recType_data.get(position);
+                        recType_TUP sendTup = tup.get(position);
 
                         getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendData.getAmount(), sendData.getValidity(), sendData.getDetail());
+                        activity.getRecahrgePlan(sendTup.getAmount(), sendTup.getValidity(), sendTup.getDetail());
                         activity.sendPlanData();
 
                     }
                 }));
+
             }
 
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
-                tv_planData_Warning.setText(throwable.getMessage());
+                tv_planTup_warningText.setText(throwable.getMessage());
             }
         });
 
-    } // End of getDataPlanDetails method;
+    }// End of getPlanTup
 
-    private void setOnRecyclerView(List<recType_Data> data){
-        
-        planAdapter_ = new
-                PlanAdapter(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
+    private void setDataOnRecyclerView(List<recType_TUP> tup){
 
-        rv_planData.setAdapter(planAdapter_);
-        rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        PlanAdapter planAdapter_ = new
+                PlanAdapter(null, null, null, tup, null, (getRecahrgePlan) requireActivity());
 
-    }// End of setOnRecyclerView method;
+        rv_planTup.setAdapter(planAdapter_);
+        rv_planTup.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+
+    }// End of setDataOnRecyclerView
 }

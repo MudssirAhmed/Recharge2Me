@@ -99,7 +99,7 @@
     </fragment>
     <fragment
         android:id="@+id/recharge_Plan"
-        android:name="recahrge.recharge_Plan"
+        android:name="recahrge.plans.recharge_Plan"
         android:label="fragment_recharge__plan"
         tools:layout="@layout/fragment_recharge__plan" />
 </navigation>

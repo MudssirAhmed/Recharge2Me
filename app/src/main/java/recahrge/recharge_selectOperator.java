@@ -72,7 +72,8 @@ public class recharge_selectOperator extends Fragment {
                         v.startAnimation(animation);
 
                         recharge_selectOperatorDirections.ActionRechargeSelectOperatorToMobileDetailsFinder
-                                        action = recharge_selectOperatorDirections.actionRechargeSelectOperatorToMobileDetailsFinder("formCircle", number);
+                                        action = recharge_selectOperatorDirections
+                                .actionRechargeSelectOperatorToMobileDetailsFinder("formCircle", number);
                         action.setOperator(recOp[position]);
 
                         Navigation.findNavController(view).navigate(action);

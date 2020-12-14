@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.recharge2mePlay.recharge2me.R;
+
+import local_Databasse.entity_numberDetails;
 import recahrge.myAdapters.circle_Adapter;
 
 public class recharge_circle extends Fragment {
@@ -63,8 +65,11 @@ public class recharge_circle extends Fragment {
 
                 view.startAnimation(animation);
 
+                entity_numberDetails a = null;
+
                 recharge_circleDirections.ActionRechargeCircleToMobileDetailsFinder
-                        action = recharge_circleDirections.actionRechargeCircleToMobileDetailsFinder("formCircle", number);
+                        action = recharge_circleDirections
+                        .actionRechargeCircleToMobileDetailsFinder("formCircle", number);
 
                 action.setUserCircle(circle[position]);
 

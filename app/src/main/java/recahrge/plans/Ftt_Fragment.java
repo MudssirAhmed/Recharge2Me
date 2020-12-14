@@ -1,4 +1,4 @@
-package recahrge;
+package recahrge.plans;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import com.recharge2mePlay.recharge2me.R;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_TUP;
+import recahrge.DataTypes.recType_FTT;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,28 +29,29 @@ import retrofit2.Retrofit;
 import Retrofit.JsonConvertor;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Tup_Fragment extends Fragment {
+public class Ftt_Fragment extends Fragment {
 
     View view;
 
-    TextView tv_planTup_warningText;
-    RecyclerView rv_planTup;
+    RecyclerView rv_planFtt;
+    TextView tv_planFtt_WarningText;
 
-    Retrofit retrofit;
+    private Retrofit retrofit;
     JsonConvertor jsonConvertor;
 
-    public Tup_Fragment() {
+    public Ftt_Fragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.tup_fragment, container, false);
+        view = inflater.inflate(R.layout.ftt_fragment, container, false);
 
-        tv_planTup_warningText = view.findViewById(R.id.tv_planTup_WarningText);
-        rv_planTup = view.findViewById(R.id.rv_planTup);
+        rv_planFtt = view.findViewById(R.id.rv_planFtt);
+        tv_planFtt_WarningText = view.findViewById(R.id.tv_planFtt_WarningText);
 
+        // Init Retrofit
         retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.baseUrl_rechApi))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -58,78 +59,71 @@ public class Tup_Fragment extends Fragment {
 
         jsonConvertor = retrofit.create(JsonConvertor.class);
 
-        getPlanTup();
+        getPlansFTT();
 
         return view;
-    }// End of onCreteView;
+    }
 
-    private void getPlanTup(){
+    private void getPlansFTT(){
 
         getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
-                .getRechargePlan("json", getString(R.string.token), "TUP", activity.getCircleId(), activity.getOpCode());
+                .getRechargePlan("json", getString(R.string.token),"FTT", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
             public void onResponse(Call<PlanData> call, Response<PlanData> response) {
+
                 if(!response.isSuccessful()){
-                    tv_planTup_warningText.setText(response.code());
+                    tv_planFtt_WarningText.setText(response.code());
                     return;
                 }
+
                 PlanData planData = response.body();
                 String resText = planData.getResText();
 
-                PlanData.Data data = planData.getData();
+                PlanData.Data  data = planData.getData();
 
-                List<recType_TUP> tup = data.getTUP();
+                List<recType_FTT> ftt = data.getFTT();
 
-                // Testing
-//                String s = "";
-//                for (recType_TUP type_tup : tup){
-//                    s += type_tup.getAmount() + "\n";
-//                }
-//                tv_planTup_warningText.setText(s);
-
-                if (tup == null)
-                    tv_planTup_warningText.setText(resText);
+                if(ftt == null)
+                    tv_planFtt_WarningText.setText(resText);
                 else
-                    setDataOnRecyclerView(tup);
+                    setFttDataOnRecyclerView(ftt);
 
-                rv_planTup.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
-                        rv_planTup, new PlanAdapter.planClickListner() {
+                rv_planFtt.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                        rv_planFtt, new PlanAdapter.planClickListner() {
                     @Override
                     public void onPlanClick(View view, int position, View btn) {
                         Context context;
                         Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
                         view.startAnimation(animation);
 
-                        recType_TUP sendTup = tup.get(position);
+                        recType_FTT sendFtt = ftt.get(position);
 
                         getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendTup.getAmount(), sendTup.getValidity(), sendTup.getDetail());
+                        activity.getRecahrgePlan(sendFtt.getAmount(), sendFtt.getValidity(), sendFtt.getDetail());
                         activity.sendPlanData();
 
                     }
                 }));
-
             }
 
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
-                tv_planTup_warningText.setText(throwable.getMessage());
+                tv_planFtt_WarningText.setText(throwable.getMessage());
             }
         });
+    }
 
-    }// End of getPlanTup
-
-    private void setDataOnRecyclerView(List<recType_TUP> tup){
+    private void setFttDataOnRecyclerView(List<recType_FTT> ftt){
 
         PlanAdapter planAdapter_ = new
-                PlanAdapter(null, null, null, tup, null, (getRecahrgePlan) requireActivity());
+                PlanAdapter(null, null, ftt, null, null, (getRecahrgePlan) requireActivity());
 
-        rv_planTup.setAdapter(planAdapter_);
-        rv_planTup.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        rv_planFtt.setAdapter(planAdapter_);
+        rv_planFtt.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
-    }// End of setDataOnRecyclerView
+    }
 }

@@ -1,4 +1,4 @@
-package recahrge;
+package recahrge.plans;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

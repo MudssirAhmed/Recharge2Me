@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name="recahrge.getRecahrgePlan"></activity>
+        <activity android:name="recahrge.plans.getRecahrgePlan"></activity>
         <activity android:name="recahrge.recharge_ui" />
         <activity android:name="Ui_Front_and_Back_end.Main_UserInterface" />
         <activity android:name="LogInSignIn_Entry.EntryActivity" />

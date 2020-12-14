@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.recharge2mePlay.recharge2me.R;
+
+import java.util.List;
+import java.util.Observer;
+
+import local_Databasse.entity_numberDetails;
+import local_Databasse.numberViewModel;
+import recahrge.myAdapters.dbNumberDetails_adapter;
 
 public class prePaid extends Fragment {
 
@@ -40,6 +49,10 @@ public class prePaid extends Fragment {
 
     Animation animation;
 
+    // number Data from Database using entity
+    numberViewModel mNumberViewModel;
+    RecyclerView rv_dbNumberDetails;
+    dbNumberDetails_adapter mAdpter_numberDetails;
 
     public prePaid() {
         // Required empty public constructor
@@ -59,6 +72,18 @@ public class prePaid extends Fragment {
         radioButton_prePaid = view.findViewById(R.id.radioButton_prePaid);
         radioButton_postPaid = view.findViewById(R.id.radioButton_postPaid);
 
+
+        // init RecyclerView for db_numberDetails
+        mAdpter_numberDetails = new dbNumberDetails_adapter();
+        rv_dbNumberDetails = view.findViewById(R.id.rv_db_numberDetails);
+        rv_dbNumberDetails.setAdapter(mAdpter_numberDetails);
+        rv_dbNumberDetails.setLayoutManager(new LinearLayoutManager((recharge_ui)requireActivity()));
+
+
+        mNumberViewModel = new numberViewModel(getActivity().getApplication());
+        mNumberViewModel.getReadAllData().observe(getViewLifecycleOwner(), entity_numberDetails -> {
+                    mAdpter_numberDetails.setData(entity_numberDetails);
+                });
 
         radioButton_prePaid.setChecked(true);
 
@@ -114,6 +139,7 @@ public class prePaid extends Fragment {
 
     private void gotoMobileDetailsFinder(String num){
 
+        entity_numberDetails entity_numberDetails1 = null;
 
         prePaidDirections.ActionPrePaid3ToMobileDetailsFinder
                 action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder(num, "from_prePaid");

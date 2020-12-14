@@ -1,4 +1,4 @@
-package recahrge;
+package recahrge.plans;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

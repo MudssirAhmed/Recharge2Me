@@ -1,6 +1,7 @@
 package recahrge;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,15 +23,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.recharge2mePlay.recharge2me.R;
-import com.google.gson.JsonObject;
-import com.razorpay.Checkout;
-import com.razorpay.PaymentResultListener;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import Retrofit.JsonConvertor;
 import custom_Loading_Dialog.LoadingDialog;
+import local_Databasse.entity_numberDetails;
+import local_Databasse.numberViewModel;
+import recahrge.plans.getRecahrgePlan;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,6 +55,8 @@ public class MobileDetailsFinder extends Fragment {
 
     ImageView iv_rechargeOperator;
 
+    private local_Databasse.numberViewModel numberViewModel;
+
     Animation animation;
 
     int circleId;
@@ -69,9 +72,6 @@ public class MobileDetailsFinder extends Fragment {
     Context context;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor edit;
-
-
-    Checkout checkout;
 
     View view;
 
@@ -116,6 +116,11 @@ public class MobileDetailsFinder extends Fragment {
         // Init onClick Animation
         animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
 
+        // Init numberVaiewModel for Database
+//        recharge_ui app = (recharge_ui.getActivity().getApplication());
+        Application application = getActivity().getApplication();
+        numberViewModel = new numberViewModel(application);
+
 
         // Init Retrofit
         Retrofit retrofit = new Retrofit.Builder()
@@ -147,7 +152,7 @@ public class MobileDetailsFinder extends Fragment {
             @Override
             public void onClick(View view) {
 //                getPayments();
-                setDataofUser();
+                setNumberDataInDatabase();
             }
         });
         // This is for BrowsePlan :-
@@ -327,6 +332,7 @@ public class MobileDetailsFinder extends Fragment {
             if (check()){
                 btn_circle.setText(sharedPreferences.getString("selectLocation", ""));
             }
+
             switch(operator){
                 case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
                     break;
@@ -363,10 +369,19 @@ public class MobileDetailsFinder extends Fragment {
 
 
 
-    private void setDataofUser(){
+    private void setNumberDataInDatabase(){
+
+        String number = tv_mobileNumber.getText().toString();
+        String circle = btn_circle.getText().toString();
+        String operator = btn_operator.getText().toString();
+
+        entity_numberDetails numberDetails = new entity_numberDetails(number, circle, operator);
+
+        numberViewModel.addNumberDetails(numberDetails);
+
+        Toast.makeText((recharge_ui) requireActivity(), "Sucess", Toast.LENGTH_SHORT).show();
 
     }
-
 
 
 
@@ -397,7 +412,7 @@ public class MobileDetailsFinder extends Fragment {
 
         tv_browsePlans.startAnimation(animation);
 
-        Intent intent = new Intent((recharge_ui) requireActivity(), recahrge.getRecahrgePlan.class );
+        Intent intent = new Intent((recharge_ui) requireActivity(), getRecahrgePlan.class );
 
         intent.putExtra("op", btn_operator.getText().toString());
         intent.putExtra("circle", btn_circle.getText().toString());

@@ -1,4 +1,4 @@
-package recahrge;
+package recahrge.plans;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import com.recharge2mePlay.recharge2me.R;
 import java.util.List;
 
 import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_RMG;
+import recahrge.DataTypes.recType_Data;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,28 +29,33 @@ import retrofit2.Retrofit;
 import Retrofit.JsonConvertor;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Rmg_Fragment extends Fragment  {
 
-    View view;
+public class Data_Fragment extends Fragment {
 
-    TextView tv_planRmg_WarningText;
-    RecyclerView rv_Rmg;
+    View v;
+    RecyclerView rv_planData;
 
-    Retrofit retrofit;
-    JsonConvertor jsonConvertor;
+    PlanAdapter planAdapter_;
+    TextView tv_planData_Warning;
 
-    public Rmg_Fragment() {
+    private Retrofit retrofit;
+    JsonConvertor  jsonConvertor;
+
+
+    public Data_Fragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.rmg_fragment, container, false);
+        v = inflater.inflate(R.layout.data_fragment, container, false);
 
-        tv_planRmg_WarningText = view.findViewById(R.id.tv_planRmg_warningText);
-        rv_Rmg = view.findViewById(R.id.rv_planRmg);
+        rv_planData = v.findViewById(R.id.rv_PlanData);
+        tv_planData_Warning = v.findViewById(R.id.tv_planData_Warning);
 
+
+        // Init Retroifit
         retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.baseUrl_rechApi))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -58,24 +63,24 @@ public class Rmg_Fragment extends Fragment  {
 
         jsonConvertor = retrofit.create(JsonConvertor.class);
 
-        getRmgData();
+        getDataPlanDetails();
 
-        return view;
-    }// end of onCreateView
+        return v;
+    }
 
-    private void getRmgData(){
+    private void getDataPlanDetails(){
 
         getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
-                .getRechargePlan("json", getString(R.string.token), "RMG", activity.getCircleId(), activity.getOpCode());
+                    .getRechargePlan("json", getString(R.string.token), "DATA", activity.getCircleId(), activity.getOpCode());
 
         call.enqueue(new Callback<PlanData>() {
             @Override
             public void onResponse(Call<PlanData> call, Response<PlanData> response) {
 
                 if(!response.isSuccessful()){
-                    tv_planRmg_WarningText.setText(response.code());
+                    tv_planData_Warning.setText(response.code());
                     return;
                 }
 
@@ -84,54 +89,48 @@ public class Rmg_Fragment extends Fragment  {
 
                 PlanData.Data data = planData.getData();
 
-                List<recType_RMG> rmg = data.getRMG();
+                List<recType_Data> recType_data = data.getDATA();
 
-                // Testing
-//                String s = "";
-//                for(recType_RMG rmg1 : rmg){
-//                    s += rmg1.getAmount();
-//                }
-//                tv_planRmg_WarningText.setText(s);
+//                tv_planData_Warning.setText(resText);
 
-                if(rmg == null)
-                    tv_planRmg_WarningText.setText(resText);
+                if (recType_data == null)
+                    tv_planData_Warning.setText(resText);
                 else
-                    setDataOnRecyclerView(rmg);
-
-                rv_Rmg.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
-                        rv_Rmg, new PlanAdapter.planClickListner() {
+                    setOnRecyclerView(recType_data);
+                
+                rv_planData.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(), 
+                        rv_planData, new PlanAdapter.planClickListner() {
                     @Override
                     public void onPlanClick(View view, int position, View btn) {
                         Context context;
                         Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
                         view.startAnimation(animation);
 
-                        recType_RMG sendRmg = rmg.get(position);
+                        recType_Data sendData = recType_data.get(position);
 
                         getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendRmg.getAmount(), sendRmg.getValidity(), sendRmg.getDetail());
+                        activity.getRecahrgePlan(sendData.getAmount(), sendData.getValidity(), sendData.getDetail());
                         activity.sendPlanData();
 
                     }
                 }));
-
             }
 
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
-                tv_planRmg_WarningText.setText(throwable.getMessage());
+                tv_planData_Warning.setText(throwable.getMessage());
             }
         });
 
-    }// end of getRmgData
+    } // End of getDataPlanDetails method;
 
-    private void setDataOnRecyclerView(List<recType_RMG> rmg){
+    private void setOnRecyclerView(List<recType_Data> data){
+        
+        planAdapter_ = new
+                PlanAdapter(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
 
-        PlanAdapter planAdapter_ = new
-                PlanAdapter(null, null, null, null,rmg, (getRecahrgePlan) requireActivity());
+        rv_planData.setAdapter(planAdapter_);
+        rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
 
-        rv_Rmg.setAdapter(planAdapter_);
-        rv_Rmg.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
-
-    }// end of setDatOnRecyclerView
+    }// End of setOnRecyclerView method;
 }
