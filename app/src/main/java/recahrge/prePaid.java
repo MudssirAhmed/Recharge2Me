@@ -8,6 +8,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.recharge2mePlay.recharge2me.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
@@ -53,6 +56,7 @@ public class prePaid extends Fragment {
     numberViewModel mNumberViewModel;
     RecyclerView rv_dbNumberDetails;
     dbNumberDetails_adapter mAdpter_numberDetails;
+    List<entity_numberDetails> list = new ArrayList<>();
 
     public prePaid() {
         // Required empty public constructor
@@ -83,19 +87,16 @@ public class prePaid extends Fragment {
         mNumberViewModel = new numberViewModel(getActivity().getApplication());
         mNumberViewModel.getReadAllData().observe(getViewLifecycleOwner(), entity_numberDetails -> {
                     mAdpter_numberDetails.setData(entity_numberDetails);
+                    list = mNumberViewModel.getReadAllData().getValue();
                 });
+
 
         radioButton_prePaid.setChecked(true);
 
         // Init onClick Animation
         animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
 
-        et_EnterMobileNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                et_EnterMobileNumber.startAnimation(animation);
-            }
-        });
+
 
         btn_fetchMobileDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +114,29 @@ public class prePaid extends Fragment {
             }
         });
 
+        et_EnterMobileNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                et_EnterMobileNumber.startAnimation(animation);
+            }
+        });
+        // This is for Filtering the numberList in Database and set on RecyclerView
+        et_EnterMobileNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                setFilteredList(editable.toString());
+            }
+        });
         // EditText Right clickListener
         et_EnterMobileNumber.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")
@@ -137,6 +161,23 @@ public class prePaid extends Fragment {
         return view;
     }
 
+    // It will set the filtered List and pass the list in RecyclerView
+    private void setFilteredList(String text){
+
+        List<entity_numberDetails> filteredList = new ArrayList<>();
+
+        if(list != null){
+            for(entity_numberDetails child: list){
+                String number = child.getNumber();
+                if(number.toLowerCase().contains(text.toLowerCase())){
+                    filteredList.add(child);
+                }
+            }
+            mAdpter_numberDetails.setData(filteredList);
+        }
+    }
+
+    // It will responsible for goto MobileFinders UI
     private void gotoMobileDetailsFinder(String num){
 
         entity_numberDetails entity_numberDetails1 = null;
