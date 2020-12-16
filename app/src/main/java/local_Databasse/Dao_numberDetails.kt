@@ -12,7 +12,7 @@ interface Dao_numberDetails {
     @Update
     suspend fun updateNumberData(nDet: entity_numberDetails)
 
-    @Query("SELECT * FROM numberDetails ORDER BY number ASC")
+    @Query("SELECT * FROM numberDetails")
     fun readAllData_numberDetails(): LiveData<List<entity_numberDetails>>
 
 }

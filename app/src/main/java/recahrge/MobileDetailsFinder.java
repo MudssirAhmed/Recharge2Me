@@ -152,8 +152,8 @@ public class MobileDetailsFinder extends Fragment {
             @Override
             public void onClick(View view) {
 //                getPayments();
-//                setNumberDataInDatabase();
-                updateNumberDataInDatabase();
+                setNumberDataInDatabase();
+//                updateNumberDataInDatabase();
             }
         });
         // This is for BrowsePlan :-
