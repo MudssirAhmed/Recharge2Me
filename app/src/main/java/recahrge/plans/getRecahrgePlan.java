@@ -6,6 +6,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
@@ -23,6 +25,7 @@ public class getRecahrgePlan extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+    private ProgressBar progressBar;
 
     String operator,
             circle,
@@ -33,6 +36,7 @@ public class getRecahrgePlan extends AppCompatActivity {
     TextView tv_planOperator;
 
     Intent intent;
+
     String Amount,
            Validity,
            Details;
@@ -51,6 +55,7 @@ public class getRecahrgePlan extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabLayout_plans);
         viewPager = findViewById(R.id.viewPager_plans);
+        progressBar = findViewById(R.id.progressBar_getRechargePlan);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -67,6 +72,7 @@ public class getRecahrgePlan extends AppCompatActivity {
         tv_planOperator = findViewById(R.id.tv_planOperator);
 
         intent = new Intent();
+
         String operator = getIntent().getExtras().getString("op");
         String circle = getIntent().getExtras().getString("circle");
         Number = getIntent().getExtras().getString("number");
@@ -76,6 +82,13 @@ public class getRecahrgePlan extends AppCompatActivity {
         tv_planOperator.setText("for "+ operator + " " +circle + " " + opCode);
 
 
+    }
+
+    public void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+    public void hideProgressBar(){
+        progressBar.setVisibility(View.GONE);
     }
 
     public void sendPlanData(){

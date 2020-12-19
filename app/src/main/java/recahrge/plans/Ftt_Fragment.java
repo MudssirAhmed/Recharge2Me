@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,8 +20,8 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_FTT;
+import recahrge.DataTypes.planDataTypes.PlanData;
+import recahrge.DataTypes.planDataTypes.recType_FTT;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,10 +37,19 @@ public class Ftt_Fragment extends Fragment {
     RecyclerView rv_planFtt;
     TextView tv_planFtt_WarningText;
 
-    private Retrofit retrofit;
+    getRecahrgePlan activity;
+
     JsonConvertor jsonConvertor;
 
     public Ftt_Fragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (getRecahrgePlan) getActivity();
+        activity.showProgressBar();
+
     }
 
     @Nullable
@@ -52,7 +62,7 @@ public class Ftt_Fragment extends Fragment {
         tv_planFtt_WarningText = view.findViewById(R.id.tv_planFtt_WarningText);
 
         // Init Retrofit
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.baseUrl_rechApi))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -66,7 +76,6 @@ public class Ftt_Fragment extends Fragment {
 
     private void getPlansFTT(){
 
-        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
                 .getRechargePlan("json", getString(R.string.token),"FTT", activity.getCircleId(), activity.getOpCode());
@@ -77,6 +86,7 @@ public class Ftt_Fragment extends Fragment {
 
                 if(!response.isSuccessful()){
                     tv_planFtt_WarningText.setText(response.code());
+                    activity.hideProgressBar();
                     return;
                 }
 
@@ -87,32 +97,37 @@ public class Ftt_Fragment extends Fragment {
 
                 List<recType_FTT> ftt = data.getFTT();
 
-                if(ftt == null)
+                if(ftt == null) {
                     tv_planFtt_WarningText.setText(resText);
+                    activity.hideProgressBar();
+                }
                 else
                     setFttDataOnRecyclerView(ftt);
 
                 rv_planFtt.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
-                        rv_planFtt, new PlanAdapter.planClickListner() {
-                    @Override
-                    public void onPlanClick(View view, int position, View btn) {
-                        Context context;
-                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
-                        view.startAnimation(animation);
+                            rv_planFtt, new PlanAdapter.planClickListner() {
+                        @Override
+                        public void onPlanClick(View view, int position, View btn) {
+                            Context context;
+                            Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                            view.startAnimation(animation);
 
-                        recType_FTT sendFtt = ftt.get(position);
+                            recType_FTT sendFtt = ftt.get(position);
 
-                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendFtt.getAmount(), sendFtt.getValidity(), sendFtt.getDetail());
-                        activity.sendPlanData();
+                            getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                            activity.getRecahrgePlan(sendFtt.getAmount(), sendFtt.getValidity(), sendFtt.getDetail());
+                            activity.sendPlanData();
 
-                    }
+                        }
                 }));
+
+
             }
 
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
                 tv_planFtt_WarningText.setText(throwable.getMessage());
+                activity.hideProgressBar();
             }
         });
     }
@@ -124,6 +139,8 @@ public class Ftt_Fragment extends Fragment {
 
         rv_planFtt.setAdapter(planAdapter_);
         rv_planFtt.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        activity.hideProgressBar();
+
 
     }
 }

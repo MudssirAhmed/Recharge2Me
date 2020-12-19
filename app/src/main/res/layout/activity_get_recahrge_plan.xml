@@ -72,6 +72,16 @@
         android:layout_height="5dp"
         app:srcCompat="@drawable/shadow" />
 
+    <ProgressBar
+        android:id="@+id/progressBar_getRechargePlan"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animationResolution="50"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/perple"
+        android:progress="25" />
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager_plans"
         android:layout_width="match_parent"

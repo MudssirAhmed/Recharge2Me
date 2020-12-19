@@ -19,8 +19,8 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_Data;
+import recahrge.DataTypes.planDataTypes.PlanData;
+import recahrge.DataTypes.planDataTypes.recType_Data;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,9 +38,17 @@ public class Data_Fragment extends Fragment {
     PlanAdapter planAdapter_;
     TextView tv_planData_Warning;
 
+    getRecahrgePlan activity;
+
     private Retrofit retrofit;
     JsonConvertor  jsonConvertor;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (getRecahrgePlan) getActivity();
+        activity.showProgressBar();
+    }
 
     public Data_Fragment() {
     }
@@ -70,7 +78,6 @@ public class Data_Fragment extends Fragment {
 
     private void getDataPlanDetails(){
 
-        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
                     .getRechargePlan("json", getString(R.string.token), "DATA", activity.getCircleId(), activity.getOpCode());
@@ -81,6 +88,7 @@ public class Data_Fragment extends Fragment {
 
                 if(!response.isSuccessful()){
                     tv_planData_Warning.setText(response.code());
+                    activity.hideProgressBar();
                     return;
                 }
 
@@ -93,8 +101,10 @@ public class Data_Fragment extends Fragment {
 
 //                tv_planData_Warning.setText(resText);
 
-                if (recType_data == null)
+                if (recType_data == null) {
                     tv_planData_Warning.setText(resText);
+                    activity.hideProgressBar();
+                }
                 else
                     setOnRecyclerView(recType_data);
                 
@@ -119,6 +129,7 @@ public class Data_Fragment extends Fragment {
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
                 tv_planData_Warning.setText(throwable.getMessage());
+                activity.hideProgressBar();
             }
         });
 
@@ -131,6 +142,8 @@ public class Data_Fragment extends Fragment {
 
         rv_planData.setAdapter(planAdapter_);
         rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        activity.hideProgressBar();
+
 
     }// End of setOnRecyclerView method;
 }

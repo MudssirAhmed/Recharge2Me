@@ -1,11 +1,13 @@
 package recahrge.plans;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,8 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_SPL;
+import recahrge.DataTypes.planDataTypes.PlanData;
+import recahrge.DataTypes.planDataTypes.recType_SPL;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,10 +37,19 @@ public class Spl_Fragment extends Fragment {
     PlanAdapter planAdapter_;
     TextView tv_spl_warning;
 
+    getRecahrgePlan activity;
+
     Retrofit retrofit;
     JsonConvertor jsonConvertor;
 
     public Spl_Fragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (getRecahrgePlan) getActivity();
+        activity.showProgressBar();
     }
 
     @Nullable
@@ -46,6 +57,7 @@ public class Spl_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.spl_fragment, container, false);
+
 
         rv_Plan = v.findViewById(R.id.rv_Plan_SPL);
         tv_spl_warning = v.findViewById(R.id.tv_spl_warning);
@@ -70,7 +82,6 @@ public class Spl_Fragment extends Fragment {
 
     public void getRecahrgePlanDetails(){
 
-        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 //        tv_spl_warning.setText("abc: "+activity.getCircleId());
 
         Call<PlanData> call = jsonConvertor.getRechargePlan(
@@ -81,6 +92,7 @@ public class Spl_Fragment extends Fragment {
             public void onResponse(Call<PlanData> call, Response<PlanData> response) {
                 if(!response.isSuccessful()){
                     tv_spl_warning.setText(response.code());
+                    activity.hideProgressBar();
                     return;
                 }
 
@@ -91,8 +103,10 @@ public class Spl_Fragment extends Fragment {
 
                 List<recType_SPL> spl = data.getSPL();
 
-                if(spl == null)
+                if(spl == null) {
                     tv_spl_warning.setText(resText);
+                    activity.hideProgressBar();
+                }
                 else
                     setRecyclerView(spl);
 
@@ -116,8 +130,8 @@ public class Spl_Fragment extends Fragment {
 
             @Override
             public void onFailure(Call<PlanData> call, Throwable t) {
-
                 tv_spl_warning.setText(t.getMessage());
+                activity.hideProgressBar();
             }
         });
 
@@ -129,6 +143,7 @@ public class Spl_Fragment extends Fragment {
 
         rv_Plan.setAdapter(planAdapter_);
         rv_Plan.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        activity.hideProgressBar();
 
     }
 

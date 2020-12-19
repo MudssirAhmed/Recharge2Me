@@ -5,10 +5,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/dialogAnimation</item>
     </style>
 
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
             <item name="fontFamily">@font/comfortaa_bold</item>
+    </style>
+
+    <style name="dialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>

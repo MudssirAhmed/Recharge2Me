@@ -19,8 +19,8 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_RMG;
+import recahrge.DataTypes.planDataTypes.PlanData;
+import recahrge.DataTypes.planDataTypes.recType_RMG;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,10 +36,19 @@ public class Rmg_Fragment extends Fragment  {
     TextView tv_planRmg_WarningText;
     RecyclerView rv_Rmg;
 
+    getRecahrgePlan activity;
+
     Retrofit retrofit;
     JsonConvertor jsonConvertor;
 
     public Rmg_Fragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (getRecahrgePlan) getActivity();
+        activity.showProgressBar();
     }
 
     @Nullable
@@ -65,7 +74,6 @@ public class Rmg_Fragment extends Fragment  {
 
     private void getRmgData(){
 
-        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
                 .getRechargePlan("json", getString(R.string.token), "RMG", activity.getCircleId(), activity.getOpCode());
@@ -76,6 +84,7 @@ public class Rmg_Fragment extends Fragment  {
 
                 if(!response.isSuccessful()){
                     tv_planRmg_WarningText.setText(response.code());
+                    activity.hideProgressBar();
                     return;
                 }
 
@@ -86,15 +95,11 @@ public class Rmg_Fragment extends Fragment  {
 
                 List<recType_RMG> rmg = data.getRMG();
 
-                // Testing
-//                String s = "";
-//                for(recType_RMG rmg1 : rmg){
-//                    s += rmg1.getAmount();
-//                }
-//                tv_planRmg_WarningText.setText(s);
 
-                if(rmg == null)
+                if(rmg == null) {
                     tv_planRmg_WarningText.setText(resText);
+                    activity.hideProgressBar();
+                }
                 else
                     setDataOnRecyclerView(rmg);
 
@@ -120,6 +125,7 @@ public class Rmg_Fragment extends Fragment  {
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
                 tv_planRmg_WarningText.setText(throwable.getMessage());
+                activity.hideProgressBar();
             }
         });
 
@@ -132,6 +138,7 @@ public class Rmg_Fragment extends Fragment  {
 
         rv_Rmg.setAdapter(planAdapter_);
         rv_Rmg.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        activity.hideProgressBar();
 
     }// end of setDatOnRecyclerView
 }

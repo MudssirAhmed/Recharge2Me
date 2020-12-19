@@ -17,6 +17,9 @@
             app:popEnterAnim="@anim/to_left_pop"
             app:popExitAnim="@anim/from_right_pop" />
         <argument android:name="recType" />
+        <action
+            android:id="@+id/action_prePaid3_to_contactList_activity"
+            app:destination="@id/contactList_activity" />
     </fragment>
     <fragment
         android:id="@+id/mobileDetailsFinder"
@@ -107,4 +110,9 @@
         android:name="recahrge.plans.recharge_Plan"
         android:label="fragment_recharge__plan"
         tools:layout="@layout/fragment_recharge__plan" />
+    <activity
+        android:id="@+id/contactList_activity"
+        android:name="recahrge.contactList.contactList_activity"
+        android:label="activity_contact_list"
+        tools:layout="@layout/activity_contact_list" />
 </navigation>

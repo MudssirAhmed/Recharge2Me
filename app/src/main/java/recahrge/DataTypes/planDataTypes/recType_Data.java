@@ -1,4 +1,4 @@
-package recahrge.DataTypes;
+package recahrge.DataTypes.planDataTypes;
 
 public class recType_Data {
 

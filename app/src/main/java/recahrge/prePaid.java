@@ -1,8 +1,11 @@
 package recahrge;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +47,8 @@ public class prePaid extends Fragment {
     RadioGroup radioGroup;
     RadioButton radioButton_prePaid, radioButton_postPaid;
 
+    // Integers
+    final int GOTO_CONTACT_LIST = 845;
 
     final int DRAWABLE_LEFT = 0;
     final int DRAWABLE_TOP = 1;
@@ -149,7 +154,10 @@ public class prePaid extends Fragment {
                         // your action here
 
                         v.startAnimation(animation);
-                        Toast.makeText((recharge_ui) requireActivity(), "contactList", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent((recharge_ui) requireActivity(), recahrge.contactList.contactList_activity.class);
+                        startActivityForResult(intent, GOTO_CONTACT_LIST);
+//                        Navigation.findNavController(view).navigate(R.id.action_prePaid3_to_contactList_activity);
 
                         return true;
                     }
@@ -195,4 +203,18 @@ public class prePaid extends Fragment {
          Navigation.findNavController(view).navigate(action);
 
     }// End of Mobile Details Finder;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GOTO_CONTACT_LIST){
+//            String number = data.getStringExtra("number");
+//            et_EnterMobileNumber.setText(number + "num");
+            if(resultCode == Activity.RESULT_OK){
+                String number = data.getStringExtra("number");
+                et_EnterMobileNumber.setText(number.trim());
+            }
+        }
+    }
 }

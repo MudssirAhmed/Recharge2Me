@@ -1,13 +1,13 @@
-package recahrge.DataTypes;
+package recahrge.DataTypes.planDataTypes;
 
-public class recType_TUP {
+public class recType_SPL {
 
     private String amount;
     private String detail;
     private String validity;
     private String talktime;
 
-    public recType_TUP(String amount, String detail, String validity, String talktime) {
+    public recType_SPL(String amount, String detail, String validity, String talktime) {
         this.amount = amount;
         this.detail = detail;
         this.validity = validity;
@@ -29,4 +29,5 @@ public class recType_TUP {
     public String getTalktime() {
         return talktime;
     }
+
 }

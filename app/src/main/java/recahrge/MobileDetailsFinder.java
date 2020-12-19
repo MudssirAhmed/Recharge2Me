@@ -2,9 +2,11 @@ package recahrge;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,14 +25,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.recharge2mePlay.recharge2me.R;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import Retrofit.JsonConvertor;
+import custom_Loading_Dialog.CustomToast;
 import custom_Loading_Dialog.LoadingDialog;
+import custom_Loading_Dialog.proceedDialog;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberViewModel;
+import okhttp3.MultipartBody;
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
 import recahrge.plans.getRecahrgePlan;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +53,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import Retrofit.MobileDetailsFinder_Data;
+import okhttp3.*;
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers.Providers;
+
+
 
 
 public class MobileDetailsFinder extends Fragment {
@@ -55,14 +74,25 @@ public class MobileDetailsFinder extends Fragment {
 
     ImageView iv_rechargeOperator;
 
+    // Strings:
+    String Details_dialoge = ""; // This is for Details shown in Alert Dialog
+    String Validity_dialoge = ""; // This is for Validity shown in Alert Dialog
+    String GOOGLE_PAY_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user"; // This is for GooglePay Payments
+
+    // Integers:
+    final int GOOGLE_PAY_REQUEST_CODE = 123;
+    final int GOTO_PLAN = 8477;
+    int circleId;
+
     private local_Databasse.numberViewModel numberViewModel;
 
     Animation animation;
 
-    int circleId;
 
     // Loading Dialog
     LoadingDialog loadingDialog;
+    proceedDialog proceedDialog;
+
 
     // Retrofit & JsonConverter
     private JsonConvertor jsonConvertor;
@@ -82,7 +112,7 @@ public class MobileDetailsFinder extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
+        
         // Init Loading Dialog
         loadingDialog = new LoadingDialog((recharge_ui) requireActivity());
         loadingDialog.startLoading();
@@ -116,8 +146,11 @@ public class MobileDetailsFinder extends Fragment {
         // Init onClick Animation
         animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
 
+        // Init custom Taost
+        CustomToast customToast = new CustomToast((recharge_ui) requireActivity());
+
+
         // Init numberVaiewModel for Database
-//        recharge_ui app = (recharge_ui.getActivity().getApplication());
         Application application = getActivity().getApplication();
         numberViewModel = new numberViewModel(application);
 
@@ -132,7 +165,7 @@ public class MobileDetailsFinder extends Fragment {
         jsonConvertor = retrofit.create(JsonConvertor.class);
 
 
-        // Init onClick Listeners
+    // Init onClick Listeners
         // This is for chose Circl :-
         btn_circle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,15 +180,6 @@ public class MobileDetailsFinder extends Fragment {
                 gotoOperatorUi();
             }
         });
-        // This is the proceed button :-
-        btn_mobileDefinder_proceed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                getPayments();
-                setNumberDataInDatabase();
-//                updateNumberDataInDatabase();
-            }
-        });
         // This is for BrowsePlan :-
         tv_browsePlans.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +187,23 @@ public class MobileDetailsFinder extends Fragment {
                 gotoRecargePlanUi();
             }
         });
+        // This is the proceed button :-
+        btn_mobileDefinder_proceed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                getPayments();
+//                setNumberDataInDatabase();
+//                updateNumberDataInDatabase();
+//                doRecharge(btn_recahargeAmount.getText().toString());
+
+                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
+                     customToast.showToast("Please select plan First!");
+                 else
+                     showAlertDialog();
+
+            }
+        });
+
 
 
 
@@ -190,15 +231,6 @@ public class MobileDetailsFinder extends Fragment {
         return view;
     } // End of OnCreteView method;
 
-    private void updateNumberDataInDatabase(){
-        String Number = tv_mobileNumber.getText().toString();
-        String operator = btn_operator.getText().toString();
-        String circle = btn_circle.getText().toString();
-
-        entity_numberDetails numberDetails = new entity_numberDetails(Number, circle, operator);
-
-        numberViewModel.updateNumberData(numberDetails);
-    }
     private void setImageViewOnOperatorImageView(String operator){
         switch(operator){
             case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
@@ -216,7 +248,7 @@ public class MobileDetailsFinder extends Fragment {
             default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
                 break;
         }
-    }
+    } // This will set the operator Image on op_imageView
     private boolean isNullOrNot(String number, String fromCircle){
 
         if(number.equals("null") && fromCircle.equals("null"))
@@ -229,15 +261,20 @@ public class MobileDetailsFinder extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 8477){
+        // when user come from planfragment
+        if(requestCode == GOTO_PLAN){
             if(resultCode == Activity.RESULT_OK){
-                btn_recahargeAmount.setText(data.getStringExtra("Amount"));
+                btn_recahargeAmount.setText("₹"+data.getStringExtra("Amount"));
 
-                String details = "Validity: " + data.getStringExtra("Validity");
+//                String Validity = "Validity: " + data.getStringExtra("Validity");
 
-                tv_mF_planDetails.setText(details + "\n" +
-                        data.getStringExtra("Details"));
+                Details_dialoge = data.getStringExtra("Details");
+                Validity_dialoge = "Validity: " + data.getStringExtra("Validity");
+
+                tv_mF_planDetails.setText(Validity_dialoge + "\n" +
+                        Details_dialoge);
             }
+            // It will exicute when user press back button
 //            if(resultCode == Activity.RESULT_CANCELED){
 //                btn_recahargeAmount.setText("Amount Error");
 //            }
@@ -250,7 +287,7 @@ public class MobileDetailsFinder extends Fragment {
             status call to get the status. Update your app with the
             success/failure status.*/
 
-            Toast.makeText((recharge_ui) requireActivity(), "Cone Back", Toast.LENGTH_SHORT).show();
+            Toast.makeText((recharge_ui) requireActivity(), "Come Back", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -315,7 +352,6 @@ public class MobileDetailsFinder extends Fragment {
         });
 
     }// End of getMobileDetails Method;
-
     // Get Data methods
     // This function returns a number having 4 digits/length
     private String getRemaining(String str){
@@ -399,22 +435,6 @@ public class MobileDetailsFinder extends Fragment {
 
 
 
-    private void setNumberDataInDatabase(){
-
-        String number = tv_mobileNumber.getText().toString();
-        String circle = btn_circle.getText().toString();
-        String operator = btn_operator.getText().toString();
-
-        entity_numberDetails numberDetails = new entity_numberDetails(number, circle, operator);
-
-        numberViewModel.addNumberDetails(numberDetails);
-
-        Toast.makeText((recharge_ui) requireActivity(), "Sucess", Toast.LENGTH_SHORT).show();
-
-    }
-
-
-
 
     // Functions for Goto another fragments
     private void gotoOperatorUi(){
@@ -455,12 +475,178 @@ public class MobileDetailsFinder extends Fragment {
         String circleID = circleData(btn_circle.getText().toString());
         intent.putExtra("circleId", circleID);
 
-        startActivityForResult(intent, 8477);
+        startActivityForResult(intent, GOTO_PLAN);
 
     }// This fun. help to going to getRecahrgePlan(Activity).
-    private void getPayments(){
 
-    }
+
+  // proceed button Functions:-
+    // These functions are for storing, updating the number Database :-
+    private void setNumberDataInDatabase(){
+
+      String number = tv_mobileNumber.getText().toString();
+      String circle = btn_circle.getText().toString();
+      String operator = btn_operator.getText().toString();
+
+      entity_numberDetails numberDetails = new entity_numberDetails(number, circle, operator);
+
+      numberViewModel.addNumberDetails(numberDetails);
+
+      Toast.makeText((recharge_ui) requireActivity(), "Sucess", Toast.LENGTH_SHORT).show();
+
+  }// This will sey the number Data in Database
+    private void updateNumberDataInDatabase(){
+        String Number = tv_mobileNumber.getText().toString();
+        String operator = btn_operator.getText().toString();
+        String circle = btn_circle.getText().toString();
+
+        entity_numberDetails numberDetails = new entity_numberDetails(Number, circle, operator);
+
+        numberViewModel.updateNumberData(numberDetails);
+    } // This will update the numberData in Database
+    // These functions are for showAlertDialog, payments and recharge
+    private void showAlertDialog(){
+
+        // These are entities which shown on AlertDialog
+        String number = tv_mobileNumber.getText().toString();
+        String circle = btn_circle.getText().toString();
+        String operator = btn_operator.getText().toString();
+        String amount = btn_recahargeAmount.getText().toString();
+
+        // make an object of proceedDialog
+        proceedDialog = new proceedDialog((recharge_ui) requireActivity());
+
+        Dialog dialog = proceedDialog.showProceedDialog(number, circle, operator, amount, Details_dialoge, Validity_dialoge);
+
+        // proceedToPayment onClick Listner
+        dialog.findViewById(R.id.btn_dialogProceed).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText((recharge_ui) requireActivity(), "Proceed", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+    }// This will show the alert Dailoge to user.
+    private void getPayments(){
+        Uri uri =
+                new Uri.Builder()
+                        .scheme("upi")
+                        .authority("pay")
+                        .appendQueryParameter("pa", "mudssirahmed@paytm")
+                        .appendQueryParameter("pn", "Recharge2me")
+                        .appendQueryParameter("mc", "your-merchant-code")
+                        .appendQueryParameter("tr", "your-transaction-ref-id")
+                        .appendQueryParameter("tn", "Recharge")
+                        .appendQueryParameter("am", "10.00")
+                        .appendQueryParameter("cu", "INR")
+                        .appendQueryParameter("url", "your-transaction-url")
+                        .build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(uri);
+        intent.setPackage(GOOGLE_PAY_PACKAGE_NAME);
+        startActivityForResult(intent, GOOGLE_PAY_REQUEST_CODE);
+
+    }// for gPay payments
+    private void getAuthToken_pay2All(String amount){
+
+        // Init Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.pay2all.in/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Init JsonConverter Interface
+        jsonConvertor = retrofit.create(JsonConvertor.class);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("email", "mudssira01@gmail.com");
+        params.put("password", "4nVztc");
+
+        Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
+
+        call.enqueue(new Callback<Pay2All_authToken>() {
+            @Override
+            public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
+                if(!response.isSuccessful()){
+                    tv_mF_planDetails.setText(response.code());
+                    return;
+                }
+
+                Pay2All_authToken pay2All_authToken = response.body();
+
+                String authToken = pay2All_authToken.getAccess_token();
+
+                getAllProvides(authToken);
+
+//                tv_mF_planDetails.setText(authToken);
+            }
+
+            @Override
+            public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
+                tv_mF_planDetails.setText(t.getMessage());
+            }
+        });
+    }// This will fetch the Auth Token
+    private void getAllProvides(String token){
+
+        Retrofit retrofit  = new Retrofit.Builder()
+                .baseUrl("https://api.pay2all.in/v1/app/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+//        APIService client = retrofit.create(APIService.class);
+        jsonConvertor = retrofit.create(JsonConvertor.class);
+
+
+        Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + token);
+
+        call.enqueue(new Callback<Pay2All_providers>() {
+            @Override
+            public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
+
+                if(!response.isSuccessful()){
+//                    tv_nestedTest.setText(response.code());
+                    return;
+                }
+
+                Pay2All_providers pay2All_providers = response.body();
+
+                List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
+
+                //            "id": 1,
+                //            "provider_name": "AIRTEL",
+                //            "service_id": 1,
+                //            "description": "Airtel",
+                //            "status": 1,
+                //            "icon": null
+
+                HashMap<String, String> rechargeProvider = new HashMap<>();
+
+                for(Pay2All_providers.Providers provider: providers){
+                    rechargeProvider.put(provider.getProvider_name(), provider.getId());
+                }
+
+                String s = "";
+
+                s =     "Airtel: " + rechargeProvider.get("AIRTEL") + "\n" +
+                        "Vodafone: " + rechargeProvider.get("VODAFONE") + "\n" +
+                        "Idea: " + rechargeProvider.get("IDEA") + "\n" +
+                        "Bsnl: " + rechargeProvider.get("BSNL") + "\n" +
+                        "Jio: " + rechargeProvider.get("Jio") + "\n";
+
+//                tv_nestedTest.setText(s);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Pay2All_providers> call, Throwable t) {
+//                tv_nestedTest.setText(t.getMessage());
+            }
+        });
+
+    } // This will fetch all Providers
 
 
 

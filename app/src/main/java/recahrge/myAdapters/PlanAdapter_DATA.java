@@ -13,7 +13,7 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.recType_Data;
+import recahrge.DataTypes.planDataTypes.recType_Data;
 
 public class PlanAdapter_DATA extends RecyclerView.Adapter<PlanAdapter_DATA.myViewHolder> {
 

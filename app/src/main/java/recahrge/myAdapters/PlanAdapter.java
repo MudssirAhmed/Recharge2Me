@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +16,11 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.recType_Data;
-import recahrge.DataTypes.recType_FTT;
-import recahrge.DataTypes.recType_RMG;
-import recahrge.DataTypes.recType_SPL;
-import recahrge.DataTypes.recType_TUP;
+import recahrge.DataTypes.planDataTypes.recType_Data;
+import recahrge.DataTypes.planDataTypes.recType_FTT;
+import recahrge.DataTypes.planDataTypes.recType_RMG;
+import recahrge.DataTypes.planDataTypes.recType_SPL;
+import recahrge.DataTypes.planDataTypes.recType_TUP;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.myViewHolder> {
 
@@ -31,7 +32,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.myViewHolder> 
 
     Context context;
 
-    public PlanAdapter(List<recType_SPL> spl, List<recType_Data> data, List<recType_FTT> ftt, List<recType_TUP> tup, List<recType_RMG> rmg, Context context) {
+    public PlanAdapter(List<recType_SPL> spl, List<recType_Data> data, List<recType_FTT> ftt,
+                       List<recType_TUP> tup, List<recType_RMG> rmg, Context context) {
         this.spl = spl;
         this.data = data;
         this.ftt = ftt;
@@ -150,6 +152,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.myViewHolder> 
             private GestureDetector gestureDetector;
 
             public planRecyclerTouchListener(Context context, final RecyclerView recycleView, planClickListner planClickListner){
+
                 this.planClickListner = planClickListner;
 
                 gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
@@ -158,18 +161,24 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.myViewHolder> 
                         return true;
                     }
                 });
+
             }
 
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
 
-                View view = rv.findChildViewUnder(e.getX(), e.getY());
-                View btn_select = view.findViewById(R.id.btn_planSelect);
-
-                if(view != null && planClickListner != null && gestureDetector.onTouchEvent(e))
+                try{
+                    View view = rv.findChildViewUnder(e.getX(), e.getY());
+                    View btn_select = view.findViewById(R.id.btn_planSelect);
+                    if(view != null && planClickListner != null && gestureDetector.onTouchEvent(e))
                         planClickListner.onPlanClick(view, rv.getChildAdapterPosition(view), btn_select);
+                }
+                catch (Exception exception){
+                    System.out.println(exception.getMessage());
+                }
 
                 return false;
+
             }
 
             @Override

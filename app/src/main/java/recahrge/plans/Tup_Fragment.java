@@ -19,8 +19,8 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import recahrge.DataTypes.PlanData;
-import recahrge.DataTypes.recType_TUP;
+import recahrge.DataTypes.planDataTypes.PlanData;
+import recahrge.DataTypes.planDataTypes.recType_TUP;
 import recahrge.myAdapters.PlanAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,10 +36,19 @@ public class Tup_Fragment extends Fragment {
     TextView tv_planTup_warningText;
     RecyclerView rv_planTup;
 
+    getRecahrgePlan activity;
+
     Retrofit retrofit;
     JsonConvertor jsonConvertor;
 
     public Tup_Fragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (getRecahrgePlan) getActivity();
+        activity.showProgressBar();
     }
 
     @Nullable
@@ -65,7 +74,6 @@ public class Tup_Fragment extends Fragment {
 
     private void getPlanTup(){
 
-        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
 
         Call<PlanData> call = jsonConvertor
                 .getRechargePlan("json", getString(R.string.token), "TUP", activity.getCircleId(), activity.getOpCode());
@@ -75,6 +83,7 @@ public class Tup_Fragment extends Fragment {
             public void onResponse(Call<PlanData> call, Response<PlanData> response) {
                 if(!response.isSuccessful()){
                     tv_planTup_warningText.setText(response.code());
+                    activity.hideProgressBar();
                     return;
                 }
                 PlanData planData = response.body();
@@ -84,15 +93,11 @@ public class Tup_Fragment extends Fragment {
 
                 List<recType_TUP> tup = data.getTUP();
 
-                // Testing
-//                String s = "";
-//                for (recType_TUP type_tup : tup){
-//                    s += type_tup.getAmount() + "\n";
-//                }
-//                tv_planTup_warningText.setText(s);
 
-                if (tup == null)
+                if (tup == null) {
                     tv_planTup_warningText.setText(resText);
+                    activity.hideProgressBar();
+                }
                 else
                     setDataOnRecyclerView(tup);
 
@@ -118,6 +123,7 @@ public class Tup_Fragment extends Fragment {
             @Override
             public void onFailure(Call<PlanData> call, Throwable throwable) {
                 tv_planTup_warningText.setText(throwable.getMessage());
+                activity.hideProgressBar();
             }
         });
 
@@ -130,6 +136,7 @@ public class Tup_Fragment extends Fragment {
 
         rv_planTup.setAdapter(planAdapter_);
         rv_planTup.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+        activity.hideProgressBar();
 
     }// End of setDataOnRecyclerView
 }
