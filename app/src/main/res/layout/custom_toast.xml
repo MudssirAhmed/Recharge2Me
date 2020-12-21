@@ -23,7 +23,7 @@
         android:fontFamily="@font/comfortaa_bold"
         android:text="Please select plan, First!"
         android:textColor="@color/whiteText"
-        android:textSize="18sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView20"
         app:layout_constraintStart_toStartOf="parent"

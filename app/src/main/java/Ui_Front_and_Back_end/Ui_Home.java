@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.recharge2mePlay.recharge2me.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,9 +30,14 @@ import LogInSignIn_Entry.EntryActivity;
 public class Ui_Home extends Fragment {
 
     View view;
+
     TextView tv_Home_Transacyion;
-    ImageView iv_prePaid, iv_postPaid;
+
+    ImageView iv_prePaid,
+              iv_postPaid;
     Animation animation;
+
+
 
     public Ui_Home() {
         // Required empty public constructor
@@ -47,6 +54,8 @@ public class Ui_Home extends Fragment {
 
         iv_postPaid = view.findViewById(R.id.iv_postPaid);
         iv_prePaid = view.findViewById(R.id.iv_prePaid);
+
+
 
         // Init onClick Animation
         animation = AnimationUtils.loadAnimation((Main_UserInterface) requireActivity(), R.anim.click);
@@ -105,7 +114,6 @@ public class Ui_Home extends Fragment {
     private void prepaid(){
 
         iv_prePaid.startAnimation(animation);
-
 
         Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
     }// End of prePaid method;

@@ -52,6 +52,36 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_yourBallance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/comfortaa_light"
+            android:text="Total Rewards"
+            android:textColor="@color/perpleSecondary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/comfortaa_bold"
+            android:text="₹ 1000.00"
+            android:textColor="@color/whiteText"
+            android:textSize="30sp" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
@@ -81,34 +111,6 @@
         app:layout_constraintStart_toStartOf="@+id/iv_prePaid"
         app:layout_constraintTop_toTopOf="@+id/iv_prePaid"
         app:layout_constraintVertical_bias="0.863" />
-
-    <TextView
-        android:id="@+id/tv_yourBallance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:fontFamily="@font/comfortaa_light"
-        android:text="Your Ballance"
-        android:textColor="@color/perpleSecondary"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/comfortaa_bold"
-        android:text="₹  10000.00"
-        android:textColor="@color/whiteText"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.23"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_yourBallance" />
 
     <TextView
         android:id="@+id/tv_Home_Transactions"

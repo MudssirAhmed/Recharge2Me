@@ -129,6 +129,7 @@
             android:hint="Full name"
             android:inputType="textPersonName"
             android:paddingLeft="20dp"
+            android:text="Mudssir"
             android:textSize="12sp" />
 
         <EditText

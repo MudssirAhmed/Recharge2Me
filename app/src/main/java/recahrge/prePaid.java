@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+import custom_Loading_Dialog.CustomToast;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberViewModel;
 import recahrge.myAdapters.dbNumberDetails_adapter;
@@ -108,14 +110,9 @@ public class prePaid extends Fragment {
             public void onClick(View view) {
 
                 btn_fetchMobileDetails.startAnimation(animation);
-
-                if(et_EnterMobileNumber.length() != 10 || et_EnterMobileNumber.length() > 10){
-                    Toast.makeText((recharge_ui) requireActivity(), "Please Enter 10 digits Mobile No.", Toast.LENGTH_SHORT).show();
-                    tv_rechargeWarningText.setText("Please Enter 10 digits Mobile no.");
-                }
-                else {
+                if(checkNoisValidateOrNot(et_EnterMobileNumber.getText().toString()))
                     gotoMobileDetailsFinder(et_EnterMobileNumber.getText().toString().trim());
-                }
+
             }
         });
 
@@ -209,12 +206,84 @@ public class prePaid extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == GOTO_CONTACT_LIST){
-//            String number = data.getStringExtra("number");
-//            et_EnterMobileNumber.setText(number + "num");
             if(resultCode == Activity.RESULT_OK){
                 String number = data.getStringExtra("number");
-                et_EnterMobileNumber.setText(number.trim());
+                if(checkNoisValidateOrNot(number));
             }
         }
+    }
+
+    // Vaidate Enter number by user
+    private boolean checkNoisValidateOrNot(String number){
+
+        CustomToast toast = new CustomToast((recharge_ui) requireActivity());
+
+        if (number.length() < 10 ) {
+
+            if(number.contains("*") || number.contains("#") || number.contains("(")
+                    || number.contains(")") || number.contains(".") || number.contains("-") || number.contains("_") || number.contains(",")
+                    || number.contains("/")) {
+                toast.showToast("Special characters doesn't allowed!");
+                return false;
+            }
+            else {
+                toast.showToast("Pleae Enter 10 digit Number!");
+                return false;
+            }
+        }
+
+        else if(number.length() > 10) {
+
+            if(number.contains("*") || number.contains("#") || number.contains("(")
+                    || number.contains(")") || number.contains(".") || number.contains("-") || number.contains("_") || number.contains(",")
+                    || number.contains("/")) {
+                toast.showToast("Special characters doesn't allowed!");
+                return false;
+            }
+
+            String myNumber = "";
+            String firstDigit = String.valueOf(number.charAt(0));
+            int flag = 0;
+
+            if(firstDigit.toLowerCase().contains("+"))
+                flag = 3;
+            if(firstDigit.toLowerCase().contains("0"))
+                flag = 1;
+
+            if(number.contains(" ")){
+                for (int i = 0; i < number.length(); i++) {
+                    if(!(String.valueOf(number.charAt(i)) == " "))
+                        myNumber += String.valueOf(number.charAt(i));
+                }
+            }
+
+            if(flag == 1 || flag == 3) {
+                for (int i = flag; i < number.length(); i++) {
+                        myNumber += String.valueOf(number.charAt(i));
+                }
+            }
+
+            et_EnterMobileNumber.setText(myNumber);
+            Log.d("number " , myNumber);
+            return false;
+        }
+
+        else if(number.length() == 10){
+            if(number.contains("*") || number.contains("#") || number.contains("(")
+                    || number.contains(")") || number.contains(".") || number.contains("-") || number.contains("_") || number.contains(",")
+                    || number.contains("/")) {
+                toast.showToast("Special characters doesn't allowed!");
+                return false;
+            }
+        }
+
+        else if(number.contains("*") || number.contains("#") || number.contains("(")
+                || number.contains(")") || number.contains(".") || number.contains("-") || number.contains("_") || number.contains(",")
+                || number.contains("/")) {
+            toast.showToast("Special characters doesn't allowed!");
+            return false;
+        }
+
+        return true;
     }
 }

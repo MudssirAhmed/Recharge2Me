@@ -105,8 +105,6 @@ public class signin_crearte_account extends Fragment {
             public void onClick(View v) {
                 Reset_fields();
             }
-
-
         });
 
 
@@ -163,6 +161,7 @@ public class signin_crearte_account extends Fragment {
                             Map<String,Object> data = new HashMap<>();
                             data.put("user_details", userDetails);
                             data.put("Google", google);
+                            data.put("Rewards", "0");
 
                             // This method can Add userData in firstore.
                             db.collection("USERS")

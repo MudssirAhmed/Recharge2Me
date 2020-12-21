@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,7 @@ public class MobileDetailsFinder extends Fragment {
     private JsonConvertor jsonConvertor;
 //    private final String base_Url = "http://api.rechapi.com/";
 
+    CustomToast customToast;
 
     Context context;
     SharedPreferences sharedPreferences;
@@ -147,7 +149,7 @@ public class MobileDetailsFinder extends Fragment {
         animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
 
         // Init custom Taost
-        CustomToast customToast = new CustomToast((recharge_ui) requireActivity());
+        customToast = new CustomToast((recharge_ui) requireActivity());
 
 
         // Init numberVaiewModel for Database
@@ -224,30 +226,43 @@ public class MobileDetailsFinder extends Fragment {
             setImageViewOnOperatorImageView(numberDetails.getOperator());
 
             loadingDialog.stopLoading();
-        }else
-            getMobileDetails(num, type, userCircle);
+        }else {
+            try {
+                getMobileDetails(num, type, userCircle);
+            }
+            catch (Exception e){
+                customToast.showToast("Unexpected Error!");
+            }
+        }
 //        loadingDialog.stopLoading();
 
         return view;
     } // End of OnCreteView method;
 
     private void setImageViewOnOperatorImageView(String operator){
-        switch(operator){
-            case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
-                break;
-            case "Vodafone" : iv_rechargeOperator.setImageResource(R.drawable.idea);
-                break;
-            case "Reliance Jio" : iv_rechargeOperator.setImageResource(R.drawable.jio);
-                break;
-            case "Airtel" : iv_rechargeOperator.setImageResource(R.drawable.airtel);
-                break;
-            case "Bsnl" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
-                break;
-            case "BSNL" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
-                break;
-            default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
-                break;
+
+        try {
+            switch(operator){
+                case "Idea" : iv_rechargeOperator.setImageResource(R.drawable.idea);
+                    break;
+                case "Vodafone" : iv_rechargeOperator.setImageResource(R.drawable.idea);
+                    break;
+                case "Reliance Jio" : iv_rechargeOperator.setImageResource(R.drawable.jio);
+                    break;
+                case "Airtel" : iv_rechargeOperator.setImageResource(R.drawable.airtel);
+                    break;
+                case "Bsnl" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
+                    break;
+                case "BSNL" : iv_rechargeOperator.setImageResource(R.drawable.bsnl);
+                    break;
+                default:    iv_rechargeOperator.setImageResource(R.drawable.mtnl);
+                    break;
+            }
         }
+        catch (Exception e){
+            customToast.showToast("Unexpected Error!");
+        }
+
     } // This will set the operator Image on op_imageView
     private boolean isNullOrNot(String number, String fromCircle){
 
@@ -274,10 +289,6 @@ public class MobileDetailsFinder extends Fragment {
                 tv_mF_planDetails.setText(Validity_dialoge + "\n" +
                         Details_dialoge);
             }
-            // It will exicute when user press back button
-//            if(resultCode == Activity.RESULT_CANCELED){
-//                btn_recahargeAmount.setText("Amount Error");
-//            }
         }
 
         if (requestCode == 99) {
@@ -317,11 +328,6 @@ public class MobileDetailsFinder extends Fragment {
                 MobileDetailsFinder_Data mobileDetailsFinder_data = response.body();
 
                 MobileDetailsFinder_Data.mobileData data = mobileDetailsFinder_data.getData();
-
-                // shared Prefrences;
-//                Context context;
-//                SharedPreferences sharedPreferences;
-//                SharedPreferences.Editor edit;
 
                 context = (recharge_ui) requireActivity();
                 sharedPreferences = context.getSharedPreferences("MobileDetails", Context.MODE_PRIVATE);

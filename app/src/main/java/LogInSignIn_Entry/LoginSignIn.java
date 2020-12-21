@@ -213,14 +213,9 @@ public class LoginSignIn extends Fragment {
         super.onStart();
 
         FirebaseUser user = mAuth.getCurrentUser();
-
         if(user != null){
             Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
         }
-        else{
-            Toast.makeText((EntryActivity)requireActivity(), "", Toast.LENGTH_SHORT).show();
-        }
-        
     }
 
     private void goToSignPage() {
