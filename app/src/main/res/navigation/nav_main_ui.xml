@@ -59,7 +59,7 @@
         tools:layout="@layout/activity_recahrge_ui" />
     <fragment
         android:id="@+id/settings"
-        android:name="com.recharge2mePlay.recharge2me.settings"
+        android:name="Ui_Front_and_Back_end.settings"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

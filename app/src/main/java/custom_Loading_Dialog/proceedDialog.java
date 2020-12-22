@@ -12,17 +12,10 @@ public class proceedDialog {
     Dialog dialog;
     Activity activity;
 
-    //        proceedDialog = new Dialog((recharge_ui) requireActivity());
-    //        proceedDialog.setContentView(R.layout.recharge_custom_dialog);
-    //        proceedDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_background));
-    //        proceedDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    //        proceedDialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
-
     public proceedDialog(Activity activity){
         this.activity = activity;
     }
 
-    //String number, String circle, String operator, String amount, String details, String validity
     public Dialog showProceedDialog(String number, String circle, String operator, String amount, String details, String validity){
 
         dialog = new Dialog(activity);

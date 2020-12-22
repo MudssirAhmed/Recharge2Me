@@ -28,6 +28,7 @@ public class LoadingDialog {
         builder.setCancelable(false);
 
         dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(activity.getDrawable(R.drawable.dialog_background));
         dialog.show();
     }
 

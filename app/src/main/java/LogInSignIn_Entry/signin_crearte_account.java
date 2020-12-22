@@ -29,14 +29,26 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
+import LogInSignIn_Entry.DataTypes.Google_User_Details;
+import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import custom_Loading_Dialog.LoadingDialog;
 
 public class signin_crearte_account extends Fragment {
 
     View view;
-    TextView tvSignIn_LogIn,tv_createAccount_exception,tv_CreateAccount_Reset;
+
+    TextView tvSignIn_LogIn,
+            tv_createAccount_exception,
+            tv_CreateAccount_Reset;
+
     Button btn_Signin_CreateAccount;
-    EditText et_createAccount_Name,et_createAccount_Email,et_createAccount_Password;
+
+    EditText et_createAccount_Name,
+            et_createAccount_Email,
+            et_createAccount_Password,
+            et_createAccount_Number;
+
     CheckBox cb_createAcc_showPassword;
 
     // Loading Dialog
@@ -69,6 +81,7 @@ public class signin_crearte_account extends Fragment {
         et_createAccount_Name = view.findViewById(R.id.et_createAccount_Name);
         et_createAccount_Password = view.findViewById(R.id.et_LogIn_password);
         tv_createAccount_exception = view.findViewById(R.id.tv_createAccount_excaption);
+        et_createAccount_Number = view.findViewById(R.id.et_signIn_number);
 
 
 
@@ -91,7 +104,7 @@ public class signin_crearte_account extends Fragment {
             @Override
             public void onClick(View v) {
                 if(et_createAccount_Name.getText().toString().isEmpty() || et_createAccount_Email.getText().toString().isEmpty()
-                        || et_createAccount_Password.getText().toString().isEmpty()){
+                        || et_createAccount_Password.getText().toString().isEmpty() || et_createAccount_Number.getText().toString().isEmpty()){
                     tv_createAccount_exception.setText("Please Enter All Fields!...");
                 }else{
                     loadingDialog.startLoading();
@@ -141,6 +154,7 @@ public class signin_crearte_account extends Fragment {
         final String Email = et_createAccount_Email.getText().toString();
         final String Name = et_createAccount_Name.getText().toString();
         final String Password = et_createAccount_Password.getText().toString();
+        final String Number = et_createAccount_Number.getText().toString();
 
 
         mAuth.createUserWithEmailAndPassword(Email, Password)
@@ -152,16 +166,13 @@ public class signin_crearte_account extends Fragment {
 
                             // Sign in success, update UI with the signed-in user's information
                             CreateAccount_userDetails userDetails =
-                                    new CreateAccount_userDetails(Name,Email);
+                                    new CreateAccount_userDetails(Name, Email, "0", Number);
 
                             // update Google info as null bco'z user can't signIn with Google
                             Google_User_Details google = new Google_User_Details("UID", "PROFILE");
 
 
-                            Map<String,Object> data = new HashMap<>();
-                            data.put("user_details", userDetails);
-                            data.put("Google", google);
-                            data.put("Rewards", "0");
+                            User_googleAndOwn data = new User_googleAndOwn(google, userDetails);
 
                             // This method can Add userData in firstore.
                             db.collection("USERS")

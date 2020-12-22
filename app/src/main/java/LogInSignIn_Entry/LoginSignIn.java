@@ -34,6 +34,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
+import LogInSignIn_Entry.DataTypes.Google_User_Details;
+import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import custom_Loading_Dialog.LoadingDialog;
 
 
@@ -176,12 +179,10 @@ public class LoginSignIn extends Fragment {
         }
 
 
-        CreateAccount_userDetails userDetails = new CreateAccount_userDetails(userName,userEmail);
+        CreateAccount_userDetails userDetails = new CreateAccount_userDetails(userName,userEmail,"0","0000000000");
         Google_User_Details googleDetails = new Google_User_Details(userId,userGooglePhotoUri.toString());
 
-        Map<String,Object> data = new HashMap<>();
-        data.put("userDetails",userDetails);
-        data.put("Google",googleDetails);
+        User_googleAndOwn data = new User_googleAndOwn(googleDetails, userDetails);
 
 
         db.collection("USERS")
