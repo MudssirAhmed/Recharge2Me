@@ -175,6 +175,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                     .setListener(null)
 
             delay(200)
+
             visibility = View.INVISIBLE
 //            alpha = 1f
             if(onBackPressedFlag == 0)

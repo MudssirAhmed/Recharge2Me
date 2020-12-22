@@ -6,6 +6,7 @@
     <color name="secondaryColor">#F9AA33</color>
     <color name="colorAccent">#FFC107</color>
     <color name="backgroundcolor">#FAF7F7</color>
+    <color name="ui_backGroundColor">#F9F7FE</color>
 
 <!--    Text colors:- -->
     <color name="whiteText">#ffffff</color>
