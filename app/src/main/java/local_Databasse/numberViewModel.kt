@@ -31,4 +31,15 @@ class numberViewModel(application: Application): AndroidViewModel(application) {
             repository.updateNumberData(entityNumberdetails)
         }
     }
+
+    fun getOneData(number: String): String{
+
+        var num: String
+
+        viewModelScope.launch(Dispatchers.IO) {
+             num  = repository.getOneData(number)
+        }
+
+        return "num"
+    }
 }

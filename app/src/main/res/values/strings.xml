@@ -53,8 +53,6 @@
         <item>Airtel</item>
         <item>Reliance Jio</item>
         <item>BSNL</item>
-        <item>MTNL Delhi NCR</item>
-        <item>MTNL Mumbai</item>
     </string-array>
 
     <string-array name="states">

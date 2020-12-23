@@ -15,4 +15,7 @@ interface Dao_numberDetails {
     @Query("SELECT * FROM numberDetails")
     fun readAllData_numberDetails(): LiveData<List<entity_numberDetails>>
 
+    @Query("SELECT number FROM numberDetails WHERE number = :compareNumber")
+    fun getOneData(compareNumber: String): String
+
 }

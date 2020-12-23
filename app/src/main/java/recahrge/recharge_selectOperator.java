@@ -33,8 +33,6 @@ public class recharge_selectOperator extends Fragment {
             R.drawable.airtel,
             R.drawable.jio,
             R.drawable.bsnl,
-            R.drawable.mtnl,
-            R.drawable.mtnl
     };
 
 
@@ -74,6 +72,7 @@ public class recharge_selectOperator extends Fragment {
                         recharge_selectOperatorDirections.ActionRechargeSelectOperatorToMobileDetailsFinder
                                         action = recharge_selectOperatorDirections
                                 .actionRechargeSelectOperatorToMobileDetailsFinder("formCircle", number);
+
                         action.setOperator(recOp[position]);
 
                         Navigation.findNavController(view).navigate(action);

@@ -13,4 +13,9 @@ class numberDataRepo(private val numberDao: Dao_numberDetails) {
     suspend fun updateNumberData(numberData: entity_numberDetails){
         numberDao.updateNumberData(numberData)
     }
+
+    suspend fun getOneData(number: String): String{
+        val num: String = numberDao.getOneData(number)
+        return num
+    }
 }

@@ -7,4 +7,14 @@
     android:background="@drawable/splash_screen"
     tools:context="com.recharge2mePlay.recharge2me.MainActivity">
 
+    <ProgressBar
+        android:id="@+id/pb_entryProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:theme="@style/dilogColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

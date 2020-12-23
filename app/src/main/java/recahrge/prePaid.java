@@ -92,6 +92,7 @@ public class prePaid extends Fragment {
 
 
         mNumberViewModel = new numberViewModel(getActivity().getApplication());
+
         mNumberViewModel.getReadAllData().observe(getViewLifecycleOwner(), entity_numberDetails -> {
                     mAdpter_numberDetails.setData(entity_numberDetails);
                     list = mNumberViewModel.getReadAllData().getValue();

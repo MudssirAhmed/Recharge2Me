@@ -30,14 +30,13 @@ class dbNumberDetails_adapter: RecyclerView.Adapter<dbNumberDetails_adapter.myVi
         holder.itemView.tv_dbCard_number.text = currentItem.number
 
         when (currentItem.operator) {
-            "Idea" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.idea)
-            "Vodafone" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.idea)
+            "IDEA" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.idea)
+            "VODAFONE" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.idea)
             "Vodafone Idea" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.idea)
-            "Reliance Jio" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.jio)
-            "Airtel" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.airtel)
-            "Bsnl" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.bsnl)
+            "Jio" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.jio)
+            "AIRTEL" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.airtel)
             "BSNL" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.bsnl)
-            else -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.mtnl)
+            "BSNL" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.bsnl)
         }
 
         holder.itemView.db_card_numberDetails.setOnClickListener {

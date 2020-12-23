@@ -2,6 +2,8 @@ package recahrge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.recharge2mePlay.recharge2me.R;

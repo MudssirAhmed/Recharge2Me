@@ -6,6 +6,7 @@ import okhttp3.RequestBody;
 import recahrge.DataTypes.planDataTypes.PlanData;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_recharge;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
@@ -42,9 +43,16 @@ public interface JsonConvertor {
     @FormUrlEncoded
     Call<Pay2All_authToken> getAuthToken(@FieldMap Map<String,String> params);
 
-
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("providers")
     Call<Pay2All_providers> getAllProviders(@Header("Authorization") String auth);
 
+    @GET("recharge")
+    Call<Pay2All_recharge> doRecharge(
+            @Query("token") String Token,
+            @Query("number") String Number,
+            @Query("amount") String Amount,
+            @Query("provider_id") String ProviderId,
+            @Query("client_id") String ClientId
+    );
 }
