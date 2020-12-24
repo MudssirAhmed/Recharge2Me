@@ -1,10 +1,12 @@
 package Ui_Front_and_Back_end
 
+import LogInSignIn_Entry.DataTypes.User_googleAndOwn
 import android.os.Bundle
 import android.view.*
 import android.view.View.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -18,10 +20,21 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
+import com.squareup.okhttp.Dispatcher
+import custom_Loading_Dialog.CustomToast
+import custom_Loading_Dialog.LoadingDialog
 import kotlinx.android.synthetic.main.activity_main__user_interface.view.*
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
+
 
 class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
 
@@ -36,6 +49,10 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     private lateinit var lL_tell_aFreind: LinearLayout
     private lateinit var lL_helpAndSupport: LinearLayout
     private lateinit var listner: NavController.OnDestinationChangedListener
+
+    // Custom
+    private lateinit var toast: CustomToast
+    private lateinit var loadingDialog: LoadingDialog
 
     // Initegers
     private var flag:Int = 0
@@ -57,6 +74,10 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         lL_tell_aFreind = nav_drawer.findViewById(R.id.lL_tell_aFreind);
         lL_helpAndSupport = nav_drawer.findViewById(R.id.lL__helpAndSupport);
 
+        // custom
+        toast = CustomToast(this)
+        loadingDialog = LoadingDialog(this)
+
         nav_drawer.visibility = GONE
 
         if(flag == 0){
@@ -68,19 +89,16 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         nav_icon.setOnClickListener{
 
             lifecycleScope.launch {
+                setDataOnNavDrawer()
                 appyAnimtionOnNavIcon()
             }
+
             applyOpenAnimation()
         }
 
         nav_drawer.getHeaderView(0).setOnClickListener {
             Toast.makeText(this, "Header", Toast.LENGTH_SHORT).show()
         }
-
-        // TODO: add this lines for set user profile Image in Header
-//        val iv: ImageView = nav_drawer.getHeaderView(0).findViewById(R.id.iv_navHeader_profileImage)
-//        iv.setImageResource(R.drawable.man)
-
         lL_tell_aFreind.setOnClickListener{
             Toast.makeText(this, "Tell a Freind", Toast.LENGTH_SHORT).show()
         }
@@ -126,6 +144,41 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         // handle signOut click
         var item: MenuItem = nav_drawer.menu.findItem(R.id.drawer_signOut)
         item.setOnMenuItemClickListener(this)
+
+        lifecycleScope.launch() {
+            setDataOnNavDrawer()
+        }
+
+    }
+
+    fun setDataOnNavDrawer(){
+        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+        val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+        val docRef = db.collection("USERS").document(auth.uid.toString())
+
+        try {
+            docRef.get()
+                    .addOnSuccessListener { documentSnapshot ->
+
+                        val city = documentSnapshot.toObject<User_googleAndOwn>()
+                        val user = city?.user_details
+                        val Name: String = user?.name ?:  "R2M Demo"
+                        val Reward: String = user?.rewards ?: "0"
+
+                        val tv_navHeader_name  = nav_drawer.getHeaderView(0).findViewById<TextView>(R.id.tv_navHeader_name);
+                        val tv_navHeader_reward  = nav_drawer.getHeaderView(0).findViewById<TextView>(R.id.tv_navHeader_reward);
+
+                        tv_navHeader_name.text = Name
+                        tv_navHeader_reward.text = "₹ " + Reward + " rewards"
+                    }
+                    .addOnFailureListener { exception ->
+                        toast.showToast("Error! " + exception.message)
+                    }
+        }
+        catch (e: Exception){
+            toast.showToast("Error! " + e.message )
+        }
 
     }
 

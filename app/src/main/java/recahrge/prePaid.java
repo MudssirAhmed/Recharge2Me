@@ -59,6 +59,8 @@ public class prePaid extends Fragment {
 
     Animation animation;
 
+    CustomToast toast;
+
     // number Data from Database using entity
     numberViewModel mNumberViewModel;
     RecyclerView rv_dbNumberDetails;
@@ -83,6 +85,7 @@ public class prePaid extends Fragment {
         radioButton_prePaid = view.findViewById(R.id.radioButton_prePaid);
         radioButton_postPaid = view.findViewById(R.id.radioButton_postPaid);
 
+        toast = new CustomToast((recharge_ui) requireActivity());
 
         // init RecyclerView for db_numberDetails
         mAdpter_numberDetails = new dbNumberDetails_adapter();
@@ -91,12 +94,18 @@ public class prePaid extends Fragment {
         rv_dbNumberDetails.setLayoutManager(new LinearLayoutManager((recharge_ui)requireActivity()));
 
 
-        mNumberViewModel = new numberViewModel(getActivity().getApplication());
+        try {
+            mNumberViewModel = new numberViewModel(getActivity().getApplication());
 
-        mNumberViewModel.getReadAllData().observe(getViewLifecycleOwner(), entity_numberDetails -> {
-                    mAdpter_numberDetails.setData(entity_numberDetails);
-                    list = mNumberViewModel.getReadAllData().getValue();
-                });
+            mNumberViewModel.getReadAllData().observe(getViewLifecycleOwner(), entity_numberDetails -> {
+                mAdpter_numberDetails.setData(entity_numberDetails);
+                list = mNumberViewModel.getReadAllData().getValue();
+            });
+
+        }
+        catch (Exception e){
+            toast.showToast(e.getMessage());
+        }
 
 
         radioButton_prePaid.setChecked(true);

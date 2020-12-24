@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/forgot_user" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/tv_navHeader_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_navHeader_profileImage" />
 
     <TextView
-        android:id="@+id/textView22"
+        android:id="@+id/tv_navHeader_reward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_navHeader_name" />
 
     <ImageView
         android:id="@+id/imageView26"
@@ -56,6 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView22"
+        app:layout_constraintTop_toBottomOf="@+id/tv_navHeader_reward"
         app:srcCompat="@drawable/shadow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

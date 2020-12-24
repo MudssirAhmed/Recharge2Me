@@ -12,6 +12,14 @@ public class User_googleAndOwn {
         this.user_details = user_details;
     }
 
+    public void setGoogle(Google_User_Details google) {
+        Google = google;
+    }
+
+    public void setUser_details(CreateAccount_userDetails user_details) {
+        this.user_details = user_details;
+    }
+
     public Google_User_Details getGoogle() {
         return Google;
     }

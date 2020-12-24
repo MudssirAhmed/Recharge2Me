@@ -198,19 +198,14 @@ public class MobileDetailsFinder extends Fragment {
             @Override
             public void onClick(View view) {
 
-//                getPayments();
-
-                // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
-                // and if data is already already present in Database and user update then it automatically update Data.
-
-
                  if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
                      customToast.showToast("Please select plan First!");
                  else {
-                     findDataInDataBase(tv_mobileNumber.getText().toString());
+                     // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
+                     // and if data is already already present in Database and user update then it automatically update Data.
+                        findDataInDataBase(tv_mobileNumber.getText().toString());
 //                     getAuthToken_pay2All(btn_recahargeAmount.getText().toString());
                  }
-
             }
         });
 
@@ -496,25 +491,25 @@ public class MobileDetailsFinder extends Fragment {
 // proceed button Functions:-
     // These functions are for storing, updating the number Database :-
         private void findDataInDataBase(String number){
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                String getNumber = Database_numberJava.getInstance((recharge_ui) requireActivity())
-                        .numberDao()
-                        .getOneData(number);
-                if(getNumber.equals(number)) {
-                    Log.d("myNumber", "save: " + number);
-                    updateNumberDataInDatabase();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String getNumber = Database_numberJava.getInstance((recharge_ui) requireActivity())
+                                .numberDao()
+                                .getOneData(number);
+                        if(getNumber.equals(number)) {
+                            Log.d("myNumber", "save: " + number);
+                            updateNumberDataInDatabase();
+                        }
+                    }
+                    catch (Exception e){
+                        Log.d("myNumberE", e.getMessage());
+                        setNumberDataInDatabase();
+                    }
+                    return;
                 }
-            }
-            catch (Exception e){
-                Log.d("myNumberE", e.getMessage());
-                setNumberDataInDatabase();
-            }
-            return;
-        }
-    }).start();
+            }).start();
 }// It update the data if Data is already present else if Data automatically added in Database
         private void setNumberDataInDatabase(){
 

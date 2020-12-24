@@ -13,6 +13,14 @@ public class Google_User_Details {
         Google_Profile = google_Profile;
     }
 
+    public void setGoogle_UID(String google_UID) {
+        Google_UID = google_UID;
+    }
+
+    public void setGoogle_Profile(String google_Profile) {
+        Google_Profile = google_Profile;
+    }
+
     public String getGoogle_UID() {
         return Google_UID;
     }
