@@ -31,13 +31,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.Google_User_Details;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
-import custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.LoadingDialog;
 
 
 public class LoginSignIn extends Fragment {

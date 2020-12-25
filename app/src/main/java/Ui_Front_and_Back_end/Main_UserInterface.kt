@@ -10,30 +10,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
-import com.squareup.okhttp.Dispatcher
-import custom_Loading_Dialog.CustomToast
-import custom_Loading_Dialog.LoadingDialog
-import kotlinx.android.synthetic.main.activity_main__user_interface.view.*
-import kotlinx.coroutines.Dispatchers.IO
+import Global.custom_Loading_Dialog.CustomToast
+import Global.custom_Loading_Dialog.LoadingDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
 
 
 class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
@@ -95,6 +85,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
             applyOpenAnimation()
         }
+
 
         nav_drawer.getHeaderView(0).setOnClickListener {
             Toast.makeText(this, "Header", Toast.LENGTH_SHORT).show()
@@ -241,14 +232,30 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     // onBackPressd and onTouch events
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        if(nav_drawer.isVisible){
-            if(onTouchFlag == 1){
-                onTouchFlag = 0
-                lifecycleScope.launch {
-                    appyCloseAnimation()
+        if (event != null) {
+            if(event.action == MotionEvent.ACTION_UP){
+                if(nav_drawer.isVisible){
+                    if(onTouchFlag == 1){
+                        onTouchFlag = 0
+                        lifecycleScope.launch {
+                            appyCloseAnimation()
+                        }
+                    }
+                }
+            }
+            else if(event.action == MotionEvent.ACTION_DOWN){
+
+                if(nav_drawer.isVisible){
+                    if(onTouchFlag == 1){
+                        onTouchFlag = 0
+                        lifecycleScope.launch {
+                            appyCloseAnimation()
+                        }
+                    }
                 }
             }
         }
+
         return super.onTouchEvent(event)
     }
     override fun onBackPressed() {
@@ -288,5 +295,6 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         return true
     }
 }
+
 
 

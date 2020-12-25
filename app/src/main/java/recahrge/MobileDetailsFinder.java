@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,10 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.room.Database;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,24 +27,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Task;
 import com.recharge2mePlay.recharge2me.R;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import Retrofit.JsonConvertor;
-import custom_Loading_Dialog.CustomToast;
-import custom_Loading_Dialog.LoadingDialog;
-import custom_Loading_Dialog.proceedDialog;
-import local_Databasse.Dao_numberDetails;
-import local_Databasse.Database_numberData;
+import Global.custom_Loading_Dialog.CustomToast;
+import Global.custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.proceedDialog;
 import local_Databasse.Database_numberJava;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberViewModel;
@@ -198,14 +188,24 @@ public class MobileDetailsFinder extends Fragment {
             @Override
             public void onClick(View view) {
 
-                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
-                     customToast.showToast("Please select plan First!");
-                 else {
-                     // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
-                     // and if data is already already present in Database and user update then it automatically update Data.
-                        findDataInDataBase(tv_mobileNumber.getText().toString());
-//                     getAuthToken_pay2All(btn_recahargeAmount.getText().toString());
-                 }
+                findDataInDataBase(tv_mobileNumber.getText().toString());
+
+                if(isNetworkAvailable()){
+                    getAuthToken_pay2All("");
+                }
+                else {
+                    customToast.showToast("Please Check Your Internet Connection!...");
+                }
+
+//                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
+//                     customToast.showToast("Please select plan First!");
+//                 else {
+//                     // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
+//                     // and if data is already already present in Database and user update then it automatically update Data.
+////                        findDataInDataBase(tv_mobileNumber.getText().toString());
+////                     getAuthToken_pay2All(btn_recahargeAmount.getText().toString());
+//                 }
+
             }
         });
 
@@ -532,130 +532,157 @@ public class MobileDetailsFinder extends Fragment {
     } // This will update the numberData in Database
     // These functions are for showAlertDialog, payments and recharge
         private void getAuthToken_pay2All(String amount){
+        try {
+            loadingDialog.startLoading();
+            // Init Retrofit
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.pay2all.in/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        loadingDialog.startLoading();
-        // Init Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.pay2all.in/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+            // Init JsonConverter Interface
+            jsonConvertor = retrofit.create(JsonConvertor.class);
 
-        // Init JsonConverter Interface
-        jsonConvertor = retrofit.create(JsonConvertor.class);
+            Map<String, String> params = new HashMap<>();
+            params.put("email", "mudssira01@gmail.com");
+            params.put("password", "4nVztc");
 
-        Map<String, String> params = new HashMap<>();
-        params.put("email", "mudssira01@gmail.com");
-        params.put("password", "4nVztc");
+            Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
+            call.enqueue(new Callback<Pay2All_authToken>() {
+                @Override
+                public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
+                    if(!response.isSuccessful()){
+                        customToast.showToast("Error! " + response.code());
+                        loadingDialog.stopLoading();
+                        return;
+                    }
 
-        Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
+                    Pay2All_authToken pay2All_authToken = response.body();
 
-        call.enqueue(new Callback<Pay2All_authToken>() {
-            @Override
-            public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
-                if(!response.isSuccessful()){
-                    customToast.showToast("TokkenCode: " + response.code());
-                    loadingDialog.stopLoading();
-                    return;
+                    String authToken = pay2All_authToken.getAccess_token();
+                    Pay2All_authToken.userPay2All user = pay2All_authToken.getUser();
+                    Pay2All_authToken.userPay2All.Balance balance = user.getBalance();
+
+                    Toast.makeText((recharge_ui) requireActivity(), "balance: "+ balance.getUser_balance(), Toast.LENGTH_SHORT).show();
+
+                    if(isNetworkAvailable()){
+                        getAllProvides(authToken, amount);
+                    }
+                    else {
+                        customToast.showToast("Please Check Your Internet Connection!...");
+                        loadingDialog.stopLoading();
+                    }
+
                 }
 
-                Pay2All_authToken pay2All_authToken = response.body();
+                @Override
+                public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
+                    customToast.showToast("Error! " + t.getMessage());
+                    loadingDialog.stopLoading();
+                }
+            });
+        }
+        catch (Exception e){
+            loadingDialog.stopLoading();
+            customToast.showToast("Error! " + e.getMessage());
+        }
 
-                String authToken = pay2All_authToken.getAccess_token();
-                Pay2All_authToken.userPay2All user = pay2All_authToken.getUser();
-                Pay2All_authToken.userPay2All.Balance balance = user.getBalance();
-
-                Toast.makeText((recharge_ui) requireActivity(), "balance: "+ balance.getUser_balance(), Toast.LENGTH_SHORT).show();
-                loadingDialog.stopLoading();
-
-//                getAllProvides(authToken, amount);
-
-            }
-
-            @Override
-            public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
-                customToast.showToast("TokkenFail: " + t.getMessage());
-                loadingDialog.stopLoading();
-            }
-        });
     }// This will fetch the Auth Token
         private void getAllProvides(String Token, String Amount){
 
-        Retrofit retrofit  = new Retrofit.Builder()
-                .baseUrl("https://api.pay2all.in/v1/app/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        try {
 
-        jsonConvertor = retrofit.create(JsonConvertor.class);
+            Retrofit retrofit  = new Retrofit.Builder()
+                    .baseUrl("https://api.pay2all.in/v1/app/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            jsonConvertor = retrofit.create(JsonConvertor.class);
+
+            Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + Token);
+            call.enqueue(new Callback<Pay2All_providers>() {
+                @Override
+                public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
+
+                    if(!response.isSuccessful()){
+                        customToast.showToast("Error: " + response.code());
+                        loadingDialog.stopLoading();
+                        return;
+                    }
+
+                    Pay2All_providers pay2All_providers = response.body();
+
+                    List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
+
+                    HashMap<String, String> rechargeProvider = new HashMap<>();
+
+                    for(Pay2All_providers.Providers provider: providers){
+                        rechargeProvider.put(provider.getProvider_name(), provider.getId());
+                    }
+
+                    HashMap<String, String> opeId = new HashMap<>();
+                    opeId.put("1", "AIRTEL");
+                    opeId.put("2", "VODAFONE");
+                    opeId.put("3", "IDEA");
+                    opeId.put("8", "BSNL");
+                    opeId.put("88", "Jio");
 
 
-        Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + Token);
+                    String operator = btn_operator.getText().toString().trim();
+//                    customToast.showToast(operator);
+                    Log.d("operator", operator);
+                    String opId = rechargeProvider.get(btn_operator.getText().toString());
 
-        call.enqueue(new Callback<Pay2All_providers>() {
-            @Override
-            public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
-
-                if(!response.isSuccessful()){
-                    customToast.showToast("providersCode " + response.code());
                     loadingDialog.stopLoading();
-                    return;
+                    showAlertDialog(operator, Token, opId, Amount);
+
                 }
 
-                Pay2All_providers pay2All_providers = response.body();
-
-                List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
-
-                HashMap<String, String> rechargeProvider = new HashMap<>();
-
-                for(Pay2All_providers.Providers provider: providers){
-                    rechargeProvider.put(provider.getProvider_name(), provider.getId());
+                @Override
+                public void onFailure(Call<Pay2All_providers> call, Throwable t) {
+                    customToast.showToast("providersFail " + t.getMessage());
+                    loadingDialog.stopLoading();
                 }
-
-                HashMap<String, String> opeId = new HashMap<>();
-                opeId.put("1", "AIRTEL");
-                opeId.put("2", "VODAFONE");
-                opeId.put("3", "IDEA");
-                opeId.put("8", "BSNL");
-                opeId.put("88", "Jio");
-
-
-                String operator = rechargeProvider.get(btn_operator.getText().toString());
-                String opId = rechargeProvider.get(btn_operator.getText().toString());
-
-                loadingDialog.stopLoading();
-                showAlertDialog(operator, Token, opId, Amount);
-
-            }
-
-            @Override
-            public void onFailure(Call<Pay2All_providers> call, Throwable t) {
-                customToast.showToast("providersFail " + t.getMessage());
-                loadingDialog.stopLoading();
-            }
-        });
+            });
+        }
+        catch (Exception e){
+            loadingDialog.stopLoading();
+            customToast.showToast("Error! " + e.getMessage());
+        }
 
     } // This will fetch all Providers
         private void showAlertDialog(String Operator, String Token, String opId, String Amount){
 
-        // These are entities which shown on AlertDialog
-        String number = tv_mobileNumber.getText().toString();
-        String circle = btn_circle.getText().toString();
+        try {
+            // These are entities which shown on AlertDialog
+            String number = tv_mobileNumber.getText().toString();
+            String circle = btn_circle.getText().toString();
 
-        // make an object of proceedDialog
-        proceedDialog = new proceedDialog((recharge_ui) requireActivity());
+            // make an object of proceedDialog
+            proceedDialog = new proceedDialog((recharge_ui) requireActivity());
+            String operator = Operator + " id: " + opId;
+            Dialog dialog = proceedDialog.showProceedDialog(number, circle, operator, Amount, Details_dialoge, Validity_dialoge);
 
-        String operator = Operator + " id: " + opId;
+            // proceedToPayment onClick Listner
+            dialog.findViewById(R.id.btn_dialogProceed).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    if(isNetworkAvailable()){
+                        Toast.makeText((recharge_ui) requireActivity(), "Please Wait", Toast.LENGTH_SHORT).show();
+//                    doRecharge(Token, number, Amount, opId);
+                    }
+                    else {
+                        customToast.showToast("Please Check Your Internet Connection!...");
+                    }
 
-        Dialog dialog = proceedDialog.showProceedDialog(number, circle, operator, Amount, Details_dialoge, Validity_dialoge);
+                }
+            });
 
-        // proceedToPayment onClick Listner
-        dialog.findViewById(R.id.btn_dialogProceed).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                Toast.makeText((recharge_ui) requireActivity(), "Please Wait", Toast.LENGTH_SHORT).show();
-                doRecharge(Token, number, Amount, opId);
-            }
-        });
+        }
+        catch (Exception e){
+            customToast.showToast("Error! " + e.getMessage());
+        }
 
     }// This will show the alert Dailoge to user.
     // Get Payments before do Recharge Process
@@ -740,6 +767,13 @@ public class MobileDetailsFinder extends Fragment {
     }// Do Recharge
 
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                =  (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 
 

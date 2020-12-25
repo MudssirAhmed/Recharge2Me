@@ -16,16 +16,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/transaction_filter_month"
-            android:fontFamily="@font/comfortaa_bold"
+        <Spinner
+            android:id="@+id/spinner_months"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/placeholder_month"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Month"
-            android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,8 +36,8 @@
             android:ems="10"
             android:fontFamily="sans-serif-black"
             android:gravity="center_horizontal|center_vertical"
+            android:hint="Enter Number"
             android:inputType="phone"
-            android:text="8477055721"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

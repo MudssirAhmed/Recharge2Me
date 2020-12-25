@@ -1,4 +1,4 @@
-package custom_Loading_Dialog;
+package Global.custom_Loading_Dialog;
 
 import android.app.Activity;
 import android.content.Context;

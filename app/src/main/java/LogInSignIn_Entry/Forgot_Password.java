@@ -28,7 +28,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
-import custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.LoadingDialog;
 
 public class Forgot_Password extends Fragment {
 

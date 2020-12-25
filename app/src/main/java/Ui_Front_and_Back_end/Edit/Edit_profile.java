@@ -3,7 +3,7 @@ package Ui_Front_and_Back_end.Edit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,11 +20,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
+import Global.Validation.Validate;
 import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.Google_User_Details;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
-import custom_Loading_Dialog.CustomToast;
-import custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.CustomToast;
+import Global.custom_Loading_Dialog.LoadingDialog;
 
 public class Edit_profile extends AppCompatActivity {
 
@@ -37,6 +36,7 @@ public class Edit_profile extends AppCompatActivity {
 
     private String Rewards;
     private Google_User_Details googleUser;
+    private Validate validate;
 
     CustomToast toast;
     LoadingDialog loadingDialog;
@@ -57,6 +57,7 @@ public class Edit_profile extends AppCompatActivity {
 
         toast = new CustomToast(this);
         loadingDialog = new LoadingDialog(this);
+        validate = new Validate(this);
 
         // StartLoadingDialog
         loadingDialog.startLoading();
@@ -69,13 +70,17 @@ public class Edit_profile extends AppCompatActivity {
         btn_edit_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    saveDataInFirebase(googleUser);
-                    loadingDialog.startLoading();
-                }
-                catch (Exception e){
-                    Log.d("Exc", e.getMessage());
-                    loadingDialog.stopLoading();
+                if(validate.checkName(et_edit_name.getText().toString())){
+                    if(validate.checkNumber(et_edit_number.getText().toString().trim())){
+                        try {
+                            saveDataInFirebase(googleUser);
+                            loadingDialog.startLoading();
+                        }
+                        catch (Exception e){
+                            Log.d("Exc", e.getMessage());
+                            loadingDialog.stopLoading();
+                        }
+                    }
                 }
             }
         });
@@ -86,49 +91,53 @@ public class Edit_profile extends AppCompatActivity {
 
     private void getDataFromFirebase(){
 
-        DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
+        try {
+            DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
 
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User_googleAndOwn data = documentSnapshot.toObject(User_googleAndOwn.class);
-                googleUser = data.getGoogle();
-                CreateAccount_userDetails user = data.getUser_details();
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    User_googleAndOwn data = documentSnapshot.toObject(User_googleAndOwn.class);
+                    googleUser = data.getGoogle();
+                    CreateAccount_userDetails user = data.getUser_details();
 
-                et_edit_name.setText(user.getName());
-                et_edit_number.setText(user.getNumber());
-                Rewards = user.getRewards();
+                    et_edit_name.setText(user.getName());
+                    et_edit_number.setText(user.getNumber());
+                    Rewards = user.getRewards();
 
-                Log.d("Google", googleUser.getGoogle_Profile() + googleUser.getGoogle_UID());
-                loadingDialog.stopLoading();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                toast.showToast("Error! " + e.getMessage());
-                loadingDialog.stopLoading();
-                finish();
-            }
-        });
+                    Log.d("Google", googleUser.getGoogle_Profile() + googleUser.getGoogle_UID());
+                    loadingDialog.stopLoading();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    toast.showToast("Error! " + e.getMessage());
+                    loadingDialog.stopLoading();
+                    finish();
+                }
+            });
+        }
+        catch (Exception e){
+            toast.showToast("Error! " + e.getMessage());
+        }
+
     }
-
     private void saveDataInFirebase(Google_User_Details googleUser){
 
-        // Changing Fields:-
-        String name = et_edit_name.getText().toString().trim();
-        String number = et_edit_number.getText().toString().trim();
-        //Google Fileds
-        String googleProfile = googleUser.getGoogle_Profile();
-        String googleUid = googleUser.getGoogle_UID();
-        // Firebase Email
-        String email = firebaseUser.getEmail();
-
-
-        CreateAccount_userDetails user = new CreateAccount_userDetails(name, email, Rewards, number);
-        Google_User_Details googleuser = new Google_User_Details(googleUid, googleProfile);
-        User_googleAndOwn GAO = new User_googleAndOwn(googleuser,user);
-
         try {
+            // Changing Fields:-
+            String name = et_edit_name.getText().toString().trim();
+            String number = et_edit_number.getText().toString().trim();
+            //Google Fileds
+            String googleProfile = googleUser.getGoogle_Profile();
+            String googleUid = googleUser.getGoogle_UID();
+            // Firebase Email
+            String email = firebaseUser.getEmail();
+
+
+            CreateAccount_userDetails user = new CreateAccount_userDetails(name, email, Rewards, number);
+            Google_User_Details googleuser = new Google_User_Details(googleUid, googleProfile);
+            User_googleAndOwn GAO = new User_googleAndOwn(googleuser,user);
             DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
 
             docRef.set(GAO)

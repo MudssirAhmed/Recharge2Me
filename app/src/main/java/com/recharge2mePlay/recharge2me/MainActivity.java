@@ -15,8 +15,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import custom_Loading_Dialog.CustomToast;
-import custom_Loading_Dialog.EntryDialog;
+import Global.custom_Loading_Dialog.CustomToast;
+import Global.custom_Loading_Dialog.EntryDialog;
 
 public class MainActivity extends AppCompatActivity {
 

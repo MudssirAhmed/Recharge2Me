@@ -25,15 +25,13 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.recharge2mePlay.recharge2me.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
-import custom_Loading_Dialog.CustomToast;
+import Global.custom_Loading_Dialog.CustomToast;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberViewModel;
 import recahrge.myAdapters.dbNumberDetails_adapter;
@@ -114,15 +112,12 @@ public class prePaid extends Fragment {
         animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
 
 
-
         btn_fetchMobileDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 btn_fetchMobileDetails.startAnimation(animation);
                 if(checkNoisValidateOrNot(et_EnterMobileNumber.getText().toString()))
                     gotoMobileDetailsFinder(et_EnterMobileNumber.getText().toString().trim());
-
             }
         });
 
@@ -132,6 +127,7 @@ public class prePaid extends Fragment {
                 et_EnterMobileNumber.startAnimation(animation);
             }
         });
+
         // This is for Filtering the numberList in Database and set on RecyclerView
         et_EnterMobileNumber.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,8 +160,6 @@ public class prePaid extends Fragment {
 
                         Intent intent = new Intent((recharge_ui) requireActivity(), recahrge.contactList.contactList_activity.class);
                         startActivityForResult(intent, GOTO_CONTACT_LIST);
-//                        Navigation.findNavController(view).navigate(R.id.action_prePaid3_to_contactList_activity);
-
                         return true;
                     }
                 }
@@ -229,7 +223,6 @@ public class prePaid extends Fragment {
         CustomToast toast = new CustomToast((recharge_ui) requireActivity());
 
         if (number.length() < 10 ) {
-
             if(number.contains("*") || number.contains("#") || number.contains("(")
                     || number.contains(")") || number.contains(".") || number.contains("-") || number.contains("_") || number.contains(",")
                     || number.contains("/")) {

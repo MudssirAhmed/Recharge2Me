@@ -24,7 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.LoadingDialog;
 
 
 public class login_EnterEmailAndPassword extends Fragment {
