@@ -1,4 +1,4 @@
-package local_Databasse
+package local_Databasse.numberData
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
+import local_Databasse.entity_numberDetails
 
 @InternalCoroutinesApi
 class numberViewModel(application: Application): AndroidViewModel(application) {
@@ -32,14 +33,4 @@ class numberViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun getOneData(number: String): String{
-
-        var num: String
-
-        viewModelScope.launch(Dispatchers.IO) {
-             num  = repository.getOneData(number)
-        }
-
-        return "num"
-    }
 }

@@ -1,7 +1,8 @@
-package local_Databasse
+package local_Databasse.numberData
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import local_Databasse.entity_numberDetails
 
 @Dao
 interface Dao_numberDetails {

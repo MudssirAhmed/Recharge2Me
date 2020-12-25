@@ -36,7 +36,6 @@ class dbNumberDetails_adapter: RecyclerView.Adapter<dbNumberDetails_adapter.myVi
             "Jio" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.jio)
             "AIRTEL" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.airtel)
             "BSNL" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.bsnl)
-            "BSNL" -> holder.itemView.iv_dbCard_operator.setImageResource(R.drawable.bsnl)
         }
 
         holder.itemView.db_card_numberDetails.setOnClickListener {

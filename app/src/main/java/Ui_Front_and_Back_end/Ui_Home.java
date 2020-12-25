@@ -1,6 +1,9 @@
 package Ui_Front_and_Back_end;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.L;
 import com.google.android.material.navigation.NavigationView;
 import com.recharge2mePlay.recharge2me.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,11 +35,29 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.lang.reflect.Array;
+import java.security.Provider;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import Global.custom_Loading_Dialog.CustomToast;
+import Global.custom_Loading_Dialog.LoadingDialog;
 import LogInSignIn_Entry.EntryActivity;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
+import local_Databasse.providersData.Database_providers;
+import local_Databasse.providersData.Entity_providers;
+import local_Databasse.providersData.Providers;
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
+import recahrge.recharge_ui;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import Retrofit.JsonConvertor;
 
 public class Ui_Home extends Fragment {
 
@@ -55,6 +77,8 @@ public class Ui_Home extends Fragment {
 
     Animation animation;
 
+    LoadingDialog loadingDialog;
+    CustomToast toast;
 
 
     public Ui_Home() {
@@ -82,6 +106,11 @@ public class Ui_Home extends Fragment {
 
         // Init onClick Animation
         animation = AnimationUtils.loadAnimation((Main_UserInterface) requireActivity(), R.anim.click);
+
+        // custom
+        loadingDialog = new LoadingDialog(getActivity());
+        toast = new CustomToast(getActivity());
+
 
 
         tv_Home_Transacyion.setOnClickListener(new View.OnClickListener() {
@@ -137,9 +166,129 @@ public class Ui_Home extends Fragment {
 
         setDataOnRecyclerView();
 
+        getAuthToken_pay2All(); // get Token and providers list and save in Room Database
+
         return view;
     }
 
+    private void getAuthToken_pay2All(){
+        try {
+            loadingDialog.startLoading();
+            // Init Retrofit
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.pay2all.in/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            // Init JsonConverter Interface
+            JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
+
+            Map<String, String> params = new HashMap<>();
+            params.put("email", "mudssira01@gmail.com");
+            params.put("password", "4nVztc");
+
+            Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
+
+            call.enqueue(new Callback<Pay2All_authToken>() {
+                @Override
+                public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
+                    if(!response.isSuccessful()){
+                        toast.showToast("Please re-open Application!...");
+                        loadingDialog.stopLoading();
+                        return;
+                    }
+
+                    Pay2All_authToken pay2All_authToken = response.body();
+
+                    String authToken = pay2All_authToken.getAccess_token();
+
+                    if(isNetworkAvailable()){
+                        getAllProvides(authToken);
+                    }
+                    else {
+                        toast.showToast("Please Check Your Internet Connection!...");
+                        loadingDialog.stopLoading();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
+                    toast.showToast("Error! " + t.getMessage());
+                    loadingDialog.stopLoading();
+                }
+            });
+        }
+        catch (Exception e){
+            loadingDialog.stopLoading();
+            toast.showToast("Error! " + e.getMessage());
+        }
+
+    }// This will fetch the Auth Token
+    private void getAllProvides(String Token){
+
+        try {
+
+            Retrofit retrofit  = new Retrofit.Builder()
+                    .baseUrl("https://api.pay2all.in/v1/app/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
+
+            Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + Token);
+            call.enqueue(new Callback<Pay2All_providers>() {
+                @Override
+                public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
+
+                    if(!response.isSuccessful()){
+                        toast.showToast("Please re-open Application...");
+                        loadingDialog.stopLoading();
+                        return;
+                    }
+
+                    Pay2All_providers pay2All_providers = response.body();
+
+                    List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                           List<Entity_providers> list = new ArrayList<>();
+                            for(Pay2All_providers.Providers provider: providers){
+                                Entity_providers p = new Entity_providers(0, provider.getId(), provider.getProvider_name());
+                                list.add(p);
+                            }
+                            Database_providers.getInstance(getContext())
+                                    .providersDao()
+                                    .insertProvider(list);
+                        }
+                    }).start();
+
+
+                    loadingDialog.stopLoading();
+
+                }
+
+                @Override
+                public void onFailure(Call<Pay2All_providers> call, Throwable t) {
+                    toast.showToast("providersFail " + t.getMessage());
+                    loadingDialog.stopLoading();
+                }
+            });
+        }
+        catch (Exception e){
+            loadingDialog.stopLoading();
+            toast.showToast("Error! " + e.getMessage());
+        }
+
+    } // This will fetch all Providers
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                =  (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     // Anime the drawer if it is visible
     private void animateNavDrawer(){
@@ -191,6 +340,8 @@ public class Ui_Home extends Fragment {
 
     public void signOutFromGoogle()
     {
+
+        // TODO default-web-client-id is added esi
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

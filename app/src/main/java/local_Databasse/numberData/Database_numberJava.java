@@ -1,4 +1,4 @@
-package local_Databasse;
+package local_Databasse.numberData;
 
 import android.content.Context;
 
@@ -6,7 +6,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {entity_numberDetails.class}, version = 1)
+import local_Databasse.entity_numberDetails;
+
+@Database(entities = {entity_numberDetails.class}, version = 1, exportSchema = false)
 public abstract  class Database_numberJava extends RoomDatabase {
 
     public abstract Dao_numberDetails numberDao();

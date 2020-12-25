@@ -1,6 +1,7 @@
-package local_Databasse
+package local_Databasse.numberData
 
 import androidx.lifecycle.LiveData
+import local_Databasse.entity_numberDetails
 
 class numberDataRepo(private val numberDao: Dao_numberDetails) {
 

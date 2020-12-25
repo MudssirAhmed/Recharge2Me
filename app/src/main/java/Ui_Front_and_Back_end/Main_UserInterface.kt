@@ -1,9 +1,15 @@
 package Ui_Front_and_Back_end
 
+import Global.custom_Loading_Dialog.CustomToast
+import Global.custom_Loading_Dialog.LoadingDialog
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn
+import Retrofit.JsonConvertor
 import android.os.Bundle
-import android.view.*
-import android.view.View.*
+import android.util.Log
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.GONE
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -20,10 +26,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
-import Global.custom_Loading_Dialog.CustomToast
-import Global.custom_Loading_Dialog.LoadingDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken
+import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken.userPay2All
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import java.util.*
 
 
 class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
@@ -142,6 +153,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
     }
 
+
     fun setDataOnNavDrawer(){
         val db: FirebaseFirestore = FirebaseFirestore.getInstance()
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -168,7 +180,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                     }
         }
         catch (e: Exception){
-            toast.showToast("Error! " + e.message )
+            toast.showToast("Error! " + e.message)
         }
 
     }

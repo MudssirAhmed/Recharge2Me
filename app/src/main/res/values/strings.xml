@@ -17,10 +17,6 @@
     <string name="token">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
     <string name="baseUrl_rechApi">http://api.rechapi.com/</string>
 
-    // Pay2all
-    <string name="token_pay2All">01kWrcdzZa5EEm36PyxuO1PjUVG33rPisf9WX7xYPZbxllqXZulpupIii4kV</string>
-    <string name="baseUrl_pay2All">https://www.pay2all.in/web-api/</string>
-
 
     <string-array name="circle">
         <item>Andhra Pradesh</item>

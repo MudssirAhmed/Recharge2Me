@@ -1,4 +1,4 @@
-package local_Databasse
+package local_Databasse.numberData
 
 import android.content.Context
 import androidx.room.Database
@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
+import local_Databasse.entity_numberDetails
 
 @Database(entities = [entity_numberDetails::class], version = 1, exportSchema = false)
 abstract class Database_numberData: RoomDatabase() {
@@ -15,10 +16,10 @@ abstract class Database_numberData: RoomDatabase() {
     companion object {
 
         @Volatile
-        private var INSTANCE:Database_numberData? = null
+        private var INSTANCE: Database_numberData? = null
 
         @InternalCoroutinesApi
-        fun getDatabase(context: Context): Database_numberData{
+        fun getDatabase(context: Context): Database_numberData {
 
             val tempInstance = INSTANCE
 

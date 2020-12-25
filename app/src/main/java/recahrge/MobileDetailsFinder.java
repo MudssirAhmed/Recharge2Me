@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.recharge2mePlay.recharge2me.MainActivity;
 import com.recharge2mePlay.recharge2me.R;
 
 import java.util.HashMap;
@@ -37,9 +39,11 @@ import Retrofit.JsonConvertor;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import Global.custom_Loading_Dialog.proceedDialog;
-import local_Databasse.Database_numberJava;
+import local_Databasse.numberData.Database_numberJava;
 import local_Databasse.entity_numberDetails;
-import local_Databasse.numberViewModel;
+import local_Databasse.numberData.numberViewModel;
+import local_Databasse.providersData.Database_providers;
+import local_Databasse.providersData.Entity_providers;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_recharge;
@@ -73,13 +77,14 @@ public class MobileDetailsFinder extends Fragment {
     String Details_dialoge = ""; // This is for Details shown in Alert Dialog
     String Validity_dialoge = ""; // This is for Validity shown in Alert Dialog
     String GOOGLE_PAY_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user"; // This is for GooglePay Payments
-
+    String providerNameFromDB = "";
+    String providerIDFromDB = "";
     // Integers:
     final int GOOGLE_PAY_REQUEST_CODE = 123;
     final int GOTO_PLAN = 8477;
     int circleId;
 
-    private local_Databasse.numberViewModel numberViewModel;
+    private local_Databasse.numberData.numberViewModel numberViewModel;
 
     Animation animation;
 
@@ -190,21 +195,21 @@ public class MobileDetailsFinder extends Fragment {
 
                 findDataInDataBase(tv_mobileNumber.getText().toString());
 
-                if(isNetworkAvailable()){
-                    getAuthToken_pay2All("");
-                }
-                else {
-                    customToast.showToast("Please Check Your Internet Connection!...");
-                }
+                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
+                     customToast.showToast("Please select plan First!");
+                 else {
+                     // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
+                     // and if data is already present in Database and user update then it automatically updates the Data.
+                     if(isNetworkAvailable()){
+                         findDataInDataBase(tv_mobileNumber.getText().toString());
+                         getAuthToken_pay2All(btn_recahargeAmount.getText().toString());
+                     }
+                     else {
+                         findDataInDataBase(tv_mobileNumber.getText().toString());
+                         customToast.showToast("Please Check Your Internet Connection!...");
+                     }
 
-//                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
-//                     customToast.showToast("Please select plan First!");
-//                 else {
-//                     // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
-//                     // and if data is already already present in Database and user update then it automatically update Data.
-////                        findDataInDataBase(tv_mobileNumber.getText().toString());
-////                     getAuthToken_pay2All(btn_recahargeAmount.getText().toString());
-//                 }
+                 }
 
             }
         });
@@ -304,8 +309,6 @@ public class MobileDetailsFinder extends Fragment {
         }
 
     }
-
-
 
 
     // it will return userMobileDetails/ mobileDetailsFinder
@@ -486,8 +489,6 @@ public class MobileDetailsFinder extends Fragment {
     }// This fun. help to going to getRecahrgePlan(Activity).
 
 
-
-
 // proceed button Functions:-
     // These functions are for storing, updating the number Database :-
         private void findDataInDataBase(String number){
@@ -565,8 +566,32 @@ public class MobileDetailsFinder extends Fragment {
 
                     Toast.makeText((recharge_ui) requireActivity(), "balance: "+ balance.getUser_balance(), Toast.LENGTH_SHORT).show();
 
+                    getProvidersFromDatabase(btn_operator.getText().toString().trim());
+
                     if(isNetworkAvailable()){
-                        getAllProvides(authToken, amount);
+
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    try{
+                                        if(providerIDFromDB.isEmpty() || providerNameFromDB.isEmpty()) {
+                                            // TODO id isEmpty then get from getProvider function
+                                            getAllProvides(authToken, amount);
+                                            loadingDialog.stopLoading();
+                                        }
+                                        else {
+                                            showAlertDialog(providerNameFromDB, authToken, providerIDFromDB, amount);
+                                            loadingDialog.stopLoading();
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        getAllProvides(authToken, amount);
+                                    }
+                                }
+                            }, 20);
+
                     }
                     else {
                         customToast.showToast("Please Check Your Internet Connection!...");
@@ -588,6 +613,32 @@ public class MobileDetailsFinder extends Fragment {
         }
 
     }// This will fetch the Auth Token
+        private void getProvidersFromDatabase(String pName){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Entity_providers p = Database_providers
+                                .getInstance(getContext())
+                                .providersDao()
+                                .getProvider(btn_operator.getText().toString().trim());
+
+                        if(!p.equals(null)){
+                            providerNameFromDB = p.getProviderName();
+                            providerIDFromDB = p.getProviderId();
+                            Log.d("Providers", p.getProviderId() + "        " + p.getProviderName());
+                        }
+                    }
+                    catch (Exception e){
+                        providerIDFromDB = null;
+                        providerNameFromDB = null;
+//                        getAllProvides(authToken, amount);
+                        Log.d("ProvidersNullExp", e.getMessage());
+                    }
+                }
+            }).start();
+
+        } // Get Provider Data from Database
         private void getAllProvides(String Token, String Amount){
 
         try {
@@ -620,17 +671,7 @@ public class MobileDetailsFinder extends Fragment {
                         rechargeProvider.put(provider.getProvider_name(), provider.getId());
                     }
 
-                    HashMap<String, String> opeId = new HashMap<>();
-                    opeId.put("1", "AIRTEL");
-                    opeId.put("2", "VODAFONE");
-                    opeId.put("3", "IDEA");
-                    opeId.put("8", "BSNL");
-                    opeId.put("88", "Jio");
-
-
                     String operator = btn_operator.getText().toString().trim();
-//                    customToast.showToast(operator);
-                    Log.d("operator", operator);
                     String opId = rechargeProvider.get(btn_operator.getText().toString());
 
                     loadingDialog.stopLoading();
@@ -640,7 +681,7 @@ public class MobileDetailsFinder extends Fragment {
 
                 @Override
                 public void onFailure(Call<Pay2All_providers> call, Throwable t) {
-                    customToast.showToast("providersFail " + t.getMessage());
+                    customToast.showToast("Error!  " + t.getMessage());
                     loadingDialog.stopLoading();
                 }
             });
@@ -722,49 +763,69 @@ public class MobileDetailsFinder extends Fragment {
 
         // TODO: Make unique Client Id or user UID from firebase
 
+            Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjczMzBmZDcwYTBkNzlkYWI5NGE5NjdhZjkzN2ZkYzY4YzNkOTc3YzBlNmVmNjA2N2I4ZWUyZTM2ZTFlNWFkZDkzM2ZiNWViYWM4NTk5Y2Y4In0.eyJhdWQiOiIxIiwianRpIjoiNzMzMGZkNzBhMGQ3OWRhYjk0YTk2N2FmOTM3ZmRjNjhjM2Q5NzdjMGU2ZWY2MDY3YjhlZTJlMzZlMWU1YWRkOTMzZmI1ZWJhYzg1OTljZjgiLCJpYXQiOjE2MDg2MzA3MjYsIm5iZiI6MTYwODYzMDcyNiwiZXhwIjoxNjQwMTY2NzI2LCJzdWIiOiIzNzciLCJzY29wZXMiOltdfQ.l82eEI9f6d4l8NMapIgkhuPn-8_PEq7tO__5IGpL7-EdpnIrn6zIg7wg8qSagtTRkaqhjI2ZZ-ksEub1OHfdii8PNiFAu8tVEqymf9UVXNYA7Hc7JSwSB2luaiJOHASIIpOJYaDsxNTm7JEhiNODuTY5oNBNcrJcSBo7GUPK0tWxmMD6bmu0G-6BT5aw716Per_bW7GNQZk2IPsNNMYTC62QlwEs6__fWZf9Cd7EOvurWgNGtQdZQemPNU7cSqvtoLaCwTJDIPzuMI9MyeK5TzHZK3hrC1FZnDw2EWnQ3llUGRY8L4o02lj3SsnF9UQEkofHz9T06z8eVMNzAAwy-4H66AK9soIu8E9rAIddc5Qbg_xIbwRm2LEmCzcmFoW-lsakwZ10ePNUjcCVpSeU2LiA1_6eD8Ro43dHlkgKOrB6Ozpp0GURdn9qnlnrmYq28PGSpCAQjcz7S0lZZq7W8NIhWQjelSu4sny3mv_MdjQ_zeAvoZlS8M2rZbscTBCpyjKFMpfNju3kUx8Jky8ytIdmePL_5KgCrAprp1PMRkw5LyvquymZkoALPl-5liH4HxHCkvqsDBEHGgwftC95L_qdQe-gPgTlwMItk5gUmgxdhSMJde6CdoJMwuf88S5gOakaz-TLB4XwzAh3dlAWuCJU1zjPDQpPtDKEgj1pA-A";
+            Number = "8477055721";
+            Amount = "16";
+            ProviderId = "3";
+
             loadingDialog.startLoading();
-        // Init Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://recharge2me.herokuapp.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        // Init JsonConverter Interface
-        jsonConvertor = retrofit.create(JsonConvertor.class);
+            // Init Retrofit
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://recharge2me.herokuapp.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
-        Call<Pay2All_recharge> call = jsonConvertor.doRecharge(Token, Number, Amount, ProviderId, "UID_923749237492");
+            // Init JsonConverter Interface
+            jsonConvertor = retrofit.create(JsonConvertor.class);
 
-        call.enqueue(new Callback<Pay2All_recharge>() {
-            @Override
-            public void onResponse(Call<Pay2All_recharge> call, Response<Pay2All_recharge> response) {
+            Call<Pay2All_recharge> call = jsonConvertor.doRecharge(Token, Number, Amount, ProviderId, "UID_923749237492");
+            call.enqueue(new Callback<Pay2All_recharge>() {
+                @Override
+                public void onResponse(Call<Pay2All_recharge> call, Response<Pay2All_recharge> response) {
 
-                if(!response.isSuccessful()){
-                    customToast.showToast(String.valueOf(response.code()));
-                    Log.d("Fail", "" + response.body());
+                    if(!response.isSuccessful()){
+                        customToast.showToast(String.valueOf(response.code()));
+                        Log.d("Fail", "" + response.body() + response.code());
+                        loadingDialog.stopLoading();
+                        return;
+                    }
+
+                    Pay2All_recharge recharge = response.body();
+
+                    Log.d("sucess", "" + response.body());
+
+                    //    "status": 2,
+                    //    "status_id": 2,
+                    //    "utr": "",
+                    //    "report_id": "",
+                    //    "orderid": "",
+                    //    "message": "Check Wallet"
+
+                    tv_mF_planDetails.setText("Status: " + recharge.getStatus()
+                            +"\nstatus_id: " + recharge.getStatus_id() +
+                            "\nutr: " + recharge.getUtr() +
+                            "\nreport_id: " + recharge.getReport_id() +
+                            "\norderId: " + recharge.getOrderid() +
+                            "\nmessage: " + recharge.getMessage() +
+                            "\nresponceCode: " + response.code());
+
                     loadingDialog.stopLoading();
-                    return;
+
                 }
 
-                Pay2All_recharge recharge = response.body();
-
-                Log.d("sucess", "" + response.body());
-
-                tv_mF_planDetails.setText("Status: " + recharge.getStatus() + "\n" + recharge.getMessage());
-
-                loadingDialog.stopLoading();
-
-            }
-
-            @Override
-            public void onFailure(Call<Pay2All_recharge> call, Throwable t) {
-//                Toast.makeText((recharge_ui) requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-                customToast.showToast(t.getMessage());
-                Log.d("exceptionOnFail", "" + t.getMessage());
-                loadingDialog.stopLoading();
-            }
-        });
+                @Override
+                public void onFailure(Call<Pay2All_recharge> call, Throwable t) {
+    //                Toast.makeText((recharge_ui) requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                    customToast.showToast(t.getMessage());
+                    Log.d("exceptionOnFail", "" + t.getMessage());
+                    loadingDialog.stopLoading();
+                }
+            });
 
     }// Do Recharge
+
+
 
 
     private boolean isNetworkAvailable() {
@@ -774,7 +835,6 @@ public class MobileDetailsFinder extends Fragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
 
 
 
@@ -824,33 +884,6 @@ public class MobileDetailsFinder extends Fragment {
         cd.put("Himachal Pradesh", "21");
         cd.put("Jammu & Kashmir", "22");
         cd.put("Chennai", "23");
-
-
-        // Pay2all Data:-
-//        cd.put("Punjab", "1");
-//        cd.put("West Bengal", "2");
-//        cd.put("Mumbai", "3");
-//        cd.put("Maharashtra", "4");
-//        cd.put("Delhi NCR", "5");
-//        cd.put("Kolkata", "6");
-//        cd.put("Chennai", "7");
-//        cd.put("Tamil Nadu", "8");
-//        cd.put("Karnataka", "9");
-//        cd.put("UP East", "10");
-//        cd.put("UP West Uttrakhand", "11");
-//        cd.put("Gujarat", "12");
-//        cd.put("Kerala", "14");
-//        cd.put("Madhya Pradesh Chhattisgarh", "16");
-//        cd.put("Rajasthan", "18");
-//        cd.put("Haryana", "20");
-//        cd.put("Himachal Pradesh", "21");
-//        cd.put("Bihar & Jharkhand", "22");
-//        cd.put("Orissa", "23");
-//        cd.put("Jammu & Kashmir", "25");
-//        cd.put("North East", "26");
-//        cd.put("Assam", "34");
-//        cd.put("Andhra Pradesh", "35");
-
 
         return cd.get(key);
     }
