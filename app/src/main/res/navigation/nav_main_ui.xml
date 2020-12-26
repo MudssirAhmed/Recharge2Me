@@ -17,12 +17,6 @@
             app:exitAnim="@anim/from_left"
             app:popEnterAnim="@anim/to_left_pop"
             app:popExitAnim="@anim/to_left_pop" />
-        <action
-            android:id="@+id/action_ui_Home_to_ui_Transactions"
-            app:destination="@id/ui_Transactions" />
-        <action
-            android:id="@+id/action_ui_Home_to_ui_Profile"
-            app:destination="@id/ui_Profile" />
     </fragment>
 
     <fragment
@@ -31,12 +25,6 @@
         android:label="fragment_ui__profile"
         tools:layout="@layout/fragment_ui__profile" >
         <action
-            android:id="@+id/action_ui_Profile_to_ui_Home"
-            app:destination="@id/ui_Home" />
-        <action
-            android:id="@+id/action_ui_Profile_to_ui_Transactions"
-            app:destination="@id/ui_Transactions" />
-        <action
             android:id="@+id/action_ui_Profile_to_settings"
             app:destination="@id/settings" />
     </fragment>
@@ -44,14 +32,7 @@
         android:id="@+id/ui_Transactions"
         android:name="Ui_Front_and_Back_end.Ui_Transactions"
         android:label="fragment_ui__transactions"
-        tools:layout="@layout/fragment_ui__transactions" >
-        <action
-            android:id="@+id/action_ui_Transactions_to_ui_Home"
-            app:destination="@id/ui_Home" />
-        <action
-            android:id="@+id/action_ui_Transactions_to_ui_Profile"
-            app:destination="@id/ui_Profile" />
-    </fragment>
+        tools:layout="@layout/fragment_ui__transactions" />
     <activity
         android:id="@+id/recahrge_ui"
         android:name="recahrge.recharge_ui"

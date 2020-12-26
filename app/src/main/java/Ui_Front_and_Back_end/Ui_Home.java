@@ -166,7 +166,7 @@ public class Ui_Home extends Fragment {
 
         setDataOnRecyclerView();
 
-        getAuthToken_pay2All(); // get Token and providers list and save in Room Database
+//        getAuthToken_pay2All(); // get Token and providers list and save in Room Database
 
         return view;
     }
@@ -338,7 +338,7 @@ public class Ui_Home extends Fragment {
 
     }
 
-    public void signOutFromGoogle()
+    private void signOutFromGoogle()
     {
 
         // TODO default-web-client-id is added esi

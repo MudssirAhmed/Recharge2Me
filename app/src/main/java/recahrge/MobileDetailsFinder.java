@@ -376,7 +376,7 @@ public class MobileDetailsFinder extends Fragment {
 
     }// end of getRemaining method;
     // it Will return userLocation/circle
-    public String getUserLocation(MobileDetailsFinder_Data.mobileData data, String fromCircle){
+    private String getUserLocation(MobileDetailsFinder_Data.mobileData data, String fromCircle){
 
         if(fromCircle.equals("Your Circle")) {
             return data.getLocation();
@@ -393,7 +393,7 @@ public class MobileDetailsFinder extends Fragment {
 
     }// end of getUserLocation method;
     // it will return userOperator/service
-    public String getUserOperator(MobileDetailsFinder_Data.mobileData data){
+    private String getUserOperator(MobileDetailsFinder_Data.mobileData data){
 
         String operator = MobileDetailsFinderArgs.fromBundle(getArguments()).getOperator();
 
@@ -432,7 +432,7 @@ public class MobileDetailsFinder extends Fragment {
         return sharedPreferences.getBoolean("checkCircle", false);
     }
     // getNumber from prePaid UI or recharge_circle UI
-    public String getNumber(String fromPrePaid, String fromCircle){
+    private String getNumber(String fromPrePaid, String fromCircle){
 
         if(fromCircle.equals("from_prePaid"))
             return fromPrePaid;
@@ -840,7 +840,7 @@ public class MobileDetailsFinder extends Fragment {
 
 
     // operatod Data/codes
-    public String operatorData(String key){
+    private String operatorData(String key){
 
         Map<String, String> op = new HashMap<>();
 
@@ -854,7 +854,7 @@ public class MobileDetailsFinder extends Fragment {
         return op.get(key);
     }
     // circle Data/codes
-    public String circleData(String key){
+    private String circleData(String key){
 
         Map<String, String> cd = new HashMap<>();
 

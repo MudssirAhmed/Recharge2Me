@@ -5,8 +5,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -26,6 +28,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
+import java.util.HashMap;
+
+import Global.customAnimation.MyAnimation;
 import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import Ui_Front_and_Back_end.Edit.Edit_profile;
@@ -44,7 +49,11 @@ public class Ui_Profile extends Fragment {
 
     NestedScrollView sv_profile;
 
+    ConstraintLayout cL_profileSettings;
+
+    // customs
     LoadingDialog loadingDialog;
+    MyAnimation animation;
 
     FirebaseFirestore db;
     FirebaseAuth firebaseAuth;
@@ -78,6 +87,12 @@ public class Ui_Profile extends Fragment {
         // NestedScroolView
         sv_profile = view.findViewById(R.id.sv_profile);
 
+        // Constraintlayout
+        cL_profileSettings = view.findViewById(R.id.cL_profile_settings);
+
+        // custom Animation
+        animation = new MyAnimation();
+
         // Init firebase
         firebaseAuth = firebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -103,6 +118,13 @@ public class Ui_Profile extends Fragment {
                 }
 
                 return false;
+            }
+        });
+
+        cL_profileSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoSettingUi();
             }
         });
 
@@ -137,6 +159,19 @@ public class Ui_Profile extends Fragment {
         }
     }
 
+    private void gotoSettingUi(){
+        animation.onClickAnimation(cL_profileSettings);
+
+        final Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Navigation.findNavController(view).navigate(R.id.action_ui_Profile_to_settings);
+            }
+        }, 80);
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -150,21 +185,7 @@ public class Ui_Profile extends Fragment {
 
     // This function appied animation on edit button
     private void applyAnimation(){
-        iv_profile_edt
-                .animate()
-                .alpha(0f)
-                .setDuration(100);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_profile_edt
-                        .animate()
-                        .alpha(1f)
-                        .setDuration(100);
-            }
-        }, 100);
+        animation.onClickAnimation(iv_profile_edt);
     }
 
     // This functuion is responsible for transact user into EditProfile Activity
