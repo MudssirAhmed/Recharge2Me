@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:headerLayout="@layout/nav_bar_header_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +35,29 @@
                 app:srcCompat="@drawable/shadow" />
 
             <LinearLayout
+                android:id="@+id/lL_navDrawer_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/nav_drawer_help_support"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Feedback"
+                    android:textColor="@color/primaryText"
+                    android:fontFamily="@font/bold"
+                    android:paddingStart="25dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/lL_tell_aFreind"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +75,9 @@
                     android:fontFamily="@font/bold"
                     android:paddingLeft="25dp"
                     android:text="Tell a Freind"
-                    android:textColor="@color/primaryText" />
+                    android:textColor="@color/primaryText"
+                    android:layout_gravity="center"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -72,7 +97,8 @@
                     android:fontFamily="@font/bold"
                     android:paddingLeft="25dp"
                     android:text="Help and Support"
-                    android:textColor="@color/primaryText" />
+                    android:textColor="@color/primaryText"
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
 

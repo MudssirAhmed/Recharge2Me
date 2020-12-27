@@ -3,7 +3,10 @@ package Ui_Front_and_Back_end
 import Global.custom_Loading_Dialog.CustomToast
 import Global.custom_Loading_Dialog.LoadingDialog
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn
-import Retrofit.JsonConvertor
+import android.app.PendingIntent.getActivity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -23,17 +26,12 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken.userPay2All
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import java.util.*
 
 
@@ -49,6 +47,9 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
     private lateinit var lL_tell_aFreind: LinearLayout
     private lateinit var lL_helpAndSupport: LinearLayout
+    private lateinit var lL_feedBack: LinearLayout
+
+
     private lateinit var listner: NavController.OnDestinationChangedListener
 
     // Custom
@@ -59,6 +60,12 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     private var flag:Int = 0
     private var onBackPressedFlag: Int = 1;
     private var onTouchFlag: Int = 1
+
+    // Firebase
+    lateinit var db: FirebaseFirestore
+    lateinit var auth: FirebaseAuth
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,12 +79,17 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         nav_drawer = findViewById<NavigationView>(R.id.nav_drawer)
 
         // LinearLayout
+        lL_feedBack = nav_drawer.findViewById(R.id.lL_navDrawer_feedback);
         lL_tell_aFreind = nav_drawer.findViewById(R.id.lL_tell_aFreind);
         lL_helpAndSupport = nav_drawer.findViewById(R.id.lL__helpAndSupport);
 
         // custom
         toast = CustomToast(this)
         loadingDialog = LoadingDialog(this)
+
+        // Firebase
+         db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         nav_drawer.visibility = GONE
 
@@ -88,12 +100,10 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
         // OnClickListner
         nav_icon.setOnClickListener{
-
             lifecycleScope.launch {
                 setDataOnNavDrawer()
                 appyAnimtionOnNavIcon()
             }
-
             applyOpenAnimation()
         }
 
@@ -101,11 +111,14 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         nav_drawer.getHeaderView(0).setOnClickListener {
             Toast.makeText(this, "Header", Toast.LENGTH_SHORT).show()
         }
+        lL_feedBack.setOnClickListener {
+            giveFeedBack()
+        }
         lL_tell_aFreind.setOnClickListener{
-            Toast.makeText(this, "Tell a Freind", Toast.LENGTH_SHORT).show()
+            getLinkFromFirebase()
         }
         lL_helpAndSupport.setOnClickListener {
-            Toast.makeText(this, "Help and Support", Toast.LENGTH_SHORT).show()
+            helpAndSupport()
         }
 
         bottomNavigationView.setupWithNavController(navController);
@@ -153,10 +166,64 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
     }
 
+    private fun giveFeedBack() {
+        val appPackageName: String = this.getPackageName() // getPackageName() from Context or Activity object
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+        } catch (anfe: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+        }
+    }    // Give Feedback
+    private fun getLinkFromFirebase() {
+        lL_tell_aFreind.isEnabled = false
+        lL_tell_aFreind.isClickable = false
+        Toast.makeText(this, "mail us for any Querry!", Toast.LENGTH_SHORT).show()
+        try {
+            val docRef: DocumentReference = db.collection("Screen Dialog").document("playStore")
+            docRef.get().addOnSuccessListener { documentSnapshot ->
+                try {
+                    val link = documentSnapshot.getString("Link")
+                    if (link != null) {
+                        onShareClicked(link)
+                    }
+                } catch (e: Exception) {
+                    Log.d("exp", e.message ?: "Error! ")
+                    onShareClicked("null")
+                }
+            }.addOnFailureListener { onShareClicked("null") }
+        }
+        catch (e: java.lang.Exception) {
+            onShareClicked("null")
+        }
+    } // Tell a freind
+    private fun onShareClicked(link: String) {
+
+        lL_tell_aFreind.isEnabled = true
+        lL_tell_aFreind.isClickable = true
+
+        var link:String = link
+
+        if (link == "null") {
+            link = "https://play.google.com/store/apps/details?id=com.recharge2mePlay.recharge2me"
+        }
+
+        val uri = Uri.parse(link)
+
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, link.toString())
+        intent.putExtra(Intent.EXTRA_TITLE, "Recharge2me")
+
+        startActivity(Intent.createChooser(intent, "Share Link"))
+    }    // play store link
+    private fun helpAndSupport() {
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "recharge2me.help@gmail.com", null))
+        this.startActivity(Intent.createChooser(emailIntent, null))
+    } // Help and support
+
 
     fun setDataOnNavDrawer(){
-        val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-        val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
         val docRef = db.collection("USERS").document(auth.uid.toString())
 

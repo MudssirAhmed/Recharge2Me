@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.airbnb.lottie.L;
 import com.google.android.material.navigation.NavigationView;
 import com.recharge2mePlay.recharge2me.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,25 +34,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.lang.reflect.Array;
-import java.security.Provider;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Global.DataTypes;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import LogInSignIn_Entry.EntryActivity;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
 import local_Databasse.providersData.Database_providers;
 import local_Databasse.providersData.Entity_providers;
-import local_Databasse.providersData.Providers;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
-import recahrge.recharge_ui;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -120,7 +113,7 @@ public class Ui_Home extends Fragment {
 
         // SharedPrefrences
         sharedPreferences = getActivity().getSharedPreferences("Providers", Context.MODE_PRIVATE);
-        String check = sharedPreferences.getString("Providers", "");
+        String check = sharedPreferences.getString("ProvidersData", "");
         Log.d("shardePrefrences", "msg" + check);
 
         tv_Home_Transacyion.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +212,7 @@ public class Ui_Home extends Fragment {
 
                     String authToken = pay2All_authToken.getAccess_token();
 
+
                     if(isNetworkAvailable()){
                         getAllProvides(authToken);
                     }
@@ -266,7 +260,8 @@ public class Ui_Home extends Fragment {
                     List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
 
                     editor = sharedPreferences.edit();
-                    editor.putString("Providers", "Have");
+                    editor.putString("ProvidersData", "Have");
+                    editor.putString("Token", Token);
                     editor.apply();
 
                     loadingDialog.stopLoading();

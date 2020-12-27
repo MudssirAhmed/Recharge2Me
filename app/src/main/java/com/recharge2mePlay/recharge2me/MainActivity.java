@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getApplicationContext().getSharedPreferences("Providers", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        editor.putString("Providers", "Get");
+        editor.putString("ProvidersData", "Get");
         editor.apply();
 
         checkStatus();

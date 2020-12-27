@@ -102,6 +102,7 @@ public class MobileDetailsFinder extends Fragment {
 
     Context context;
     SharedPreferences sharedPreferences;
+    SharedPreferences spProviders;
     SharedPreferences.Editor edit;
 
     View view;
@@ -126,6 +127,8 @@ public class MobileDetailsFinder extends Fragment {
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_mobile_details_finder, container, false);
+
+        // TODO get providrs Data from Database and add token feild in providrsDatabase
 
         // TextView
         tv_mobileNumber = view.findViewById(R.id.tv_mobileNumber);
@@ -201,16 +204,12 @@ public class MobileDetailsFinder extends Fragment {
                      // Use this for Add and update Data in Database if Data can't exist then it automatically add the data in Database
                      // and if data is already present in Database and user update then it automatically updates the Data.
                      if(isNetworkAvailable()){
-                         findDataInDataBase(tv_mobileNumber.getText().toString());
-                         getAuthToken_pay2All(btn_recahargeAmount.getText().toString());
+                         getAuthToken_pay2All(btn_recahargeAmount.getText().toString().trim());
                      }
                      else {
-                         findDataInDataBase(tv_mobileNumber.getText().toString());
                          customToast.showToast("Please Check Your Internet Connection!...");
                      }
-
                  }
-
             }
         });
 
@@ -244,6 +243,8 @@ public class MobileDetailsFinder extends Fragment {
 
         return view;
     } // End of OnCreteView method;
+
+
 
     private void setOperatorText(String operator){
         switch (operator){
@@ -308,7 +309,7 @@ public class MobileDetailsFinder extends Fragment {
             Toast.makeText((recharge_ui) requireActivity(), "Come Back", Toast.LENGTH_SHORT).show();
         }
 
-    }
+    } // End of onActivityResult
 
 
     // it will return userMobileDetails/ mobileDetailsFinder
@@ -371,9 +372,7 @@ public class MobileDetailsFinder extends Fragment {
         while(s.length() < 4){
             s += chars[s.length()];
         }
-
         return s;
-
     }// end of getRemaining method;
     // it Will return userLocation/circle
     private String getUserLocation(MobileDetailsFinder_Data.mobileData data, String fromCircle){
@@ -489,6 +488,7 @@ public class MobileDetailsFinder extends Fragment {
     }// This fun. help to going to getRecahrgePlan(Activity).
 
 
+
 // proceed button Functions:-
     // These functions are for storing, updating the number Database :-
         private void findDataInDataBase(String number){
@@ -566,40 +566,15 @@ public class MobileDetailsFinder extends Fragment {
 
                     Toast.makeText((recharge_ui) requireActivity(), "balance: "+ balance.getUser_balance(), Toast.LENGTH_SHORT).show();
 
-                    getProvidersFromDatabase(btn_operator.getText().toString().trim());
-
+                    //todo check ballance also
                     if(isNetworkAvailable()){
-
-                            final Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    try{
-                                        if(providerIDFromDB.isEmpty() || providerNameFromDB.isEmpty()) {
-                                            // TODO id isEmpty then get from getProvider function
-                                            getAllProvides(authToken, amount);
-                                            loadingDialog.stopLoading();
-                                        }
-                                        else {
-                                            showAlertDialog(providerNameFromDB, authToken, providerIDFromDB, amount);
-                                            loadingDialog.stopLoading();
-                                        }
-                                    }
-                                    catch (Exception e){
-                                        getAllProvides(authToken, amount);
-                                    }
-                                }
-                            }, 20);
-
+                        getProvidersFromDatabase(btn_operator.getText().toString(), amount, authToken);
                     }
                     else {
                         customToast.showToast("Please Check Your Internet Connection!...");
                         loadingDialog.stopLoading();
                     }
-
                 }
-
                 @Override
                 public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
                     customToast.showToast("Error! " + t.getMessage());
@@ -613,33 +588,50 @@ public class MobileDetailsFinder extends Fragment {
         }
 
     }// This will fetch the Auth Token
-        private void getProvidersFromDatabase(String pName){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        Entity_providers p = Database_providers
-                                .getInstance(getContext())
-                                .providersDao()
-                                .getProvider(btn_operator.getText().toString().trim());
+        private void getProvidersFromDatabase(String pName, String Amount, String Token){
 
-                        if(!p.equals(null)){
-                            providerNameFromDB = p.getProviderName();
-                            providerIDFromDB = p.getProviderId();
-                            Log.d("Providers", p.getProviderId() + "        " + p.getProviderName());
-                        }
-                    }
-                    catch (Exception e){
-                        providerIDFromDB = null;
-                        providerNameFromDB = null;
-//                        getAllProvides(authToken, amount);
-                        Log.d("ProvidersNullExp", e.getMessage());
+        final Handler handler = new Handler();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Entity_providers p = Database_providers
+                            .getInstance(getContext())
+                            .providersDao()
+                            .getProvider(btn_operator.getText().toString().trim());
+
+                    if(!p.equals(null)){
+                        providerNameFromDB = p.getProviderName();
+                        providerIDFromDB = p.getProviderId();
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.stopLoading();
+                                showAlertDialog(p.getProviderName(), Token, p.getProviderId(), Amount);
+                            }
+                        });
+
                     }
                 }
-            }).start();
+                catch (Exception e){
+                    providerIDFromDB = null;
+                    providerNameFromDB = null;
+                    //TODO id providerFromDb is null then get Token and providers lkist from serverfrom server
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            getAllProviders(Token, Amount);
+                        }
+                    });
+                    Log.d("ProvidersNullExp", e.getMessage());
+                }
+            }
+        }).start();
 
-        } // Get Provider Data from Database
-        private void getAllProvides(String Token, String Amount){
+    } // Get Auth_Token and Provider_Data from Database
+        private void getAllProviders(String Token, String Amount){
 
         try {
 
@@ -674,6 +666,7 @@ public class MobileDetailsFinder extends Fragment {
                     String operator = btn_operator.getText().toString().trim();
                     String opId = rechargeProvider.get(btn_operator.getText().toString());
 
+                    Log.i("AllProviders", "All");
                     loadingDialog.stopLoading();
                     showAlertDialog(operator, Token, opId, Amount);
 
@@ -763,9 +756,10 @@ public class MobileDetailsFinder extends Fragment {
 
         // TODO: Make unique Client Id or user UID from firebase
 
+            // TODO Check Amount please
             Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjczMzBmZDcwYTBkNzlkYWI5NGE5NjdhZjkzN2ZkYzY4YzNkOTc3YzBlNmVmNjA2N2I4ZWUyZTM2ZTFlNWFkZDkzM2ZiNWViYWM4NTk5Y2Y4In0.eyJhdWQiOiIxIiwianRpIjoiNzMzMGZkNzBhMGQ3OWRhYjk0YTk2N2FmOTM3ZmRjNjhjM2Q5NzdjMGU2ZWY2MDY3YjhlZTJlMzZlMWU1YWRkOTMzZmI1ZWJhYzg1OTljZjgiLCJpYXQiOjE2MDg2MzA3MjYsIm5iZiI6MTYwODYzMDcyNiwiZXhwIjoxNjQwMTY2NzI2LCJzdWIiOiIzNzciLCJzY29wZXMiOltdfQ.l82eEI9f6d4l8NMapIgkhuPn-8_PEq7tO__5IGpL7-EdpnIrn6zIg7wg8qSagtTRkaqhjI2ZZ-ksEub1OHfdii8PNiFAu8tVEqymf9UVXNYA7Hc7JSwSB2luaiJOHASIIpOJYaDsxNTm7JEhiNODuTY5oNBNcrJcSBo7GUPK0tWxmMD6bmu0G-6BT5aw716Per_bW7GNQZk2IPsNNMYTC62QlwEs6__fWZf9Cd7EOvurWgNGtQdZQemPNU7cSqvtoLaCwTJDIPzuMI9MyeK5TzHZK3hrC1FZnDw2EWnQ3llUGRY8L4o02lj3SsnF9UQEkofHz9T06z8eVMNzAAwy-4H66AK9soIu8E9rAIddc5Qbg_xIbwRm2LEmCzcmFoW-lsakwZ10ePNUjcCVpSeU2LiA1_6eD8Ro43dHlkgKOrB6Ozpp0GURdn9qnlnrmYq28PGSpCAQjcz7S0lZZq7W8NIhWQjelSu4sny3mv_MdjQ_zeAvoZlS8M2rZbscTBCpyjKFMpfNju3kUx8Jky8ytIdmePL_5KgCrAprp1PMRkw5LyvquymZkoALPl-5liH4HxHCkvqsDBEHGgwftC95L_qdQe-gPgTlwMItk5gUmgxdhSMJde6CdoJMwuf88S5gOakaz-TLB4XwzAh3dlAWuCJU1zjPDQpPtDKEgj1pA-A";
             Number = "8477055721";
-            Amount = "16";
+            Amount = "6995";
             ProviderId = "3";
 
             loadingDialog.startLoading();
@@ -824,6 +818,8 @@ public class MobileDetailsFinder extends Fragment {
             });
 
     }// Do Recharge
+
+
 
 
 

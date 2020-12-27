@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -242,6 +243,7 @@ public class settings extends Fragment {
 
 // give Feedback
     private void giveFeedBack(){
+        Toast.makeText((Main_UserInterface) requireActivity(), "Give your valuable Feedback", Toast.LENGTH_SHORT).show();
 
         final String appPackageName = getActivity().getPackageName(); // getPackageName() from Context or Activity object
         try {
@@ -253,6 +255,8 @@ public class settings extends Fragment {
 
 // Rase a ticket
     private void raiseTicket(){
+
+        Toast.makeText((Main_UserInterface) requireActivity(), "mail us for any Querry!", Toast.LENGTH_SHORT).show();
 
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "recharge2me.help@gmail.com", null));
