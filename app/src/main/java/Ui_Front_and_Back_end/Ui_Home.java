@@ -220,7 +220,6 @@ public class Ui_Home extends Fragment {
                     String authToken = pay2All_authToken.getAccess_token();
 
                     if(isNetworkAvailable()){
-                        loadingDialog.stopLoading();
                         getAllProvides(authToken);
                     }
                     else {
@@ -270,15 +269,19 @@ public class Ui_Home extends Fragment {
                     editor.putString("Providers", "Have");
                     editor.apply();
 
+                    loadingDialog.stopLoading();
+
                     saveInDatabase(providers);
                 }
                 catch (Exception e){
                     toast.showToast("Error! " + e.getMessage());
+                    loadingDialog.stopLoading();
                 }
             }
             @Override
             public void onFailure(Call<Pay2All_providers> call, Throwable t) {
                 toast.showToast("providersFail " + t.getMessage());
+                loadingDialog.stopLoading();
             }
         });
     } // This will fetch all Providers
