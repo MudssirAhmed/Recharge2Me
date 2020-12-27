@@ -2,6 +2,7 @@ package Ui_Front_and_Back_end;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Global.DataTypes;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import LogInSignIn_Entry.EntryActivity;
@@ -73,7 +75,12 @@ public class Ui_Home extends Fragment {
     RecyclerView rv_Home_Transaction;
     TransactionAdapter transactionAdapter;
 
+    // SharedPreferences
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     int touchFlag = 1;
+//    int providersFlag = 1;
 
     Animation animation;
 
@@ -111,7 +118,10 @@ public class Ui_Home extends Fragment {
         loadingDialog = new LoadingDialog(getActivity());
         toast = new CustomToast(getActivity());
 
-
+        // SharedPrefrences
+        sharedPreferences = getActivity().getSharedPreferences("Providers", Context.MODE_PRIVATE);
+        String check = sharedPreferences.getString("Providers", "");
+        Log.d("shardePrefrences", "msg" + check);
 
         tv_Home_Transacyion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,14 +129,12 @@ public class Ui_Home extends Fragment {
                 signOutFromGoogle();
             }
         });
-
         iv_prePaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 prepaid();
             }
         });
-
         iv_postPaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,43 +174,53 @@ public class Ui_Home extends Fragment {
 
         setDataOnRecyclerView();
 
-//        getAuthToken_pay2All(); // get Token and providers list and save in Room Database
+        if(isNetworkAvailable()){
+            if(check.equals("Get")){
+                getAuthToken_pay2All();
+            }
+        }
+        else {
+            toast.showToast("Please check your Internet connection");
+        }
+
 
         return view;
     }
 
     private void getAuthToken_pay2All(){
-        try {
-            loadingDialog.startLoading();
-            // Init Retrofit
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.pay2all.in/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+        loadingDialog.startLoading();
 
-            // Init JsonConverter Interface
-            JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
+        // Init Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.pay2all.in/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-            Map<String, String> params = new HashMap<>();
-            params.put("email", "mudssira01@gmail.com");
-            params.put("password", "4nVztc");
+        // Init JsonConverter Interface
+        JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
 
-            Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
+        Map<String, String> params = new HashMap<>();
+        params.put("email", "mudssira01@gmail.com");
+        params.put("password", "4nVztc");
 
-            call.enqueue(new Callback<Pay2All_authToken>() {
-                @Override
-                public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
-                    if(!response.isSuccessful()){
-                        toast.showToast("Please re-open Application!...");
-                        loadingDialog.stopLoading();
-                        return;
-                    }
+        Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
 
+        call.enqueue(new Callback<Pay2All_authToken>() {
+            @Override
+            public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
+                if(!response.isSuccessful()){
+                    toast.showToast("Please re-open Application!...");
+                    loadingDialog.stopLoading();
+                    return;
+                }
+
+                try {
                     Pay2All_authToken pay2All_authToken = response.body();
 
                     String authToken = pay2All_authToken.getAccess_token();
 
                     if(isNetworkAvailable()){
+                        loadingDialog.stopLoading();
                         getAllProvides(authToken);
                     }
                     else {
@@ -210,77 +228,77 @@ public class Ui_Home extends Fragment {
                         loadingDialog.stopLoading();
                     }
                 }
-                @Override
-                public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
-                    toast.showToast("Error! " + t.getMessage());
+                catch (Exception e){
                     loadingDialog.stopLoading();
+                    toast.showToast("Error! " + e.getMessage());
                 }
-            });
-        }
-        catch (Exception e){
-            loadingDialog.stopLoading();
-            toast.showToast("Error! " + e.getMessage());
-        }
 
+            }
+            @Override
+            public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
+                toast.showToast("Error! " + t.getMessage());
+                loadingDialog.stopLoading();
+            }
+        });
     }// This will fetch the Auth Token
     private void getAllProvides(String Token){
 
-        try {
-
-            Retrofit retrofit  = new Retrofit.Builder()
+        Retrofit retrofit  = new Retrofit.Builder()
                     .baseUrl("https://api.pay2all.in/v1/app/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
+        JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
 
-            Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + Token);
-            call.enqueue(new Callback<Pay2All_providers>() {
-                @Override
-                public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
+        Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + Token);
+        call.enqueue(new Callback<Pay2All_providers>() {
+            @Override
+            public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
 
-                    if(!response.isSuccessful()){
-                        toast.showToast("Please re-open Application...");
-                        loadingDialog.stopLoading();
-                        return;
-                    }
+                if(!response.isSuccessful()){
+                    toast.showToast("Please re-open Application...");
+                    loadingDialog.stopLoading();
+                    return;
+                }
 
+                try {
                     Pay2All_providers pay2All_providers = response.body();
 
                     List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                           List<Entity_providers> list = new ArrayList<>();
-                            for(Pay2All_providers.Providers provider: providers){
-                                Entity_providers p = new Entity_providers(0, provider.getId(), provider.getProvider_name());
-                                list.add(p);
-                            }
-                            Database_providers.getInstance(getContext())
-                                    .providersDao()
-                                    .insertProvider(list);
-                        }
-                    }).start();
+                    editor = sharedPreferences.edit();
+                    editor.putString("Providers", "Have");
+                    editor.apply();
 
-
-                    loadingDialog.stopLoading();
-
+                    saveInDatabase(providers);
                 }
-
-                @Override
-                public void onFailure(Call<Pay2All_providers> call, Throwable t) {
-                    toast.showToast("providersFail " + t.getMessage());
-                    loadingDialog.stopLoading();
+                catch (Exception e){
+                    toast.showToast("Error! " + e.getMessage());
                 }
-            });
-        }
-        catch (Exception e){
-            loadingDialog.stopLoading();
-            toast.showToast("Error! " + e.getMessage());
-        }
-
+            }
+            @Override
+            public void onFailure(Call<Pay2All_providers> call, Throwable t) {
+                toast.showToast("providersFail " + t.getMessage());
+            }
+        });
     } // This will fetch all Providers
+
+    // it will save providers Data in Database
+    private void saveInDatabase(List<Pay2All_providers.Providers> providers){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Entity_providers> list = new ArrayList<>();
+                for(Pay2All_providers.Providers provider: providers){
+                    Entity_providers p = new Entity_providers(0, provider.getId(), provider.getProvider_name());
+                    list.add(p);
+                }
+                Database_providers.getInstance(getContext())
+                        .providersDao()
+                        .insertProvider(list);
+            }
+        }).start();
+    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -338,8 +356,7 @@ public class Ui_Home extends Fragment {
 
     }
 
-    private void signOutFromGoogle()
-    {
+    private void signOutFromGoogle() {
 
         // TODO default-web-client-id is added esi
 

@@ -3,7 +3,9 @@ package com.recharge2mePlay.recharge2me;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     EntryDialog entryDialog;
     ProgressBar progressBar;
 
+    // SharedPreferences
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +41,16 @@ public class MainActivity extends AppCompatActivity {
         entryDialog = new EntryDialog(this);
         progressBar = findViewById(R.id.pb_entryProgress);
 
+        sharedPreferences = getApplicationContext().getSharedPreferences("Providers", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString("Providers", "Get");
+        editor.apply();
 
+        checkStatus();
+
+    }
+
+    private void checkStatus(){
         DocumentReference docRef = db.collection("Screen Dialog").document("Entry Screen");
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -70,7 +85,5 @@ public class MainActivity extends AppCompatActivity {
                 toast.showToast(e.getMessage());
             }
         });
-
-
     }
 }
