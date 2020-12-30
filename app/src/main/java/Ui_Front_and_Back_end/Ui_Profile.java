@@ -199,7 +199,7 @@ public class Ui_Profile extends Fragment {
                 Intent intent = new Intent(getActivity(), Edit_profile.class);
                 startActivityForResult(intent, EDIT_PROFILE);
             }
-        }, 100);
+        }, 125);
 
     }
 

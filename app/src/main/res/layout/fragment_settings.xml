@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ns_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Ui_Front_and_Back_end.settings">
@@ -311,7 +312,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cL_settingFeedback"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -344,10 +345,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cL_settingRaiseTicket"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cL_settingFeedback">
 
@@ -377,10 +377,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cL_tellAFreind"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cL_settingRaiseTicket">
 

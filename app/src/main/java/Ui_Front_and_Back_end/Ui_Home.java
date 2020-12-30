@@ -39,10 +39,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import LogInSignIn_Entry.EntryActivity;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
+import Ui_Front_and_Back_end.Edit.Edit_profile;
 import local_Databasse.providersData.Database_providers;
 import local_Databasse.providersData.Entity_providers;
 import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
@@ -75,7 +77,7 @@ public class Ui_Home extends Fragment {
     int touchFlag = 1;
 //    int providersFlag = 1;
 
-    Animation animation;
+    MyAnimation animation;
 
     LoadingDialog loadingDialog;
     CustomToast toast;
@@ -105,7 +107,7 @@ public class Ui_Home extends Fragment {
         ns_home = view.findViewById(R.id.ns_home);
 
         // Init onClick Animation
-        animation = AnimationUtils.loadAnimation((Main_UserInterface) requireActivity(), R.anim.click);
+        animation = new MyAnimation();
 
         // custom
         loadingDialog = new LoadingDialog(getActivity());
@@ -125,13 +127,13 @@ public class Ui_Home extends Fragment {
         iv_prePaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prepaid();
+                prePaid(iv_prePaid);
             }
         });
         iv_postPaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postpaid();
+                prePaid(iv_postPaid);
             }
         });
 
@@ -178,7 +180,7 @@ public class Ui_Home extends Fragment {
 
 
         return view;
-    }
+    }// End of onCreate()
 
     private void getAuthToken_pay2All(){
         loadingDialog.startLoading();
@@ -214,7 +216,17 @@ public class Ui_Home extends Fragment {
 
 
                     if(isNetworkAvailable()){
-                        getAllProvides(authToken);
+
+                        loadingDialog.stopLoading();
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                getAllProvides(authToken);
+                                Log.i("Providers", "Token");
+                            }
+                        }).start();
+
                     }
                     else {
                         toast.showToast("Please Check Your Internet Connection!...");
@@ -222,6 +234,7 @@ public class Ui_Home extends Fragment {
                     }
                 }
                 catch (Exception e){
+                    Log.i("ErrorCatch", e.getMessage());
                     loadingDialog.stopLoading();
                     toast.showToast("Error! " + e.getMessage());
                 }
@@ -229,6 +242,7 @@ public class Ui_Home extends Fragment {
             }
             @Override
             public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
+                Log.i("ErrorOnFailure", t.getMessage());
                 toast.showToast("Error! " + t.getMessage());
                 loadingDialog.stopLoading();
             }
@@ -250,7 +264,6 @@ public class Ui_Home extends Fragment {
 
                 if(!response.isSuccessful()){
                     toast.showToast("Please re-open Application...");
-                    loadingDialog.stopLoading();
                     return;
                 }
 
@@ -264,19 +277,17 @@ public class Ui_Home extends Fragment {
                     editor.putString("Token", Token);
                     editor.apply();
 
-                    loadingDialog.stopLoading();
+                    Log.i("Providers", "Providers");
 
                     saveInDatabase(providers);
                 }
                 catch (Exception e){
                     toast.showToast("Error! " + e.getMessage());
-                    loadingDialog.stopLoading();
                 }
             }
             @Override
             public void onFailure(Call<Pay2All_providers> call, Throwable t) {
                 toast.showToast("providersFail " + t.getMessage());
-                loadingDialog.stopLoading();
             }
         });
     } // This will fetch all Providers
@@ -294,6 +305,8 @@ public class Ui_Home extends Fragment {
                 Database_providers.getInstance(getContext())
                         .providersDao()
                         .insertProvider(list);
+                Log.i("Providers", "Database");
+
             }
         }).start();
     }
@@ -329,6 +342,7 @@ public class Ui_Home extends Fragment {
                         touchFlag = 1;
                     }
                 }, 200);
+
             }
         }
     }
@@ -337,11 +351,6 @@ public class Ui_Home extends Fragment {
     private void setDataOnRecyclerView(){
 
         List<String> list = new ArrayList<>();
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
         list.add("hi");
         list.add("hi");
         list.add("hi");
@@ -381,17 +390,17 @@ public class Ui_Home extends Fragment {
 
     } // End of signOutFromGoogle method;
 
-    private void prepaid(){
+    private void prePaid(View view){
+        animation.onClickAnimation(view);
 
-        iv_prePaid.startAnimation(animation);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
+            }
+        }, 120);
 
-        Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
     }// End of prePaid method;
 
-    private void postpaid(){
-
-        iv_postPaid.startAnimation(animation);
-        Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
-
-    } // End of postpaid method;
 }

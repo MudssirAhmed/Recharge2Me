@@ -215,7 +215,7 @@ public class signin_crearte_account extends Fragment {
             // update Google info as null bco'z user can't signIn with Google
             Google_User_Details google = new Google_User_Details("UID", "PROFILE");
 
-            User_googleAndOwn data = new User_googleAndOwn(google, userDetails);
+            User_googleAndOwn data = new User_googleAndOwn(google, userDetails, mAuth.getUid());
 
             // This method can Add userData in firstore.
             db.collection("USERS")

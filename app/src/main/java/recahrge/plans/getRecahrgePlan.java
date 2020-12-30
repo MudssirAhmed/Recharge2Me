@@ -7,12 +7,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
 import com.google.android.material.tabs.TabLayout;
 
+import Global.customAnimation.MyAnimation;
 import recahrge.plans.Data_Fragment;
 import recahrge.plans.Ftt_Fragment;
 import recahrge.plans.Rmg_Fragment;
@@ -35,6 +37,8 @@ public class getRecahrgePlan extends AppCompatActivity {
 
     TextView tv_planOperator;
 
+    ImageView iv_plansBack;
+
     Intent intent;
 
     String Amount,
@@ -56,6 +60,7 @@ public class getRecahrgePlan extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout_plans);
         viewPager = findViewById(R.id.viewPager_plans);
         progressBar = findViewById(R.id.progressBar_getRechargePlan);
+        iv_plansBack = findViewById(R.id.iv_plan_back);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -81,6 +86,15 @@ public class getRecahrgePlan extends AppCompatActivity {
 
         tv_planOperator.setText("for "+ operator + " " +circle + " " + opCode);
 
+        iv_plansBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyAnimation animation = new MyAnimation();
+                animation.onClickAnimation(iv_plansBack);
+                finish();
+                overridePendingTransition(R.anim.to_left_pop, R.anim.from_right_pop);
+            }
+        });
 
     }
 

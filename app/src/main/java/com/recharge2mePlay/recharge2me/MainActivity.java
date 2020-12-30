@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkStatus(){
-        DocumentReference docRef = db.collection("Screen Dialog").document("Entry Screen");
+
+        DocumentReference docRef = db.collection("ScreenDialog").document("EntryScreen");
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Log.i("Main", e.getMessage());
                 toast.showToast(e.getMessage());
             }
         });

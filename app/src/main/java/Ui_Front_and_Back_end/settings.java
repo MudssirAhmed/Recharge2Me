@@ -6,11 +6,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -51,6 +54,8 @@ public class settings extends Fragment {
 
     ImageView iv_settingsVerify;
 
+    NestedScrollView ns_settings;
+
     ConstraintLayout cL_tellAFreind,
                      cL_settingsRaiseTicket,
                      cL_settingsFeedback;
@@ -59,6 +64,9 @@ public class settings extends Fragment {
     MyAnimation animation;
     CustomToast toast;
     LoadingDialog loadingDialog;
+
+    // Int
+    int navFlag = 1;
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore db;
@@ -74,6 +82,9 @@ public class settings extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_settings, container, false);
+
+        //Nested ScrollView ns_settings
+        ns_settings = view.findViewById(R.id.ns_settings);
 
         tv_settings_verify = view.findViewById(R.id.tv_settings_verify);
         tv_settings_edit = view.findViewById(R.id.tv_settings_edit);
@@ -100,7 +111,19 @@ public class settings extends Fragment {
         db = FirebaseFirestore.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        // TODO set the dowload link
+        ns_settings.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent e) {
+
+                if(e.getAction() == MotionEvent.ACTION_UP){
+                    animateNavDrawer();
+                }
+                else if(e.getAction() == MotionEvent.ACTION_DOWN){
+                    animateNavDrawer();
+                }
+                    return false;
+            }
+        });
         tv_settings_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +169,30 @@ public class settings extends Fragment {
 
         return view;
     }
+
+    private void animateNavDrawer(){
+
+        NavigationView nav_drawer = getActivity().findViewById(R.id.nav_drawer);
+        int visi = nav_drawer.getVisibility();
+
+        if(visi == 0){
+            if(navFlag == 1){
+                navFlag = 0;
+                MyAnimation animation = new MyAnimation();
+                animation.navDrawerAnimation(nav_drawer);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        navFlag = 1;
+                    }
+                }, 200);
+
+            }
+        }
+
+    }
+
 // Set Data on Views
     // it can get the user data from firebase and send the users object to setDataOnViews method
     private void getUserDataFromFirebase(){

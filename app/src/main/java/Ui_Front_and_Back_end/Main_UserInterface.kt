@@ -179,7 +179,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         lL_tell_aFreind.isClickable = false
         Toast.makeText(this, "mail us for any Querry!", Toast.LENGTH_SHORT).show()
         try {
-            val docRef: DocumentReference = db.collection("Screen Dialog").document("playStore")
+            val docRef: DocumentReference = db.collection("ScreenDialog").document("playStore")
             docRef.get().addOnSuccessListener { documentSnapshot ->
                 try {
                     val link = documentSnapshot.getString("Link")
@@ -187,16 +187,20 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                         onShareClicked(link)
                     }
                 } catch (e: Exception) {
-                    Log.d("exp", e.message ?: "Error! ")
+                    Log.i("expInside", e.message ?: "Error! ")
                     onShareClicked("null")
                 }
-            }.addOnFailureListener { onShareClicked("null") }
+            }.addOnFailureListener {
+                Log.i("expFail",  "Error! ")
+                onShareClicked("null") }
         }
         catch (e: java.lang.Exception) {
+            Log.i("expMain", e.message ?: "Error! ")
             onShareClicked("null")
         }
     } // Tell a freind
     private fun onShareClicked(link: String) {
+        Log.i("link", "link: " + link)
 
         lL_tell_aFreind.isEnabled = true
         lL_tell_aFreind.isClickable = true

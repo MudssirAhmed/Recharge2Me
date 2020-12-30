@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,7 +33,9 @@ import com.recharge2mePlay.recharge2me.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
+import Ui_Front_and_Back_end.Main_UserInterface;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
 import recahrge.myAdapters.dbNumberDetails_adapter;
@@ -42,6 +46,7 @@ public class prePaid extends Fragment {
     EditText et_EnterMobileNumber;
     Button btn_fetchMobileDetails;
     TextView tv_rechargeWarningText;
+    ImageView iv_prePiad_back;
 
     // Radio button & group
     RadioGroup radioGroup;
@@ -55,7 +60,9 @@ public class prePaid extends Fragment {
     final int DRAWABLE_RIGHT = 2;
     final int DRAWABLE_BOTTOM = 3;
 
+    // customs
     Animation animation;
+    MyAnimation myAnimation;
 
     CustomToast toast;
 
@@ -78,6 +85,7 @@ public class prePaid extends Fragment {
         et_EnterMobileNumber = view.findViewById(R.id.et_EnterMobileNumber);
         btn_fetchMobileDetails = view.findViewById(R.id.btn_fetchMobileDetails);
         tv_rechargeWarningText = view.findViewById(R.id.tv_rechargeWarningText);
+//        iv_prePiad_back = view.findViewById(R.id.iv_prePaid_back);
 
         radioGroup = view.findViewById(R.id.rb_preAndPost);
         radioButton_prePaid = view.findViewById(R.id.radioButton_prePaid);
@@ -86,11 +94,14 @@ public class prePaid extends Fragment {
         toast = new CustomToast((recharge_ui) requireActivity());
 
         // init RecyclerView for db_numberDetails
-        mAdpter_numberDetails = new dbNumberDetails_adapter();
+        mAdpter_numberDetails = new dbNumberDetails_adapter(getActivity());
         rv_dbNumberDetails = view.findViewById(R.id.rv_db_numberDetails);
         rv_dbNumberDetails.setAdapter(mAdpter_numberDetails);
         rv_dbNumberDetails.setLayoutManager(new LinearLayoutManager((recharge_ui)requireActivity()));
 
+        // Init onClick Animation
+        animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
+        myAnimation  = new MyAnimation();
 
         try {
             mNumberViewModel = new numberViewModel(getActivity().getApplication());
@@ -107,10 +118,6 @@ public class prePaid extends Fragment {
 
 
         radioButton_prePaid.setChecked(true);
-
-        // Init onClick Animation
-        animation = AnimationUtils.loadAnimation((recharge_ui) requireActivity(), R.anim.click);
-
 
         btn_fetchMobileDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +196,8 @@ public class prePaid extends Fragment {
     // It will responsible for goto MobileFinders UI
     private void gotoMobileDetailsFinder(String num){
 
+        hideBackButton();
+
         entity_numberDetails entity_numberDetails1 = null;
 
         prePaidDirections.ActionPrePaid3ToMobileDetailsFinder
@@ -204,7 +213,16 @@ public class prePaid extends Fragment {
          Navigation.findNavController(view).navigate(action);
 
     }// End of Mobile Details Finder;
-
+    private void hideBackButton(){
+        ImageView iv_rechargeUi_back = getActivity().findViewById(R.id.iv_rechargeUi_back);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                iv_rechargeUi_back.setVisibility(View.GONE);
+            }
+        }, 100);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -179,7 +179,7 @@ public class LoginSignIn extends Fragment {
         CreateAccount_userDetails userDetails = new CreateAccount_userDetails(userName,userEmail,"0","0000000000");
         Google_User_Details googleDetails = new Google_User_Details(userId,userGooglePhotoUri.toString());
 
-        User_googleAndOwn data = new User_googleAndOwn(googleDetails, userDetails);
+        User_googleAndOwn data = new User_googleAndOwn(googleDetails, userDetails, mAuth.getUid());
 
 
         db.collection("USERS")

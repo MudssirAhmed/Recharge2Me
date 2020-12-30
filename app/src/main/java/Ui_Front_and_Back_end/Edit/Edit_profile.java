@@ -137,7 +137,7 @@ public class Edit_profile extends AppCompatActivity {
 
             CreateAccount_userDetails user = new CreateAccount_userDetails(name, email, Rewards, number);
             Google_User_Details googleuser = new Google_User_Details(googleUid, googleProfile);
-            User_googleAndOwn GAO = new User_googleAndOwn(googleuser,user);
+            User_googleAndOwn GAO = new User_googleAndOwn(googleuser,user, mAuth.getUid());
             DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
 
             docRef.set(GAO)

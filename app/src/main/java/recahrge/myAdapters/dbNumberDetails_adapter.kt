@@ -1,8 +1,12 @@
 package recahrge.myAdapters
 
+import android.app.Activity
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.recharge2mePlay.recharge2me.R
@@ -10,9 +14,12 @@ import kotlinx.android.synthetic.main.db_number_card.view.*
 import local_Databasse.entity_numberDetails
 import recahrge.prePaidDirections
 
-class dbNumberDetails_adapter: RecyclerView.Adapter<dbNumberDetails_adapter.myViewHolder>() {
+class dbNumberDetails_adapter(activity: FragmentActivity) : RecyclerView.Adapter<dbNumberDetails_adapter.myViewHolder>() {
 
     private var numberList = emptyList<entity_numberDetails>()
+    private var activity: Activity = activity
+
+
 
     class myViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -39,11 +46,18 @@ class dbNumberDetails_adapter: RecyclerView.Adapter<dbNumberDetails_adapter.myVi
         }
 
         holder.itemView.db_card_numberDetails.setOnClickListener {
-            val action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder( "null", "null")
+            val action = prePaidDirections.actionPrePaid3ToMobileDetailsFinder("null", "null")
             action.setNumberData(currentItem)
+            hideBackButton();
             holder.itemView.findNavController().navigate(action)
         }
 
+    }
+
+    fun hideBackButton(){
+        val iv_rechargeUi_back: ImageView = activity.findViewById<ImageView>(R.id.iv_rechargeUi_back)
+        val handler = Handler()
+        handler.postDelayed({ iv_rechargeUi_back.visibility = View.GONE }, 100)
     }
 
     override fun getItemCount(): Int {
