@@ -96,5 +96,9 @@
         <argument
             android:name="fromTransactions"
             android:defaultValue="None" />
+        <argument
+            android:name="orderId"
+            android:defaultValue="orderId"
+            app:argType="string" />
     </fragment>
 </navigation>

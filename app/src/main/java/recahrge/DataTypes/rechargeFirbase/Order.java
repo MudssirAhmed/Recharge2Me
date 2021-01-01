@@ -1,6 +1,18 @@
 package recahrge.DataTypes.rechargeFirbase;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.common.collect.Ordering;
+
 public class Order {
+
+    private String orderId;
+    private String amount;
+    private String operator;
+    private String number;
+    private String details;
+
 
     private Pay2All_rechargeFirebase recharge;
     private Pay2All_status status;
@@ -12,8 +24,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(Pay2All_rechargeFirebase recharge, Pay2All_status status, Paytm_initiateTransaction initiateTransaction,
+
+    public Order(String orderId, String operator, Pay2All_rechargeFirebase recharge, Pay2All_status status, Paytm_initiateTransaction initiateTransaction,
                  Paytm_transactonStatus transactonStatus, Paytm_refund refund, Paytm_refundStatus refundStatus) {
+        this.orderId = orderId;
+        this.operator = operator;
         this.recharge = recharge;
         this.status = status;
         this.initiateTransaction = initiateTransaction;
@@ -22,6 +37,22 @@ public class Order {
         this.refundStatus = refundStatus;
     }
 
+
+    public String getAmount() {
+        return amount;
+    }
+    public String getNumber() {
+        return number;
+    }
+    public String getDetails() {
+        return details;
+    }
+    public String getOrderId() {
+        return orderId;
+    }
+    public String getOperator() {
+        return operator;
+    }
     public Pay2All_rechargeFirebase getRecharge() {
         return recharge;
     }
@@ -43,6 +74,21 @@ public class Order {
 
 
 
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+    public void setNumber(String number) {
+        this.number = number;
+    }
+    public void setDetails(String details) {
+        this.details = details;
+    }
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
     public void setRecharge(Pay2All_rechargeFirebase recharge) {
         this.recharge = recharge;
     }

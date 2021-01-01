@@ -881,7 +881,15 @@ public class MobileDetailsFinder extends Fragment {
     private String getDateTime() {
         DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmmss");
         Date date = new Date();
-        return dateFormat.format(date);
+
+        String dateTime =  dateFormat.format(date);
+        String uid = mAuth.getUid();
+
+        String orderId = uid.substring(0, (uid.length()/2)) + dateTime;
+
+        Log.i("orderid", orderId);
+
+        return orderId;
     }
 
 
@@ -1020,31 +1028,49 @@ public class MobileDetailsFinder extends Fragment {
     // This is an example of Transaction Data in firebase
     private void setOrderData(){
 
-        String orderId = mAuth.getUid() +"_"+ getDateTime();
+        String orderId = getDateTime();
+        String Amount = btn_recahargeAmount.getText().toString().trim();
 
         // clien_id is orderId
         // orderid is pay2all unique orderId
         Pay2All_rechargeFirebase recharge = new Pay2All_rechargeFirebase("0", "1", "54204", "APR2012271021230038",
-                "2424166", "success", "699", "8477055721", orderId, tv_mF_planDetails.getText().toString().trim());
-
-        Pay2All_status status = new Pay2All_status("1", "1", "2438098", "8126126759", "699",
+                "2424166", "success", Amount, "8477055721", orderId, tv_mF_planDetails.getText().toString().trim());
+        Pay2All_status status = new Pay2All_status("1", "1", "2438098", "8126126759", Amount,
                 "1578055287", orderId);
+
 
         Paytm_initiateTransaction initiateTransaction = new Paytm_initiateTransaction("S", "0000", "Success",
                 "fe795335ed3049c78a57271075f2199e1526969112097");
         Paytm_transactonStatus transactonStatus = new Paytm_transactonStatus("TXN_SUCCESS", "01", "Txn Success",
                 "fe795335ed3049c78a57271075f2199e1526969112097", orderId, "100.00", "100.00", "2019-02-20 12:35:20.0");
 
+
         Paytm_refund refund = new Paytm_refund("2019-09-02 12:31:49.0", orderId, orderId+ "_refund", "PENDING",
                 "601", "Refund request was raised for this transaction. But it is pending state",
                 "PAYTM_REFUND_ID", "PAYTM_TRANSACTION_ID", "100.00");
-
         Paytm_refundStatus refundStatus = new Paytm_refundStatus(orderId, "SUCCESS", "TXN_SUCCESS", "10",
                 "Refund Successfull", "2019-05-01 19:25:41.0", "2019-05-01 19:27:25.0",
                 "SUCCESS", "TO_SOURCE", "2019-05-02", "100.00", orderId+"_refund",
                 "100.00", "PAYTM_REFUND_ID", "PAYTM_TRANSACTION_ID");
 
-        Order order = new Order(recharge, status, initiateTransaction, transactonStatus, refund, refundStatus);
+        // TODO remove number, operator, amount and details from Pay2allRecharge_firebase class
+        Map<String, Object> order = new HashMap<>();
+
+        order.put("orderId", orderId);
+        order.put("amount", btn_recahargeAmount.getText().toString().trim());
+        order.put("operator", btn_operator.getText().toString().trim());
+        order.put("number", tv_mobileNumber.getText().toString().trim());
+        order.put("details", tv_mF_planDetails.getText().toString().trim());
+
+        order.put("recharge", recharge);
+        order.put("status", status);
+        order.put("initiateTransaction", initiateTransaction);
+        order.put("transactonStatus", transactonStatus);
+        order.put("refund", refund);
+        order.put("refundStatus", refundStatus);
+
+//        Order order = new Order(orderId, recharge, status, initiateTransaction, transactonStatus, refund, refundStatus);
+
 
         db.collection("USERS").document(mAuth.getUid()).collection("Transactions")
                 .document(orderId)

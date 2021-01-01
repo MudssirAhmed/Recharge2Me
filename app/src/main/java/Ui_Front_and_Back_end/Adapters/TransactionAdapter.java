@@ -2,6 +2,7 @@ package Ui_Front_and_Back_end.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,9 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
+import Ui_Front_and_Back_end.Edit.Edit_profile;
+import Ui_Front_and_Back_end.Main_UserInterface;
+import Ui_Front_and_Back_end.TransactionDetails;
 import Ui_Front_and_Back_end.Ui_HomeDirections;
 import Ui_Front_and_Back_end.Ui_TransactionsDirections;
 import recahrge.DataTypes.Paye2All.Pay2All_recharge;
@@ -63,10 +67,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         tv_number.setText(recharge.getNumber());
         tv_Amount.setText(recharge.getAmount());
 
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                NavigateToTransactionDetailsFragment(order.getOrderId());
             }
         });
 
@@ -80,21 +85,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public class myViewHolder extends RecyclerView.ViewHolder {
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    NavigationView nav_drawer = activity.findViewById(R.id.nav_drawer);
-                    int a = nav_drawer.getVisibility();
-                    if(a == 0)
-                        closeNavDrawer();
 
-                    NavigateToTransactionDetailsFragment();
-                }
-            });
         }
     }
-
-
 
     private void closeNavDrawer(){
 
@@ -120,12 +113,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
     }
 
-    private void NavigateToTransactionDetailsFragment(){
+    private void NavigateToTransactionDetailsFragment(String orderId){
 
         if(check.equals("Transactions")){
+
             Ui_TransactionsDirections.ActionUiTransactionsToTransactionDetails action =
                     Ui_TransactionsDirections.actionUiTransactionsToTransactionDetails();
+            action.setOrderId(orderId);
             action.setFromTransactions("Transactions");
+
             Navigation.findNavController(view).navigate(action);
         }
         else if(check.equals("Home")){

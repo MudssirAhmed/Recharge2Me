@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import Global.custom_Loading_Dialog.CustomToast;
 import Ui_Front_and_Back_end.Adapters.DropDown_month;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
 import recahrge.DataTypes.rechargeFirbase.Order;
@@ -47,9 +49,16 @@ public class Ui_Transactions extends Fragment{
     TransactionAdapter transactionAdapter;
     Spinner spinner_months;
 
+    ImageView iv_noTransactions;
+
+    ProgressBar pbTransaction;
+
     int touchFlag = 1;
 
     View view;
+
+    // Custom
+    CustomToast toast;
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -68,6 +77,15 @@ public class Ui_Transactions extends Fragment{
         rv_uiTransactions = view.findViewById(R.id.rv_uiTransaction);
         spinner_months = view.findViewById(R.id.spinner_months);
         spinner_months.setPrompt("Select Month");
+
+        // Custom
+        toast = new CustomToast((Main_UserInterface) requireActivity());
+
+        // ImageView
+        iv_noTransactions = view.findViewById(R.id.iv_setting_noTransaction);
+
+        //ProgressBar
+        pbTransaction = view.findViewById(R.id.pb_transactions);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -107,29 +125,38 @@ public class Ui_Transactions extends Fragment{
             }
         });
 
-//        setDataOnDropDown();
-//        setDataOnRecyclerViewe();
+        setDataOnDropDown();
         getRechargeData();
 
         return view;
     }
 
     private void getRechargeData(){
-        Log.i("uid:",mAuth.getUid() + "uid");
+
         CollectionReference colRef = db.collection("USERS").document(mAuth.getUid()).collection("Transactions");
 
         colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<Order> list = new ArrayList<>();
-                for(QueryDocumentSnapshot q: queryDocumentSnapshots){
-                    Order order = q.toObject(Order.class);
-                    list.add(order);
 
-//                    Log.i("Documnet", "Data: " + q.toObject(Order.class));
+                if(queryDocumentSnapshots.isEmpty()){
+                    iv_noTransactions.setVisibility(View.VISIBLE);
+                    pbTransaction.setVisibility(View.GONE);
+                    return;
                 }
 
-                setDataOnRecyclerViewe(list);
+                try {
+                    List<Order> list = new ArrayList<>();
+                    for(QueryDocumentSnapshot q: queryDocumentSnapshots){
+                        Order order = q.toObject(Order.class);
+                        list.add(order);
+                    }
+                    pbTransaction.setVisibility(View.GONE);
+                    setDataOnRecyclerViewe(list);
+                }
+                catch (Exception e){
+                    toast.showToast("Error! " + e.getMessage());
+                }
             }
         });
     }
@@ -158,6 +185,7 @@ public class Ui_Transactions extends Fragment{
         transactionAdapter = new TransactionAdapter((Main_UserInterface)requireActivity(), list, getActivity(), view, "Transactions");
         rv_uiTransactions.setAdapter(transactionAdapter);
         rv_uiTransactions.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
+
     }
     private void animateNavDrawer(){
         NavigationView nav_drawer = getActivity().findViewById(R.id.nav_drawer);
