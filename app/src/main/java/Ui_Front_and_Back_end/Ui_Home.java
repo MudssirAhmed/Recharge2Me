@@ -20,8 +20,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,11 +42,11 @@ import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import LogInSignIn_Entry.EntryActivity;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
-import Ui_Front_and_Back_end.Edit.Edit_profile;
 import local_Databasse.providersData.Database_providers;
 import local_Databasse.providersData.Entity_providers;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
+import recahrge.DataTypes.Paye2All.Pay2All_authToken;
+import recahrge.DataTypes.Paye2All.Pay2All_providers;
+import recahrge.DataTypes.rechargeFirbase.Order;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -171,7 +169,7 @@ public class Ui_Home extends Fragment {
 
         if(isNetworkAvailable()){
             if(check.equals("Get")){
-                getAuthToken_pay2All();
+//                getAuthToken_pay2All();
             }
         }
         else {
@@ -350,14 +348,9 @@ public class Ui_Home extends Fragment {
     // Set the data on RecyclerView
     private void setDataOnRecyclerView(){
 
-        List<String> list = new ArrayList<>();
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
+        List<Order> list = new ArrayList<>();
 
-        transactionAdapter = new TransactionAdapter( (Main_UserInterface) requireActivity(), list, getActivity());
+        transactionAdapter = new TransactionAdapter( (Main_UserInterface) requireActivity(), list, getActivity(), view, "Home");
         rv_Home_Transaction.setAdapter(transactionAdapter);
         rv_Home_Transaction.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
 
@@ -365,7 +358,6 @@ public class Ui_Home extends Fragment {
 
     private void signOutFromGoogle() {
 
-        // TODO default-web-client-id is added esi
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

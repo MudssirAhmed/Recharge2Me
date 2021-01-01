@@ -20,6 +20,7 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
+import Global.custom_Loading_Dialog.CustomToast;
 import recahrge.DataTypes.planDataTypes.PlanData;
 import recahrge.DataTypes.planDataTypes.recType_FTT;
 import recahrge.myAdapters.PlanAdapter;
@@ -41,6 +42,8 @@ public class Ftt_Fragment extends Fragment {
 
     JsonConvertor jsonConvertor;
 
+    CustomToast toast;
+
     public Ftt_Fragment() {
     }
 
@@ -60,6 +63,8 @@ public class Ftt_Fragment extends Fragment {
 
         rv_planFtt = view.findViewById(R.id.rv_planFtt);
         tv_planFtt_WarningText = view.findViewById(R.id.tv_planFtt_WarningText);
+
+        toast = new CustomToast(getActivity());
 
         // Init Retrofit
         Retrofit retrofit = new Retrofit.Builder()
@@ -89,22 +94,22 @@ public class Ftt_Fragment extends Fragment {
                     activity.hideProgressBar();
                     return;
                 }
+                try {
+                    PlanData planData = response.body();
+                    String resText = planData.getResText();
 
-                PlanData planData = response.body();
-                String resText = planData.getResText();
+                    PlanData.Data  data = planData.getData();
 
-                PlanData.Data  data = planData.getData();
+                    List<recType_FTT> ftt = data.getFTT();
 
-                List<recType_FTT> ftt = data.getFTT();
+                    if(ftt == null) {
+                        tv_planFtt_WarningText.setText(resText);
+                        activity.hideProgressBar();
+                    }
+                    else
+                        setFttDataOnRecyclerView(ftt);
 
-                if(ftt == null) {
-                    tv_planFtt_WarningText.setText(resText);
-                    activity.hideProgressBar();
-                }
-                else
-                    setFttDataOnRecyclerView(ftt);
-
-                rv_planFtt.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                    rv_planFtt.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
                             rv_planFtt, new PlanAdapter.planClickListner() {
                         @Override
                         public void onPlanClick(View view, int position, View btn) {
@@ -119,8 +124,11 @@ public class Ftt_Fragment extends Fragment {
                             activity.sendPlanData();
 
                         }
-                }));
+                    }));
+                }
+                catch (Exception e){
 
+                }
 
             }
 
@@ -134,13 +142,16 @@ public class Ftt_Fragment extends Fragment {
 
     private void setFttDataOnRecyclerView(List<recType_FTT> ftt){
 
-        PlanAdapter planAdapter_ = new
-                PlanAdapter(null, null, ftt, null, null, (getRecahrgePlan) requireActivity());
+        try {
+            PlanAdapter planAdapter_ = new
+                    PlanAdapter(null, null, ftt, null, null, (getRecahrgePlan) requireActivity());
 
-        rv_planFtt.setAdapter(planAdapter_);
-        rv_planFtt.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
-        activity.hideProgressBar();
-
-
+            rv_planFtt.setAdapter(planAdapter_);
+            rv_planFtt.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+            activity.hideProgressBar();
+        }
+        catch (Exception e) {
+            toast.showToast("Error!");
+        }
     }
 }

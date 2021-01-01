@@ -19,90 +19,119 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/nav_drawer_menu">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="5dp"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/imageView27"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="16dp"
-                app:srcCompat="@drawable/shadow" />
+            android:layout_gravity="bottom">
 
             <LinearLayout
-                android:id="@+id/lL_navDrawer_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/nav_drawer_help_support"/>
+                    android:id="@+id/imageView27"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="16dp"
+                    app:srcCompat="@drawable/shadow" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/lL_navDrawer_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Feedback"
-                    android:textColor="@color/primaryText"
-                    android:fontFamily="@font/bold"
-                    android:paddingStart="25dp"
-                    android:layout_gravity="center"/>
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/nav_drawer_help_support"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Feedback"
+                        android:textColor="@color/primaryText"
+                        android:fontFamily="@font/bold"
+                        android:paddingStart="25dp"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lL_tell_aFreind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/nav_drawer_tell_a_freind" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bold"
+                        android:paddingLeft="25dp"
+                        android:text="Tell a Freind"
+                        android:textColor="@color/primaryText"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/lL__helpAndSupport"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="25dp"-->
+<!--                        android:layout_height="25dp"-->
+<!--                        android:background="@drawable/nav_drawer_help_support" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:fontFamily="@font/bold"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Help and Support"-->
+<!--                        android:textColor="@color/primaryText"-->
+<!--                        android:layout_gravity="center"/>-->
+<!--                </LinearLayout>-->
+
+                <LinearLayout
+                    android:id="@+id/lL_policies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/policy"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Policies"
+                        android:textColor="@color/primaryText"
+                        android:fontFamily="@font/bold"
+                        android:paddingLeft="25dp"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/lL_tell_aFreind"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/nav_drawer_tell_a_freind" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bold"
-                    android:paddingLeft="25dp"
-                    android:text="Tell a Freind"
-                    android:textColor="@color/primaryText"
-                    android:layout_gravity="center"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lL__helpAndSupport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/nav_drawer_help_support" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bold"
-                    android:paddingLeft="25dp"
-                    android:text="Help and Support"
-                    android:textColor="@color/primaryText"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
-
-
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </com.google.android.material.navigation.NavigationView>
 

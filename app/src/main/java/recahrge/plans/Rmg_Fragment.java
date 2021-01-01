@@ -88,37 +88,43 @@ public class Rmg_Fragment extends Fragment  {
                     return;
                 }
 
-                PlanData planData = response.body();
-                String resText = planData.getResText();
+                try {
+                    PlanData planData = response.body();
+                    String resText = planData.getResText();
 
-                PlanData.Data data = planData.getData();
+                    PlanData.Data data = planData.getData();
 
-                List<recType_RMG> rmg = data.getRMG();
+                    List<recType_RMG> rmg = data.getRMG();
 
 
-                if(rmg == null) {
-                    tv_planRmg_WarningText.setText(resText);
-                    activity.hideProgressBar();
-                }
-                else
-                    setDataOnRecyclerView(rmg);
-
-                rv_Rmg.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
-                        rv_Rmg, new PlanAdapter.planClickListner() {
-                    @Override
-                    public void onPlanClick(View view, int position, View btn) {
-                        Context context;
-                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
-                        view.startAnimation(animation);
-
-                        recType_RMG sendRmg = rmg.get(position);
-
-                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendRmg.getAmount(), sendRmg.getValidity(), sendRmg.getDetail());
-                        activity.sendPlanData();
-
+                    if(rmg == null) {
+                        tv_planRmg_WarningText.setText(resText);
+                        activity.hideProgressBar();
                     }
-                }));
+                    else
+                        setDataOnRecyclerView(rmg);
+
+                    rv_Rmg.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                            rv_Rmg, new PlanAdapter.planClickListner() {
+                        @Override
+                        public void onPlanClick(View view, int position, View btn) {
+                            Context context;
+                            Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                            view.startAnimation(animation);
+
+                            recType_RMG sendRmg = rmg.get(position);
+
+                            getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                            activity.getRecahrgePlan(sendRmg.getAmount(), sendRmg.getValidity(), sendRmg.getDetail());
+                            activity.sendPlanData();
+
+                        }
+                    }));
+                }
+                catch (Exception e){
+
+                }
+
 
             }
 
@@ -133,12 +139,18 @@ public class Rmg_Fragment extends Fragment  {
 
     private void setDataOnRecyclerView(List<recType_RMG> rmg){
 
-        PlanAdapter planAdapter_ = new
-                PlanAdapter(null, null, null, null,rmg, (getRecahrgePlan) requireActivity());
+        try{
+            PlanAdapter planAdapter_ = new
+                    PlanAdapter(null, null, null, null,rmg, (getRecahrgePlan) requireActivity());
 
-        rv_Rmg.setAdapter(planAdapter_);
-        rv_Rmg.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
-        activity.hideProgressBar();
+
+            rv_Rmg.setAdapter(planAdapter_);
+            rv_Rmg.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+            activity.hideProgressBar();
+        }
+        catch (Exception e){
+
+        }
 
     }// end of setDatOnRecyclerView
 }

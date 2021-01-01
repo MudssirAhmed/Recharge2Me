@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.util.Log;
@@ -52,7 +53,8 @@ public class settings extends Fragment {
              tv_settingsEditNumber,
              tv_settingsEmail;
 
-    ImageView iv_settingsVerify;
+    ImageView iv_settingsVerify,
+              iv_settingCross;
 
     NestedScrollView ns_settings;
 
@@ -96,6 +98,8 @@ public class settings extends Fragment {
 
         //ImageView
         iv_settingsVerify = view.findViewById(R.id.iv_settingsVerify);
+        iv_settingCross = view.findViewById(R.id.iv_settings_cross);
+
         // ConstraintLayout
         cL_tellAFreind = view.findViewById(R.id.cL_tellAFreind);
         cL_settingsFeedback = view.findViewById(R.id.cL_settingFeedback);
@@ -110,6 +114,13 @@ public class settings extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         user = firebaseAuth.getCurrentUser();
+
+        iv_settingCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoProfileUi(settingsArgs.fromBundle(getArguments()).getFromProfile());
+            }
+        });
 
         ns_settings.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -168,6 +179,13 @@ public class settings extends Fragment {
         checkVerifiedOrNot();
 
         return view;
+    }
+
+    private void gotoProfileUi(String check){
+        if(check.equals("Profile"))
+            Navigation.findNavController(view).navigate(R.id.action_settings_to_ui_Profile);
+        else
+            Navigation.findNavController(view).navigate(R.id.action_settings_to_ui_Home);
     }
 
     private void animateNavDrawer(){
@@ -265,7 +283,7 @@ public class settings extends Fragment {
 // Verify Emial
     // send verification email
     public void sendVerificationEmail(){
-//        user = firebaseAuth.getCurrentUser();
+        Toast.makeText((Main_UserInterface) requireActivity(), "we send a verification link on your registeres mail", Toast.LENGTH_SHORT).show();
 
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -287,10 +305,9 @@ public class settings extends Fragment {
             iv_settingsVerify.setVisibility(View.VISIBLE);
         }
     }
-
 // give Feedback
     private void giveFeedBack(){
-        Toast.makeText((Main_UserInterface) requireActivity(), "Give your valuable Feedback", Toast.LENGTH_SHORT).show();
+        Toast.makeText((Main_UserInterface) requireActivity(), "Give your Valuable Feedback", Toast.LENGTH_SHORT).show();
 
         final String appPackageName = getActivity().getPackageName(); // getPackageName() from Context or Activity object
         try {
@@ -299,7 +316,6 @@ public class settings extends Fragment {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     }
-
 // Rase a ticket
     private void raiseTicket(){
 

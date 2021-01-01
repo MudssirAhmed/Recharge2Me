@@ -17,23 +17,20 @@ public class User_googleAndOwn {
     public void setGoogle(Google_User_Details google) {
         Google = google;
     }
-
     public void setUser_details(CreateAccount_userDetails user_details) {
         this.user_details = user_details;
     }
-
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+
     public String getUid() {
         return uid;
     }
-
     public Google_User_Details getGoogle() {
         return Google;
     }
-
     public CreateAccount_userDetails getUser_details() {
         return user_details;
     }

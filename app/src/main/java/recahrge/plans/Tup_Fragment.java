@@ -86,38 +86,42 @@ public class Tup_Fragment extends Fragment {
                     activity.hideProgressBar();
                     return;
                 }
-                PlanData planData = response.body();
-                String resText = planData.getResText();
 
-                PlanData.Data data = planData.getData();
+                try {
+                    PlanData planData = response.body();
+                    String resText = planData.getResText();
 
-                List<recType_TUP> tup = data.getTUP();
+                    PlanData.Data data = planData.getData();
 
+                    List<recType_TUP> tup = data.getTUP();
 
-                if (tup == null) {
-                    tv_planTup_warningText.setText(resText);
-                    activity.hideProgressBar();
-                }
-                else
-                    setDataOnRecyclerView(tup);
-
-                rv_planTup.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
-                        rv_planTup, new PlanAdapter.planClickListner() {
-                    @Override
-                    public void onPlanClick(View view, int position, View btn) {
-                        Context context;
-                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
-                        view.startAnimation(animation);
-
-                        recType_TUP sendTup = tup.get(position);
-
-                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendTup.getAmount(), sendTup.getValidity(), sendTup.getDetail());
-                        activity.sendPlanData();
-
+                    if (tup == null) {
+                        tv_planTup_warningText.setText(resText);
+                        activity.hideProgressBar();
                     }
-                }));
+                    else
+                        setDataOnRecyclerView(tup);
 
+                    rv_planTup.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                            rv_planTup, new PlanAdapter.planClickListner() {
+                        @Override
+                        public void onPlanClick(View view, int position, View btn) {
+                            Context context;
+                            Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                            view.startAnimation(animation);
+
+                            recType_TUP sendTup = tup.get(position);
+
+                            getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                            activity.getRecahrgePlan(sendTup.getAmount(), sendTup.getValidity(), sendTup.getDetail());
+                            activity.sendPlanData();
+
+                        }
+                    }));
+                }
+                catch (Exception e){
+
+                }
             }
 
             @Override
@@ -131,12 +135,17 @@ public class Tup_Fragment extends Fragment {
 
     private void setDataOnRecyclerView(List<recType_TUP> tup){
 
-        PlanAdapter planAdapter_ = new
-                PlanAdapter(null, null, null, tup, null, (getRecahrgePlan) requireActivity());
+        try {
+            PlanAdapter planAdapter_ = new
+                    PlanAdapter(null, null, null, tup, null, (getRecahrgePlan) requireActivity());
 
-        rv_planTup.setAdapter(planAdapter_);
-        rv_planTup.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
-        activity.hideProgressBar();
+            rv_planTup.setAdapter(planAdapter_);
+            rv_planTup.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+            activity.hideProgressBar();
+        }
+        catch (Exception e){
+
+        }
 
     }// End of setDataOnRecyclerView
 }

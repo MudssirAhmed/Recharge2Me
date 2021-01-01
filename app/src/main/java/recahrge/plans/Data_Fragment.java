@@ -78,7 +78,6 @@ public class Data_Fragment extends Fragment {
 
     private void getDataPlanDetails(){
 
-
         Call<PlanData> call = jsonConvertor
                     .getRechargePlan("json", getString(R.string.token), "DATA", activity.getCircleId(), activity.getOpCode());
 
@@ -92,38 +91,42 @@ public class Data_Fragment extends Fragment {
                     return;
                 }
 
-                PlanData planData = response.body();
-                String resText = planData.getResText();
+                try {
+                    PlanData planData = response.body();
+                    String resText = planData.getResText();
 
-                PlanData.Data data = planData.getData();
+                    PlanData.Data data = planData.getData();
 
-                List<recType_Data> recType_data = data.getDATA();
+                    List<recType_Data> recType_data = data.getDATA();
 
-//                tv_planData_Warning.setText(resText);
-
-                if (recType_data == null) {
-                    tv_planData_Warning.setText(resText);
-                    activity.hideProgressBar();
-                }
-                else
-                    setOnRecyclerView(recType_data);
-                
-                rv_planData.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(), 
-                        rv_planData, new PlanAdapter.planClickListner() {
-                    @Override
-                    public void onPlanClick(View view, int position, View btn) {
-                        Context context;
-                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
-                        view.startAnimation(animation);
-
-                        recType_Data sendData = recType_data.get(position);
-
-                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        activity.getRecahrgePlan(sendData.getAmount(), sendData.getValidity(), sendData.getDetail());
-                        activity.sendPlanData();
-
+                    if (recType_data == null) {
+                        tv_planData_Warning.setText(resText);
+                        activity.hideProgressBar();
                     }
-                }));
+                    else
+                        setOnRecyclerView(recType_data);
+
+                    rv_planData.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                            rv_planData, new PlanAdapter.planClickListner() {
+                        @Override
+                        public void onPlanClick(View view, int position, View btn) {
+                            Context context;
+                            Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click );
+                            view.startAnimation(animation);
+
+                            recType_Data sendData = recType_data.get(position);
+
+                            getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                            activity.getRecahrgePlan(sendData.getAmount(), sendData.getValidity(), sendData.getDetail());
+                            activity.sendPlanData();
+
+                        }
+                    }));
+                }
+                catch (Exception e){
+
+                }
+
             }
 
             @Override
@@ -136,14 +139,17 @@ public class Data_Fragment extends Fragment {
     } // End of getDataPlanDetails method;
 
     private void setOnRecyclerView(List<recType_Data> data){
-        
-        planAdapter_ = new
-                PlanAdapter(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
 
-        rv_planData.setAdapter(planAdapter_);
-        rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
-        activity.hideProgressBar();
+        try{
+            planAdapter_ = new
+                    PlanAdapter(null, data, null, null, null,  (getRecahrgePlan) requireActivity());
 
+            rv_planData.setAdapter(planAdapter_);
+            rv_planData.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+            activity.hideProgressBar();
+        }
+        catch (Exception e){
 
+        }
     }// End of setOnRecyclerView method;
 }

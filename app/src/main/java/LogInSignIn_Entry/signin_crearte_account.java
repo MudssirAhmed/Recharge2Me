@@ -1,6 +1,7 @@
 package LogInSignIn_Entry;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.Google_User_Details;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import Global.custom_Loading_Dialog.LoadingDialog;
+import Ui_Front_and_Back_end.Policies;
 
 public class signin_crearte_account extends Fragment {
 
@@ -224,9 +226,11 @@ public class signin_crearte_account extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText((EntryActivity) requireActivity(), "LogIn...", Toast.LENGTH_SHORT).show();
                             loadingDialog.stopLoading();
-                            Navigation.findNavController(view).navigate(R.id.action_signin_crearte_account_to_main_UserInterface);
+
+                            Intent intent = new Intent((EntryActivity) requireActivity(), Policies.class);
+                            intent.putExtra("Details", "fromCreateAccount");
+                            startActivity(intent);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

@@ -167,7 +167,11 @@ public class Ui_Profile extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Navigation.findNavController(view).navigate(R.id.action_ui_Profile_to_settings);
+                Ui_ProfileDirections.ActionUiProfileToSettings action =
+                        Ui_ProfileDirections.actionUiProfileToSettings();
+                action.setFromProfile("Profile");
+
+                Navigation.findNavController(view).navigate(action);
             }
         }, 80);
 

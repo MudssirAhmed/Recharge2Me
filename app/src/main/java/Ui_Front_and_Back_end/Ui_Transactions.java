@@ -20,14 +20,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.recharge2mePlay.recharge2me.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import Ui_Front_and_Back_end.Adapters.DropDown_month;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
+import recahrge.DataTypes.rechargeFirbase.Order;
 
 
 public class Ui_Transactions extends Fragment{
@@ -39,6 +50,9 @@ public class Ui_Transactions extends Fragment{
     int touchFlag = 1;
 
     View view;
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
 
     public Ui_Transactions() {
         // Required empty public constructor
@@ -54,6 +68,9 @@ public class Ui_Transactions extends Fragment{
         rv_uiTransactions = view.findViewById(R.id.rv_uiTransaction);
         spinner_months = view.findViewById(R.id.spinner_months);
         spinner_months.setPrompt("Select Month");
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
 
         spinner_months.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -90,10 +107,31 @@ public class Ui_Transactions extends Fragment{
             }
         });
 
-        setDataOnDropDown();
-        setDataOnRecyclerViewe();
+//        setDataOnDropDown();
+//        setDataOnRecyclerViewe();
+        getRechargeData();
 
         return view;
+    }
+
+    private void getRechargeData(){
+        Log.i("uid:",mAuth.getUid() + "uid");
+        CollectionReference colRef = db.collection("USERS").document(mAuth.getUid()).collection("Transactions");
+
+        colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Order> list = new ArrayList<>();
+                for(QueryDocumentSnapshot q: queryDocumentSnapshots){
+                    Order order = q.toObject(Order.class);
+                    list.add(order);
+
+//                    Log.i("Documnet", "Data: " + q.toObject(Order.class));
+                }
+
+                setDataOnRecyclerViewe(list);
+            }
+        });
     }
 
     private void setDataOnDropDown(){
@@ -115,35 +153,12 @@ public class Ui_Transactions extends Fragment{
         DropDown_month adapter = new DropDown_month((Main_UserInterface) requireActivity(), month);
         spinner_months.setAdapter(adapter);
     }
-    public void setDataOnRecyclerViewe(){
+    public void setDataOnRecyclerViewe(List<Order> list){
 
-        List<String> list = new ArrayList<>();
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-        list.add("hi");
-
-        transactionAdapter = new TransactionAdapter((Main_UserInterface)requireActivity(), list, getActivity());
+        transactionAdapter = new TransactionAdapter((Main_UserInterface)requireActivity(), list, getActivity(), view, "Transactions");
         rv_uiTransactions.setAdapter(transactionAdapter);
         rv_uiTransactions.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
     }
-
     private void animateNavDrawer(){
         NavigationView nav_drawer = getActivity().findViewById(R.id.nav_drawer);
 

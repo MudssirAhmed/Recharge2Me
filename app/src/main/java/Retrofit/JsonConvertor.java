@@ -2,13 +2,12 @@ package Retrofit;
 
 import java.util.Map;
 
-import okhttp3.RequestBody;
 import recahrge.DataTypes.planDataTypes.PlanData;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_recharge;
+import recahrge.DataTypes.Paye2All.Pay2All_authToken;
+import recahrge.DataTypes.Paye2All.Pay2All_providers;
+import recahrge.DataTypes.Paye2All.Pay2All_recharge;
+import recahrge.paytm.PaytmToken;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -54,5 +53,11 @@ public interface JsonConvertor {
             @Query("amount") String Amount,
             @Query("provider_id") String ProviderId,
             @Query("client_id") String ClientId
+    );
+
+    @GET("getToken")
+    Call<PaytmToken> getPaytmTransactionToken(
+            @Query("O_id") String O_id,
+            @Query("amount") String amount
     );
 }

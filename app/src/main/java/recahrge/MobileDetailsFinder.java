@@ -28,18 +28,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
-import com.recharge2mePlay.recharge2me.MainActivity;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
+import com.paytm.pgsdk.TransactionManager;
 import com.recharge2mePlay.recharge2me.R;
 
 import java.text.DateFormat;
@@ -59,9 +54,17 @@ import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
 import local_Databasse.providersData.Database_providers;
 import local_Databasse.providersData.Entity_providers;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_authToken;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_providers;
-import recahrge.DataTypes.rechargeDataTypes.Pay2All_recharge;
+import recahrge.DataTypes.Paye2All.Pay2All_authToken;
+import recahrge.DataTypes.Paye2All.Pay2All_providers;
+import recahrge.DataTypes.Paye2All.Pay2All_recharge;
+import recahrge.DataTypes.rechargeFirbase.Order;
+import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
+import recahrge.DataTypes.rechargeFirbase.Pay2All_status;
+import recahrge.DataTypes.rechargeFirbase.Paytm_initiateTransaction;
+import recahrge.DataTypes.rechargeFirbase.Paytm_refund;
+import recahrge.DataTypes.rechargeFirbase.Paytm_refundStatus;
+import recahrge.DataTypes.rechargeFirbase.Paytm_transactonStatus;
+import recahrge.paytm.PaytmToken;
 import recahrge.plans.getRecahrgePlan;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,6 +100,7 @@ public class MobileDetailsFinder extends Fragment {
     String providerIDFromDB = "";
     // Integers:
     final int GOOGLE_PAY_REQUEST_CODE = 123;
+    final int PAYTM_RESULT_CODE = 121;
     final int GOTO_PLAN = 8477;
     int circleId;
 
@@ -227,10 +231,17 @@ public class MobileDetailsFinder extends Fragment {
             @Override
             public void onClick(View view) {
 
-                    getOrderData();
-
                  findDataInDataBase(tv_mobileNumber.getText().toString());
-//
+
+                 setOrderData();
+
+//                 if(btn_recahargeAmount.getText().toString().equals("Amount")){
+//                     customToast.showToast("Please select plan");
+//                 }
+//                 else {
+//                     showAlertDialog("", "", "", "");
+//                 }
+
 //                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
 //                     customToast.showToast("Please select plan First!");
 //                 else {
@@ -338,6 +349,11 @@ public class MobileDetailsFinder extends Fragment {
         }
         if (requestCode == 99) {
             Toast.makeText((recharge_ui) requireActivity(), "Come Back", Toast.LENGTH_SHORT).show();
+        }
+
+        if (requestCode == PAYTM_RESULT_CODE && data != null) {
+            Toast.makeText((recharge_ui) requireActivity(), "Error: " + data.getStringExtra("nativeSdkForMerchantMessage") +
+                    data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
         }
 
     } // End of onActivityResult
@@ -509,7 +525,6 @@ public class MobileDetailsFinder extends Fragment {
         intent.putExtra("op", btn_operator.getText().toString());
         intent.putExtra("circle", btn_circle.getText().toString());
         intent.putExtra("number", tv_mobileNumber.getText().toString());
-//        intent.putExtra("circleId", String.valueOf(circleId));
 
         String opCode = operatorData(btn_operator.getText().toString());
 
@@ -521,6 +536,7 @@ public class MobileDetailsFinder extends Fragment {
         startActivityForResult(intent, GOTO_PLAN);
 
     }// This fun. help to going to getRecahrgePlan(Activity).
+
 
 
 
@@ -593,22 +609,28 @@ public class MobileDetailsFinder extends Fragment {
                         return;
                     }
 
-                    Pay2All_authToken pay2All_authToken = response.body();
+                    try {
+                        Pay2All_authToken pay2All_authToken = response.body();
 
-                    String authToken = pay2All_authToken.getAccess_token();
-                    Pay2All_authToken.userPay2All user = pay2All_authToken.getUser();
-                    Pay2All_authToken.userPay2All.Balance balance = user.getBalance();
+                        String authToken = pay2All_authToken.getAccess_token();
+                        Pay2All_authToken.userPay2All user = pay2All_authToken.getUser();
+                        Pay2All_authToken.userPay2All.Balance balance = user.getBalance();
 
-                    Toast.makeText((recharge_ui) requireActivity(), "balance: "+ balance.getUser_balance(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText((recharge_ui) requireActivity(), "balance: "+ balance.getUser_balance(), Toast.LENGTH_SHORT).show();
 
-                    //todo check ballance also
-                    if(isNetworkAvailable()){
-                        getProvidersFromDatabase(btn_operator.getText().toString(), amount, authToken);
+                        //todo check ballance also
+                        if(isNetworkAvailable()){
+                            getProvidersFromDatabase(btn_operator.getText().toString(), amount, authToken);
+                        }
+                        else {
+                            customToast.showToast("Please Check Your Internet Connection!...");
+                            loadingDialog.stopLoading();
+                        }
                     }
-                    else {
-                        customToast.showToast("Please Check Your Internet Connection!...");
-                        loadingDialog.stopLoading();
+                    catch (Exception e){
+                        customToast.showToast("Error! " + e.getMessage());
                     }
+
                 }
                 @Override
                 public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
@@ -643,17 +665,16 @@ public class MobileDetailsFinder extends Fragment {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
+                                Log.d("Providers", "Providrs From Database");
                                 loadingDialog.stopLoading();
                                 showAlertDialog(p.getProviderName(), Token, p.getProviderId(), Amount);
                             }
                         });
-
                     }
                 }
                 catch (Exception e){
                     providerIDFromDB = null;
                     providerNameFromDB = null;
-                    //TODO id providerFromDb is null then get Token and providers lkist from serverfrom server
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -701,8 +722,8 @@ public class MobileDetailsFinder extends Fragment {
                     String operator = btn_operator.getText().toString().trim();
                     String opId = rechargeProvider.get(btn_operator.getText().toString());
 
-                    Log.i("AllProviders", "All");
                     loadingDialog.stopLoading();
+                    Log.d("Providers", "Providrs From API");
                     showAlertDialog(operator, Token, opId, Amount);
 
                 }
@@ -726,20 +747,24 @@ public class MobileDetailsFinder extends Fragment {
             // These are entities which shown on AlertDialog
             String number = tv_mobileNumber.getText().toString();
             String circle = btn_circle.getText().toString();
+            Amount = btn_recahargeAmount.getText().toString().trim();
+            String operator = btn_operator.getText().toString().trim();
 
             // make an object of proceedDialog
             proceedDialog = new proceedDialog((recharge_ui) requireActivity());
-            String operator = Operator + " id: " + opId;
+//            String operator = Operator + " id: " + opId;
             Dialog dialog = proceedDialog.showProceedDialog(number, circle, operator, Amount, Details_dialoge, Validity_dialoge);
 
             // proceedToPayment onClick Listner
+            String finalAmount = Amount;
             dialog.findViewById(R.id.btn_dialogProceed).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
                     if(isNetworkAvailable()){
-                        Toast.makeText((recharge_ui) requireActivity(), "Please Wait", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText((recharge_ui) requireActivity(), "Please Wait", Toast.LENGTH_SHORT).show();
 //                    doRecharge(Token, number, Amount, opId);
+                        getPaymentsPaytm(finalAmount);
                     }
                     else {
                         customToast.showToast("Please Check Your Internet Connection!...");
@@ -854,10 +879,132 @@ public class MobileDetailsFinder extends Fragment {
 
 
     private String getDateTime() {
-        DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmmss");
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+
+    // Paytm
+    private void getPaymentsPaytm(String Amount){
+
+        loadingDialog.startLoading();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://recharge2me.herokuapp.com/paytm/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        jsonConvertor = retrofit.create(JsonConvertor.class);
+
+        char[] a = Amount.toCharArray();
+        String amount = "";
+        for(int i=1; i<a.length; i ++){
+            amount += a[i];
+        }
+
+        if(amount.contains(".")){
+        }
+        else {
+            amount += ".00";
+        }
+
+        String orderId = getDateTime();
+
+        Log.i("orderId", orderId);
+
+        Call<PaytmToken> call = jsonConvertor.getPaytmTransactionToken(orderId, amount);
+
+        String finalAmount = amount;
+
+        call.enqueue(new Callback<PaytmToken>() {
+            @Override
+            public void onResponse(Call<PaytmToken> call, Response<PaytmToken> response) {
+                if(!response.isSuccessful()){
+                    customToast.showToast("Error! code: " + response.code());
+                    loadingDialog.stopLoading();
+                    return;
+                }
+
+                PaytmToken data = response.body();
+                PaytmToken.Body body = data.getBody();
+                String txnTokken = body.getTxnToken();
+
+                Log.i("Tokken", "Token: " + txnTokken);
+
+                startPaytmOrder(txnTokken, finalAmount, orderId);
+
+            }
+
+            @Override
+            public void onFailure(Call<PaytmToken> call, Throwable t) {
+                customToast.showToast("Error! " + t.getMessage());
+                loadingDialog.stopLoading();
+            }
+        });
+    }
+
+    private void startPaytmOrder(String token, String amount, String orderId){
+
+        Log.i("orderId", orderId + "Token: " + token);
+
+        String host = "https://securegw-stage.paytm.in/";
+        String callBackUrl = "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID="+orderId;
+        String url = "https://pguat.paytm.com/paytmchecksum/paytmCallback.jsp";
+        String mid = "doAbsM13735083718155";
+
+        PaytmOrder paytmOrder = new PaytmOrder(orderId, mid, token, "10.00", callBackUrl);
+
+        loadingDialog.stopLoading();
+
+
+        TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback() {
+            @Override
+            public void onTransactionResponse(Bundle bundle) {
+                Toast.makeText((recharge_ui) requireActivity(), "Payment Transaction response " + bundle.toString(),
+                        Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void networkNotAvailable() {
+                customToast.showToast("nerwork not avialable");
+            }
+
+            @Override
+            public void onErrorProceed(String s) {
+                customToast.showToast("Error! " + s);
+            }
+
+            @Override
+            public void clientAuthenticationFailed(String s) {
+                customToast.showToast("Error! " + s);
+            }
+
+            @Override
+            public void someUIErrorOccurred(String s) {
+                customToast.showToast("Error! " + s);
+            }
+
+            @Override
+            public void onErrorLoadingWebPage(int i, String s, String s1) {
+                customToast.showToast("Error! " + s + "\n" + s1);
+            }
+
+            @Override
+            public void onBackPressedCancelTransaction() {
+                        customToast.showToast("Cancled");
+            }
+
+            @Override
+            public void onTransactionCancel(String s, Bundle bundle) {
+                customToast.showToast(s);
+            }
+        });// code statement);
+
+        transactionManager.setShowPaymentUrl(host + "theia/api/v1/showPaymentPage");
+        transactionManager.startTransaction((recharge_ui) requireActivity(), PAYTM_RESULT_CODE);
+    }
+
 
 
 
@@ -871,90 +1018,47 @@ public class MobileDetailsFinder extends Fragment {
 
 
     // This is an example of Transaction Data in firebase
-    private void getOrderData(){
+    private void setOrderData(){
 
         String orderId = mAuth.getUid() +"_"+ getDateTime();
 
-        Map<String, String> Pay2All_recharge = new HashMap<>();
-        Pay2All_recharge.put("status_id", "0 or 1");
-        Pay2All_recharge.put("utr", "Operator ref number");
-        Pay2All_recharge.put("report_id", "Pay2all uniq id");
-        Pay2All_recharge.put("orderid", "Pay2all uniq id");
-        Pay2All_recharge.put("message", "Message");
+        // clien_id is orderId
+        // orderid is pay2all unique orderId
+        Pay2All_rechargeFirebase recharge = new Pay2All_rechargeFirebase("0", "1", "54204", "APR2012271021230038",
+                "2424166", "success", "699", "8477055721", orderId, tv_mF_planDetails.getText().toString().trim());
 
-        Map<String, String> Pay2all_status = new HashMap<>();
-        Pay2all_status.put("status_id", "Status id ( 0 or 1 success, 2 failure, 3 pending, 4 refund )");
-        Pay2all_status.put("report_id", "Pay2all report uniq id");
-        Pay2all_status.put("number", "Transaction number");
-        Pay2all_status.put("amount", "Transaction amount");
-        Pay2all_status.put("utr", "Operator ref number");
-        Pay2all_status.put("client_id", "Your uniq id");
+        Pay2All_status status = new Pay2All_status("1", "1", "2438098", "8126126759", "699",
+                "1578055287", orderId);
 
-        Map<String, String> Paytm_initiateTransaction = new HashMap<>();
-        Paytm_initiateTransaction.put("resultInfo", "S");
-        Paytm_initiateTransaction.put("resultCode", "0000");
-        Paytm_initiateTransaction.put("resultMsg", "Success");
-        Paytm_initiateTransaction.put("txnToken", "fe795335ed3049c78a57271075f2199e1526969112097");
+        Paytm_initiateTransaction initiateTransaction = new Paytm_initiateTransaction("S", "0000", "Success",
+                "fe795335ed3049c78a57271075f2199e1526969112097");
+        Paytm_transactonStatus transactonStatus = new Paytm_transactonStatus("TXN_SUCCESS", "01", "Txn Success",
+                "fe795335ed3049c78a57271075f2199e1526969112097", orderId, "100.00", "100.00", "2019-02-20 12:35:20.0");
 
-        Map<String, String> Paytm_transactionStatus = new HashMap<>();
-        Paytm_transactionStatus.put("resultStatus", "TXN_SUCCESS");
-        Paytm_transactionStatus.put("resultCode", "01");
-        Paytm_transactionStatus.put("resultMsg", "Txn Success");
-        Paytm_transactionStatus.put("txnId", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        Paytm_transactionStatus.put("orderId", "xxxxxxx");
-        Paytm_transactionStatus.put("txnAmount", "100.00");
-        Paytm_transactionStatus.put("refundAmt", "100.00");
-        Paytm_transactionStatus.put("txnDate", "2019-02-20 12:35:20.0");
+        Paytm_refund refund = new Paytm_refund("2019-09-02 12:31:49.0", orderId, orderId+ "_refund", "PENDING",
+                "601", "Refund request was raised for this transaction. But it is pending state",
+                "PAYTM_REFUND_ID", "PAYTM_TRANSACTION_ID", "100.00");
 
-        Map<String, String> Paytm_refund = new HashMap<>();
-        Paytm_refund.put("txnTimestamp", "2019-09-02 12:31:49.0");
-        Paytm_refund.put("orderId", "YOUR_ORDER_ID");
-        Paytm_refund.put("refId", "UNIQUE_REFUND_ID");
-        Paytm_refund.put("resultStatus", "PENDING");
-        Paytm_refund.put("resultCode", "601");
-        Paytm_refund.put("resultMsg", "Refund request was raised for this transaction. But it is pending state");
-        Paytm_refund.put("refundId", "PAYTM_REFUND_ID");
-        Paytm_refund.put("txnId", "PAYTM_TRANSACTION_ID");
-        Paytm_refund.put("refundAmount", "1.00");
+        Paytm_refundStatus refundStatus = new Paytm_refundStatus(orderId, "SUCCESS", "TXN_SUCCESS", "10",
+                "Refund Successfull", "2019-05-01 19:25:41.0", "2019-05-01 19:27:25.0",
+                "SUCCESS", "TO_SOURCE", "2019-05-02", "100.00", orderId+"_refund",
+                "100.00", "PAYTM_REFUND_ID", "PAYTM_TRANSACTION_ID");
 
-        Map<String, String> Paytm_refundStatus = new HashMap<>();
-        Paytm_refundStatus.put("orderId", "YOUR_ORDER_ID");
-        Paytm_refundStatus.put("userCreditInitiateStatus", "SUCCESS");
-        Paytm_refundStatus.put("resultStatus", "TXN_SUCCESS");
-        Paytm_refundStatus.put("resultCode", "10");
-        Paytm_refundStatus.put("resultMsg", "10");
-        Paytm_refundStatus.put("resultMsg", "Refund Successfull");
-        Paytm_refundStatus.put("txnTimestamp", "2019-05-01 19:25:41.0");
-        Paytm_refundStatus.put("acceptRefundTimestamp", "2019-05-01 19:27:25.0");
-        Paytm_refundStatus.put("acceptRefundStatus", "SUCCESS");
-        Paytm_refundStatus.put("refundType", "TO_SOURCE");
-        Paytm_refundStatus.put("userCreditExpectedDate", "2019-05-02");
-        Paytm_refundStatus.put("refundAmount", "1.00");
-        Paytm_refundStatus.put("refId", "UNIQUE_REFUND_ID");
-        Paytm_refundStatus.put("txnAmount", "10.00");
-        Paytm_refundStatus.put("refundId", "PAYTM_REFUND_ID");
-        Paytm_refundStatus.put("txnId", "PAYTM_TRANSACTION_ID");
-
-        Map<Object, Object> order = new HashMap<>();
-        order.put("Pay2All_recharge", Pay2All_recharge);
-        order.put("Pay2All_status", Pay2all_status);
-        order.put("Pytm_initiateTransaction", Paytm_initiateTransaction);
-        order.put("Pytm_transactionStatus", Paytm_transactionStatus);
-        order.put("Pytm_refund", Paytm_refund);
-        order.put("Pytm_redundStatus", Paytm_refundStatus);
+        Order order = new Order(recharge, status, initiateTransaction, transactonStatus, refund, refundStatus);
 
         db.collection("USERS").document(mAuth.getUid()).collection("Transactions")
-                .document(orderId).set(order)
+                .document(orderId)
+                .set(order)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                    public void onSuccess(Void aVoid) {
-                Log.i("Added", "add" + order);
-            }
+                    @Override
+                        public void onSuccess(Void aVoid) {
+                        Toast.makeText((recharge_ui) requireActivity(),"save",Toast.LENGTH_SHORT).show();
+                    }
                 }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                    public void onFailure(@NonNull Exception e) {
-                Log.i("Error", e.getMessage());
-            }
+                    @Override
+                        public void onFailure(@NonNull Exception e) {
+                        Toast.makeText((recharge_ui) requireActivity(),"fail",Toast.LENGTH_SHORT).show();
+                    }
                 });
 
     }

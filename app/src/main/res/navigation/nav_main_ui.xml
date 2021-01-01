@@ -17,6 +17,13 @@
             app:exitAnim="@anim/from_left"
             app:popEnterAnim="@anim/to_left_pop"
             app:popExitAnim="@anim/to_left_pop" />
+        <action
+            android:id="@+id/action_ui_Home_to_transactionDetails"
+            app:destination="@id/transactionDetails"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
     </fragment>
 
     <fragment
@@ -26,13 +33,23 @@
         tools:layout="@layout/fragment_ui__profile" >
         <action
             android:id="@+id/action_ui_Profile_to_settings"
-            app:destination="@id/settings" />
+            app:destination="@id/settings"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left" />
     </fragment>
     <fragment
         android:id="@+id/ui_Transactions"
         android:name="Ui_Front_and_Back_end.Ui_Transactions"
         android:label="fragment_ui__transactions"
-        tools:layout="@layout/fragment_ui__transactions" />
+        tools:layout="@layout/fragment_ui__transactions" >
+        <action
+            android:id="@+id/action_ui_Transactions_to_transactionDetails"
+            app:destination="@id/transactionDetails"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
+    </fragment>
     <activity
         android:id="@+id/recahrge_ui"
         android:name="recahrge.recharge_ui"
@@ -42,5 +59,42 @@
         android:id="@+id/settings"
         android:name="Ui_Front_and_Back_end.settings"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings_to_ui_Profile"
+            app:destination="@id/ui_Profile"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop" />
+        <argument
+            android:name="fromProfile"
+            android:defaultValue="None" />
+        <action
+            android:id="@+id/action_settings_to_ui_Home"
+            app:destination="@id/ui_Home"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionDetails"
+        android:name="Ui_Front_and_Back_end.TransactionDetails"
+        android:label="fragment_transaction_details"
+        tools:layout="@layout/fragment_transaction_details" >
+        <action
+            android:id="@+id/action_transactionDetails_to_ui_Home"
+            app:destination="@id/ui_Home"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop" />
+        <action
+            android:id="@+id/action_transactionDetails_to_ui_Transactions"
+            app:destination="@id/ui_Transactions"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop" />
+        <argument
+            android:name="fromHome"
+            app:argType="string"
+            android:defaultValue="None" />
+        <argument
+            android:name="fromTransactions"
+            android:defaultValue="None" />
+    </fragment>
 </navigation>

@@ -20,6 +20,7 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
+import Global.custom_Loading_Dialog.CustomToast;
 import recahrge.DataTypes.planDataTypes.PlanData;
 import recahrge.DataTypes.planDataTypes.recType_SPL;
 import recahrge.myAdapters.PlanAdapter;
@@ -38,6 +39,8 @@ public class Spl_Fragment extends Fragment {
     TextView tv_spl_warning;
 
     getRecahrgePlan activity;
+
+    CustomToast toast;
 
     Retrofit retrofit;
     JsonConvertor jsonConvertor;
@@ -61,7 +64,7 @@ public class Spl_Fragment extends Fragment {
 
         rv_Plan = v.findViewById(R.id.rv_Plan_SPL);
         tv_spl_warning = v.findViewById(R.id.tv_spl_warning);
-
+        toast = new CustomToast(getActivity());
 
         // Init Retrofit
         retrofit = new Retrofit.Builder()
@@ -82,7 +85,6 @@ public class Spl_Fragment extends Fragment {
 
     public void getRecahrgePlanDetails(){
 
-//        tv_spl_warning.setText("abc: "+activity.getCircleId());
 
         Call<PlanData> call = jsonConvertor.getRechargePlan(
                 "json", getString(R.string.token), "SPL", activity.getCircleId(), activity.getOpCode());
@@ -95,36 +97,41 @@ public class Spl_Fragment extends Fragment {
                     activity.hideProgressBar();
                     return;
                 }
+                try {
+                    PlanData planData1 = response.body();
+                    String resText = planData1.getResText();
 
-                PlanData planData1 = response.body();
-                String resText = planData1.getResText();
+                    PlanData.Data data = planData1.getData();
 
-                PlanData.Data data = planData1.getData();
+                    List<recType_SPL> spl = data.getSPL();
 
-                List<recType_SPL> spl = data.getSPL();
-
-                if(spl == null) {
-                    tv_spl_warning.setText(resText);
-                    activity.hideProgressBar();
-                }
-                else
-                    setRecyclerView(spl);
-
-                rv_Plan.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
-                        rv_Plan, new PlanAdapter.planClickListner() {
-                    @Override
-                    public void onPlanClick(View view, int position, View v) {
-
-                        Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click);
-                        view.startAnimation(animation);
-
-                        getRecahrgePlan activity = (getRecahrgePlan) getActivity();
-                        recType_SPL sendSpl = spl.get(position);
-                        activity.getRecahrgePlan(sendSpl.getAmount(), sendSpl.getValidity(), sendSpl.getDetail());
-
-                        activity.sendPlanData();
+                    if(spl == null) {
+                        tv_spl_warning.setText(resText);
+                        activity.hideProgressBar();
                     }
-                }));
+                    else
+                        setRecyclerView(spl);
+
+                    rv_Plan.addOnItemTouchListener(new PlanAdapter.planRecyclerTouchListener((getRecahrgePlan) requireActivity(),
+                            rv_Plan, new PlanAdapter.planClickListner() {
+                        @Override
+                        public void onPlanClick(View view, int position, View v) {
+
+                            Animation animation = AnimationUtils.loadAnimation((getRecahrgePlan) requireActivity(), R.anim.click);
+                            view.startAnimation(animation);
+
+                            getRecahrgePlan activity = (getRecahrgePlan) getActivity();
+                            recType_SPL sendSpl = spl.get(position);
+                            activity.getRecahrgePlan(sendSpl.getAmount(), sendSpl.getValidity(), sendSpl.getDetail());
+
+                            activity.sendPlanData();
+                        }
+                    }));
+                }
+                catch (Exception e){
+
+                }
+
 
             }
 
@@ -139,11 +146,16 @@ public class Spl_Fragment extends Fragment {
 
     public void setRecyclerView(List<recType_SPL> spls){
 
-        planAdapter_ = new PlanAdapter(spls,null, null, null, null, (getRecahrgePlan) requireActivity());
+        try {
+            planAdapter_ = new PlanAdapter(spls,null, null, null, null, (getRecahrgePlan) requireActivity());
 
-        rv_Plan.setAdapter(planAdapter_);
-        rv_Plan.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
-        activity.hideProgressBar();
+            rv_Plan.setAdapter(planAdapter_);
+            rv_Plan.setLayoutManager(new LinearLayoutManager((getRecahrgePlan) requireActivity()));
+            activity.hideProgressBar();
+        }
+        catch (Exception e){
+        }
+
 
     }
 

@@ -1,212 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="recahrge.MobileDetailsFinder">
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_mobileDetails_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:src="@drawable/back_arrow_black" />
-
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/comfortaa_bold"
-            android:text="Select Operator and Circle"
-            android:textColor="@color/primaryText"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="30dp"
-        android:paddingTop="20dp"
-        android:paddingRight="30dp"
-        android:paddingBottom="20dp"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:orientation="vertical">
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_mobileDetails_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:src="@drawable/back_arrow_black" />
 
             <TextView
-                android:id="@+id/textView18"
-                android:layout_width="match_parent"
+                android:id="@+id/textView25"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/comfortaa_light"
-                android:text="User"
-                android:textColor="@color/secondaryText"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_mobileNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/comfortaa_regular"
-                android:hint="Number"
+                android:layout_weight="1"
+                android:fontFamily="@font/comfortaa_bold"
+                android:text="Select Operator and Circle"
                 android:textColor="@color/primaryText"
-                android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/tv_recahrgeType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/light"
-                android:text="Prepaid"
-                android:textColor="@color/secondaryText"
-                android:textSize="16sp" />
-
+                android:textSize="18sp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_proceedRechareOperator"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:src="@drawable/mobile_display" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="30dp"
+            android:paddingTop="20dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="20dp"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
-    <TextView
-        android:id="@+id/tv_socWarningText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/comfortaa_bold"
-        android:textColor="@color/Warning_text"
-        app:layout_constraintBottom_toTopOf="@+id/btn_rechargeCircle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
+                android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_BrowsePlans"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:drawableEnd="@drawable/menu_arrow"
-        android:drawablePadding="5dp"
-        android:fontFamily="@font/comfortaa_bold"
-        android:text="Browse Plans"
-        android:textColor="@color/perple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.881"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_rechargeAmount" />
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/comfortaa_light"
+                    android:text="User"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_mf_planDetails"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/comfortaa_regular"
-        android:maxLines="5"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:textColor="@color/primaryText"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.274"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_BrowsePlans" />
+                <TextView
+                    android:id="@+id/tv_mobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/comfortaa_regular"
+                    android:hint="Number"
+                    android:textColor="@color/primaryText"
+                    android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btn_operator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/tv_editbackground"
-        android:fontFamily="@font/comfortaa_regular"
-        android:gravity="center_horizontal|center_vertical"
-        android:hint="Your Operator"
-        android:textAllCaps="false"
-        android:textColor="@color/perple"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_rechargeCircle" />
+                <TextView
+                    android:id="@+id/tv_recahrgeType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/light"
+                    android:text="Prepaid"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/btn_rechargeCircle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/tv_editbackground"
-        android:ellipsize="end"
-        android:fontFamily="@font/comfortaa_regular"
-        android:gravity="center_horizontal|center_vertical"
-        android:hint="Your Circle"
-        android:maxLines="1"
-        android:textAllCaps="false"
-        android:textColor="@color/perple"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_rechargeAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/tv_editbackground"
-        android:fontFamily="@font/comfortaa_regular"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Amount"
-        android:textAllCaps="false"
-        android:textColor="@color/perple"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_operator" />
+            <ImageView
+                android:id="@+id/iv_proceedRechareOperator"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:src="@drawable/mobile_display" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_mobileFinder_Proceed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/btn_proceed"
-        android:fontFamily="@font/comfortaa_bold"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Proceed"
-        android:textAllCaps="false"
-        android:textColor="@color/whiteText"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/tv_socWarningText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/comfortaa_bold"
+            android:textColor="@color/Warning_text"
+            app:layout_constraintBottom_toTopOf="@+id/btn_rechargeCircle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_BrowsePlans"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:drawableEnd="@drawable/menu_arrow"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/comfortaa_bold"
+            android:text="Browse Plans"
+            android:textColor="@color/perple"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_rechargeAmount" />
+
+        <TextView
+            android:id="@+id/tv_mf_planDetails"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/comfortaa_regular"
+            android:maxLines="7"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:textColor="@color/primaryText"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.274"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_BrowsePlans" />
+
+        <Button
+            android:id="@+id/btn_operator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/tv_editbackground"
+            android:fontFamily="@font/comfortaa_regular"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Your Operator"
+            android:textAllCaps="false"
+            android:textColor="@color/perple"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_rechargeCircle" />
+
+        <Button
+            android:id="@+id/btn_rechargeCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/tv_editbackground"
+            android:ellipsize="end"
+            android:fontFamily="@font/comfortaa_regular"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="Your Circle"
+            android:maxLines="1"
+            android:textAllCaps="false"
+            android:textColor="@color/perple"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+        <Button
+            android:id="@+id/btn_rechargeAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/tv_editbackground"
+            android:fontFamily="@font/comfortaa_regular"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Amount"
+            android:textAllCaps="false"
+            android:textColor="@color/perple"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_operator" />
+
+        <Button
+            android:id="@+id/btn_mobileFinder_Proceed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_proceed"
+            android:fontFamily="@font/comfortaa_bold"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Proceed"
+            android:textAllCaps="false"
+            android:textColor="@color/whiteText"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_mf_planDetails" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

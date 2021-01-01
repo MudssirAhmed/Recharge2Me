@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
 import Global.Validation.Validate;
+import Global.customAnimation.MyAnimation;
 import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.Google_User_Details;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
@@ -38,8 +40,10 @@ public class Edit_profile extends AppCompatActivity {
     private Google_User_Details googleUser;
     private Validate validate;
 
+    // Customs
     CustomToast toast;
     LoadingDialog loadingDialog;
+    MyAnimation animation;
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
@@ -57,6 +61,7 @@ public class Edit_profile extends AppCompatActivity {
 
         toast = new CustomToast(this);
         loadingDialog = new LoadingDialog(this);
+        animation = new MyAnimation();
         validate = new Validate(this);
 
         // StartLoadingDialog
@@ -73,6 +78,7 @@ public class Edit_profile extends AppCompatActivity {
                 if(validate.checkName(et_edit_name.getText().toString())){
                     if(validate.checkNumber(et_edit_number.getText().toString().trim())){
                         try {
+                            animation.onClickAnimation(view);
                             saveDataInFirebase(googleUser);
                             loadingDialog.startLoading();
                         }

@@ -3,7 +3,6 @@ package Ui_Front_and_Back_end
 import Global.custom_Loading_Dialog.CustomToast
 import Global.custom_Loading_Dialog.LoadingDialog
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn
-import android.app.PendingIntent.getActivity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +12,7 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -32,7 +32,6 @@ import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
@@ -46,8 +45,10 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     private lateinit var nav_icon: ImageView
 
     private lateinit var lL_tell_aFreind: LinearLayout
-    private lateinit var lL_helpAndSupport: LinearLayout
+//    private lateinit var lL_helpAndSupport: LinearLayout
     private lateinit var lL_feedBack: LinearLayout
+    private lateinit var lL_policies: LinearLayout
+
 
 
     private lateinit var listner: NavController.OnDestinationChangedListener
@@ -81,7 +82,8 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         // LinearLayout
         lL_feedBack = nav_drawer.findViewById(R.id.lL_navDrawer_feedback);
         lL_tell_aFreind = nav_drawer.findViewById(R.id.lL_tell_aFreind);
-        lL_helpAndSupport = nav_drawer.findViewById(R.id.lL__helpAndSupport);
+//        lL_helpAndSupport = nav_drawer.findViewById(R.id.lL__helpAndSupport);
+        lL_policies = nav_drawer.findViewById(R.id.lL_policies);
 
         // custom
         toast = CustomToast(this)
@@ -117,8 +119,13 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         lL_tell_aFreind.setOnClickListener{
             getLinkFromFirebase()
         }
-        lL_helpAndSupport.setOnClickListener {
-            helpAndSupport()
+//        lL_helpAndSupport.setOnClickListener {
+//            helpAndSupport()
+//        }
+        lL_policies.setOnClickListener {
+            val intent: Intent = Intent(this, Policies::class.java)
+            intent.putExtra("Details", "fromMainUi")
+            startActivity(intent)
         }
 
         bottomNavigationView.setupWithNavController(navController);
@@ -132,6 +139,8 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                             appyCloseAnimation()
                         }
                 }
+                bottomNavigationView.visibility = VISIBLE
+                nav_icon.visibility = VISIBLE
             }
             else if(destination.id == R.id.ui_Home){
                 if(nav_drawer.isVisible){
@@ -139,6 +148,8 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                         appyCloseAnimation()
                     }
                 }
+                bottomNavigationView.visibility = VISIBLE
+                nav_icon.visibility = VISIBLE
             }
             else if(destination.id == R.id.ui_Transactions){
                 if(nav_drawer.isVisible){
@@ -146,6 +157,8 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                         appyCloseAnimation()
                     }
                 }
+                bottomNavigationView.visibility = VISIBLE
+                nav_icon.visibility = VISIBLE
             }
             else if(destination.id == R.id.settings){
                 if(nav_drawer.isVisible){
@@ -153,6 +166,17 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                         appyCloseAnimation()
                     }
                 }
+                bottomNavigationView.visibility = GONE
+                nav_icon.visibility = GONE
+            }
+            else if(destination.id == R.id.transactionDetails){
+                if(nav_drawer.isVisible){
+                    lifecycleScope.launch {
+                        appyCloseAnimation()
+                    }
+                }
+                bottomNavigationView.visibility = GONE
+                nav_icon.visibility = GONE
             }
         }
 
@@ -191,7 +215,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                     onShareClicked("null")
                 }
             }.addOnFailureListener {
-                Log.i("expFail",  "Error! ")
+                Log.i("expFail", "Error! ")
                 onShareClicked("null") }
         }
         catch (e: java.lang.Exception) {
@@ -344,19 +368,20 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     override fun onBackPressed() {
 
         if(!nav_drawer.isVisible){
-            if(backpressedTime + 2000 > System.currentTimeMillis())
-            {
-                backToast?.cancel()
-                moveTaskToBack(true);
-                finish()
-                return
+            if(nav_icon.isVisible){
+                if(backpressedTime + 2000 > System.currentTimeMillis())
+                {
+                    backToast?.cancel()
+                    moveTaskToBack(true);
+                    finish()
+                    return
+                }
+                else{
+                    backToast = Toast.makeText(this, "Press again to exit!", Toast.LENGTH_SHORT)
+                    backToast?.show()
+                }
+                backpressedTime = System.currentTimeMillis()
             }
-            else{
-                backToast = Toast.makeText(this, "Press again to exit!", Toast.LENGTH_SHORT)
-                backToast?.show()
-            }
-
-            backpressedTime = System.currentTimeMillis()
         }
 
         if(nav_drawer.isVisible){
