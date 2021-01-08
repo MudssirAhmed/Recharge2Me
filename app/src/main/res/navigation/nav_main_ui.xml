@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/ui_Transactions"
-        android:name="Ui_Front_and_Back_end.Ui_Transactions"
+        android:name="Ui_Front_and_Back_end.Transactions.Ui_Transactions"
         android:label="fragment_ui__transactions"
         tools:layout="@layout/fragment_ui__transactions" >
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/transactionDetails"
-        android:name="Ui_Front_and_Back_end.TransactionDetails"
+        android:name="Ui_Front_and_Back_end.Transactions.TransactionDetails"
         android:label="fragment_transaction_details"
         tools:layout="@layout/fragment_transaction_details" >
         <action

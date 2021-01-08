@@ -2,13 +2,11 @@ package Ui_Front_and_Back_end.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -19,14 +17,9 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import Ui_Front_and_Back_end.Edit.Edit_profile;
-import Ui_Front_and_Back_end.Main_UserInterface;
-import Ui_Front_and_Back_end.TransactionDetails;
 import Ui_Front_and_Back_end.Ui_HomeDirections;
-import Ui_Front_and_Back_end.Ui_TransactionsDirections;
-import recahrge.DataTypes.Paye2All.Pay2All_recharge;
+import Ui_Front_and_Back_end.Transactions.Ui_TransactionsDirections;
 import recahrge.DataTypes.rechargeFirbase.Order;
-import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.myViewHolder> {
 
@@ -57,15 +50,16 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
+
         TextView tv_number = holder.itemView.findViewById(R.id.tv_trsCard_number);
         TextView tv_Amount = holder.itemView.findViewById(R.id.tv_trsCard_amount);
         TextView tv_Date = holder.itemView.findViewById(R.id.tv_trsCard_date);
 
         Order order = list.get(position);
-        Pay2All_rechargeFirebase recharge = order.getRecharge();
 
-        tv_number.setText(recharge.getNumber());
-        tv_Amount.setText(recharge.getAmount());
+        tv_number.setText(order.getNumber());
+        tv_Amount.setText(order.getAmount());
+        tv_Date.setText(order.getDate());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +81,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             super(itemView);
 
         }
+    }
+
+    public void setFilteredList(List<Order> orders){
+        list = orders;
+        notifyDataSetChanged();
     }
 
     private void closeNavDrawer(){
@@ -128,6 +127,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             Ui_HomeDirections.ActionUiHomeToTransactionDetails action =
                     Ui_HomeDirections.actionUiHomeToTransactionDetails();
             action.setFromHome("Home");
+            action.setOrderId(orderId);
+
             Navigation.findNavController(view).navigate(action);
         }
 

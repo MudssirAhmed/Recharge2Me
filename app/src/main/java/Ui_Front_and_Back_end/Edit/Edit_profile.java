@@ -36,7 +36,11 @@ public class Edit_profile extends AppCompatActivity {
 
     Button btn_edit_save;
 
+    // String
     private String Rewards;
+    // Integers
+    private Integer Transaction;
+
     private Google_User_Details googleUser;
     private Validate validate;
 
@@ -110,6 +114,7 @@ public class Edit_profile extends AppCompatActivity {
                     et_edit_name.setText(user.getName());
                     et_edit_number.setText(user.getNumber());
                     Rewards = user.getRewards();
+                    Transaction = data.getTransaction();
 
                     Log.d("Google", googleUser.getGoogle_Profile() + googleUser.getGoogle_UID());
                     loadingDialog.stopLoading();
@@ -143,7 +148,7 @@ public class Edit_profile extends AppCompatActivity {
 
             CreateAccount_userDetails user = new CreateAccount_userDetails(name, email, Rewards, number);
             Google_User_Details googleuser = new Google_User_Details(googleUid, googleProfile);
-            User_googleAndOwn GAO = new User_googleAndOwn(googleuser,user, mAuth.getUid());
+            User_googleAndOwn GAO = new User_googleAndOwn(googleuser,user, mAuth.getUid(), Transaction);
             DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
 
             docRef.set(GAO)

@@ -1,5 +1,7 @@
-package Ui_Front_and_Back_end;
+package Ui_Front_and_Back_end.Transactions;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
+import Ui_Front_and_Back_end.Main_UserInterface;
+import Ui_Front_and_Back_end.Transactions.TransactionDetailsArgs;
 import recahrge.DataTypes.rechargeFirbase.Order;
 import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
 import recahrge.DataTypes.rechargeFirbase.Pay2All_status;
@@ -55,7 +59,8 @@ public class TransactionDetails extends Fragment {
 
     ProgressBar pb_load;
 
-    ConstraintLayout cL_mainLayout;
+    ConstraintLayout cL_mainLayout,
+                     cL_contactR2m;
 
     String fromHome, fromTransaction, orderId;
     public TransactionDetails() {
@@ -89,6 +94,7 @@ public class TransactionDetails extends Fragment {
 
         // ConstraintLayout
         cL_mainLayout = view.findViewById(R.id.cL_txnDet_mainLayout);
+        cL_contactR2m = view.findViewById(R.id.cL_txnDet_ContactR2m);
 
         // progressBar
         pb_load = view.findViewById(R.id.pb_txnDet_progressBar);
@@ -102,6 +108,19 @@ public class TransactionDetails extends Fragment {
             @Override
             public void onClick(View view) {
                 gotoHomeUi();
+            }
+        });
+
+        cL_contactR2m.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText((Main_UserInterface) requireActivity(), "mail us for any Query!", Toast.LENGTH_SHORT).show();
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "recharge2me.help@gmail.com", null));
+
+                getActivity().startActivity(Intent.createChooser(emailIntent, null));
             }
         });
 

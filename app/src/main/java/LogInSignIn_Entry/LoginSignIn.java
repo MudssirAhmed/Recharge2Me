@@ -94,6 +94,7 @@ public class LoginSignIn extends Fragment {
             }
         });
 
+        // TODO Remove GoogleProfile feild from GooleUserDetails
         // This is an onClick listner on btnGoogle Button
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,8 +102,7 @@ public class LoginSignIn extends Fragment {
                 goToLoginPage_FromGooleSignIn();
             }
         });
-
-
+        
         return view;
     }
 
@@ -179,7 +179,7 @@ public class LoginSignIn extends Fragment {
         CreateAccount_userDetails userDetails = new CreateAccount_userDetails(userName,userEmail,"0","0000000000");
         Google_User_Details googleDetails = new Google_User_Details(userId,userGooglePhotoUri.toString());
 
-        User_googleAndOwn data = new User_googleAndOwn(googleDetails, userDetails, mAuth.getUid());
+        User_googleAndOwn data = new User_googleAndOwn(googleDetails, userDetails, mAuth.getUid(), 0);
 
 
         db.collection("USERS")
@@ -200,9 +200,6 @@ public class LoginSignIn extends Fragment {
                         loadingDialog.stopLoading();
                     }
                 });
-
-
-
     }
 
 
@@ -211,9 +208,15 @@ public class LoginSignIn extends Fragment {
         super.onStart();
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if(user != null){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount((EntryActivity) requireActivity());
+
+        if(acct != null){
             Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
         }
+        else if (user != null){
+            Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
+        }
+
     }
 
     private void goToSignPage() {

@@ -149,6 +149,8 @@ public class settings extends Fragment {
             }
         });
 
+
+
         cL_settingsFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,8 +176,8 @@ public class settings extends Fragment {
             }
         });
 
-        getUserDataFromFirebase();
 
+        getUserDataFromFirebase();
         checkVerifiedOrNot();
 
         return view;
@@ -319,7 +321,7 @@ public class settings extends Fragment {
 // Rase a ticket
     private void raiseTicket(){
 
-        Toast.makeText((Main_UserInterface) requireActivity(), "mail us for any Querry!", Toast.LENGTH_SHORT).show();
+        Toast.makeText((Main_UserInterface) requireActivity(), "mail us for any Query!", Toast.LENGTH_SHORT).show();
 
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "recharge2me.help@gmail.com", null));

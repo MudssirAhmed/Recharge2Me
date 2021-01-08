@@ -3,6 +3,7 @@ package Ui_Front_and_Back_end
 import Global.custom_Loading_Dialog.CustomToast
 import Global.custom_Loading_Dialog.LoadingDialog
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn
+import LogInSignIn_Entry.EntryActivity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -22,14 +23,19 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
+import kotlinx.android.synthetic.main.activity_main__user_interface.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -61,6 +67,11 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     private var flag:Int = 0
     private var onBackPressedFlag: Int = 1;
     private var onTouchFlag: Int = 1
+
+    // Strings
+    private var set: String = ""
+    private var setP: String = ""
+    private var trx: String = ""
 
     // Firebase
     lateinit var db: FirebaseFirestore
@@ -141,6 +152,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                 }
                 bottomNavigationView.visibility = VISIBLE
                 nav_icon.visibility = VISIBLE
+                set = "Profile"
             }
             else if(destination.id == R.id.ui_Home){
                 if(nav_drawer.isVisible){
@@ -150,6 +162,8 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                 }
                 bottomNavigationView.visibility = VISIBLE
                 nav_icon.visibility = VISIBLE
+                set = "Home"
+                trx = "Home"
             }
             else if(destination.id == R.id.ui_Transactions){
                 if(nav_drawer.isVisible){
@@ -159,6 +173,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                 }
                 bottomNavigationView.visibility = VISIBLE
                 nav_icon.visibility = VISIBLE
+                trx = "Transactions"
             }
             else if(destination.id == R.id.settings){
                 if(nav_drawer.isVisible){
@@ -168,6 +183,13 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                 }
                 bottomNavigationView.visibility = GONE
                 nav_icon.visibility = GONE
+                if(set == "Home"){
+                    set = "Go_Home"
+                }
+                else if(set == "Profile"){
+                    set = "Go_Profile"
+                }
+
             }
             else if(destination.id == R.id.transactionDetails){
                 if(nav_drawer.isVisible){
@@ -177,6 +199,13 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                 }
                 bottomNavigationView.visibility = GONE
                 nav_icon.visibility = GONE
+
+                if(trx.equals("Home")){
+                    trx = "Go_Home"
+                }
+                else if(trx.equals("Transactions")){
+                    trx = "Go_Transactions"
+                }
             }
         }
 
@@ -189,6 +218,48 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         }
 
     }
+
+    // When signOut clicked
+    override fun onMenuItemClick(p0: MenuItem?): Boolean {
+        lifecycleScope.launch {
+            appyCloseAnimation()
+            signOut()
+        }
+        return true
+    }
+
+    private fun signOut() {
+        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+        val acct = GoogleSignIn.getLastSignedInAccount(this)
+
+        if (acct != null) { // means user signIn with Google
+
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+
+            val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+            // This code clears which account is connected to the app. To sign in again, the user must choose their account again.
+            mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this) { // It will go back on LogIn-SignIn Page.
+                        gotoLogninSignUi()
+                    }
+        }
+        else {
+            val user: FirebaseUser? = mAuth.getCurrentUser()
+
+            if (user != null) { // means user will signIn using firebaseAuth
+                mAuth.signOut()
+                gotoLogninSignUi()
+            }
+        }
+    } // End of signOut method;
+
+    private fun gotoLogninSignUi() {
+        val intent = Intent(this, EntryActivity::class.java)
+        startActivity(intent)
+        Toast.makeText(this, "You are Logged Out...", Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun giveFeedBack() {
         val appPackageName: String = this.getPackageName() // getPackageName() from Context or Activity object
@@ -231,7 +302,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
         var link:String = link
 
-        if (link == "null") {
+        if (link.equals("null")) {
             link = "https://play.google.com/store/apps/details?id=com.recharge2mePlay.recharge2me"
         }
 
@@ -367,7 +438,8 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     }
     override fun onBackPressed() {
 
-        if(!nav_drawer.isVisible){
+        if(!nav_drawer.isVisible && (set.equals("Home") || set.equals("Profile"))
+                                && (trx.equals("Home") || trx.equals("Transactions"))   ){
             if(nav_icon.isVisible){
                 if(backpressedTime + 2000 > System.currentTimeMillis())
                 {
@@ -392,16 +464,27 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
                 }
             }
         }
+
+        // Hondeling back button
+        if(set == "Go_Home"){
+            nhf_mainUi.findNavController().navigate(R.id.action_settings_to_ui_Home)
+        }
+        else if(set == "Go_Profile"){
+            nhf_mainUi.findNavController().navigate(R.id.action_settings_to_ui_Profile)
+        }
+        else if(trx == "Go_Home"){
+            nhf_mainUi.findNavController().navigate(R.id.action_transactionDetails_to_ui_Home)
+        }
+        else if(trx == "Go_Transactions"){
+            nhf_mainUi.findNavController().navigate(R.id.action_transactionDetails_to_ui_Transactions)
+        }
+
     }
 
-    // When signOut clicked
-    override fun onMenuItemClick(p0: MenuItem?): Boolean {
-        Toast.makeText(this, "signOut", Toast.LENGTH_SHORT).show()
-        lifecycleScope.launch {
-            appyCloseAnimation()
-        }
-        return true
-    }
+
+
+
+
 }
 
 

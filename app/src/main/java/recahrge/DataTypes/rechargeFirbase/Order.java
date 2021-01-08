@@ -12,6 +12,7 @@ public class Order {
     private String operator;
     private String number;
     private String details;
+    private String date;
 
 
     private Pay2All_rechargeFirebase recharge;
@@ -38,6 +39,9 @@ public class Order {
     }
 
 
+    public String getDate() {
+        return date;
+    }
     public String getAmount() {
         return amount;
     }
@@ -73,7 +77,9 @@ public class Order {
     }
 
 
-
+    public void setDate(String date) {
+        this.date = date;
+    }
     public void setAmount(String amount) {
         this.amount = amount;
     }

@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end;
+package Ui_Front_and_Back_end.Transactions;
 
 import android.os.Bundle;
 
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -40,6 +43,7 @@ import java.util.concurrent.ExecutionException;
 import Global.custom_Loading_Dialog.CustomToast;
 import Ui_Front_and_Back_end.Adapters.DropDown_month;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
+import Ui_Front_and_Back_end.Main_UserInterface;
 import recahrge.DataTypes.rechargeFirbase.Order;
 
 
@@ -49,10 +53,14 @@ public class Ui_Transactions extends Fragment{
     TransactionAdapter transactionAdapter;
     Spinner spinner_months;
 
+    EditText et_transaction_searchNumber;
+
     ImageView iv_noTransactions;
 
     ProgressBar pbTransaction;
 
+    // containers
+    List<Order> orders;
     int touchFlag = 1;
 
     View view;
@@ -84,24 +92,48 @@ public class Ui_Transactions extends Fragment{
         // ImageView
         iv_noTransactions = view.findViewById(R.id.iv_setting_noTransaction);
 
+        // EditText
+        et_transaction_searchNumber = view.findViewById(R.id.et_transaction_searchNumber);
+
         //ProgressBar
         pbTransaction = view.findViewById(R.id.pb_transactions);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        // When text is changed on numberEditText
+        et_transaction_searchNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                setFilteredTransactionList_number(editable.toString());
+            }
+        });
 
         spinner_months.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
+
                 TextView tv_spinner = view.findViewById(R.id.tv_monthDrop_month);
+
                 if(tv_spinner.getText().toString().equals(" ")){
                     spinner_months.setBackground(getResources().getDrawable((R.drawable.placeholder_month)));
                 }
                 else {
                     spinner_months.setBackground(getResources().getDrawable((R.drawable.transaction_filter_month)));
-                    Toast.makeText((Main_UserInterface) requireActivity(), tv_spinner.getText().toString(), Toast.LENGTH_SHORT).show();
+                    String month = tv_spinner.getText().toString().trim();
+                    setFilteredTransactionList_month(month.substring(0,3));
+                    Toast.makeText((Main_UserInterface) requireActivity(), month.substring(0,3), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -110,7 +142,6 @@ public class Ui_Transactions extends Fragment{
 
             }
         });
-
 
         rv_uiTransactions.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -133,9 +164,11 @@ public class Ui_Transactions extends Fragment{
 
     private void getRechargeData(){
 
-        CollectionReference colRef = db.collection("USERS").document(mAuth.getUid()).collection("Transactions");
 
-        colRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        Query query = db.collection("USERS").document(mAuth.getUid()).collection("Transactions")
+                .orderBy("orderId", Query.Direction.DESCENDING).limit(25);
+
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
@@ -160,6 +193,58 @@ public class Ui_Transactions extends Fragment{
             }
         });
     }
+    private void setDataOnRecyclerViewe(List<Order> list){
+
+        orders = list;
+
+        transactionAdapter = new TransactionAdapter((Main_UserInterface)requireActivity(), list, getActivity(), view, "Transactions");
+        rv_uiTransactions.setAdapter(transactionAdapter);
+        rv_uiTransactions.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
+
+    }
+
+    // Filter transactions list
+    private void setFilteredTransactionList_number(String text){
+        List<Order> filteredList = new ArrayList<>();
+
+        for(Order order: orders){
+            String number = order.getNumber();
+            if(number.toLowerCase().contains(text)){
+                filteredList.add(order);
+            }
+        }
+
+        if(filteredList.isEmpty()){
+            iv_noTransactions.setVisibility(View.VISIBLE);
+            rv_uiTransactions.setVisibility(View.GONE);
+        }
+        else {
+            iv_noTransactions.setVisibility(View.GONE);
+            rv_uiTransactions.setVisibility(View.VISIBLE);
+            transactionAdapter.setFilteredList(filteredList);
+        }
+    }
+    private void setFilteredTransactionList_month(String text){
+        List<Order> filteredList = new ArrayList<>();
+
+        for(Order order: orders){
+            String date = order.getDate();
+            if(date.toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(order);
+            }
+        }
+
+        if(filteredList.isEmpty()){
+            iv_noTransactions.setVisibility(View.VISIBLE);
+            rv_uiTransactions.setVisibility(View.GONE);
+        }
+        else {
+            iv_noTransactions.setVisibility(View.GONE);
+            rv_uiTransactions.setVisibility(View.VISIBLE);
+            transactionAdapter.setFilteredList(filteredList);
+        }
+
+    }
 
     private void setDataOnDropDown(){
         List<String> month = new ArrayList<>();
@@ -180,13 +265,7 @@ public class Ui_Transactions extends Fragment{
         DropDown_month adapter = new DropDown_month((Main_UserInterface) requireActivity(), month);
         spinner_months.setAdapter(adapter);
     }
-    public void setDataOnRecyclerViewe(List<Order> list){
 
-        transactionAdapter = new TransactionAdapter((Main_UserInterface)requireActivity(), list, getActivity(), view, "Transactions");
-        rv_uiTransactions.setAdapter(transactionAdapter);
-        rv_uiTransactions.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
-
-    }
     private void animateNavDrawer(){
         NavigationView nav_drawer = getActivity().findViewById(R.id.nav_drawer);
 

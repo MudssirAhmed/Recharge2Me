@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ui_backGroundColor"
-    tools:context="Ui_Front_and_Back_end.Ui_Transactions">
+    tools:context="Ui_Front_and_Back_end.Transactions.Ui_Transactions">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
@@ -36,12 +36,12 @@
             android:background="@drawable/placeholder_month"
             android:gravity="center_horizontal|center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
+            app:layout_constraintEnd_toStartOf="@+id/et_transaction_searchNumber"
             app:layout_constraintStart_toEndOf="@+id/imageView45"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editTextPhone"
+            android:id="@+id/et_transaction_searchNumber"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -90,8 +90,8 @@
         android:layout_height="150dp"
         android:src="@drawable/no_transactions"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_uiTransaction"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

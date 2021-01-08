@@ -7,6 +7,7 @@ import recahrge.DataTypes.Paye2All.Pay2All_authToken;
 import recahrge.DataTypes.Paye2All.Pay2All_providers;
 import recahrge.DataTypes.Paye2All.Pay2All_recharge;
 import recahrge.paytm.PaytmToken;
+import recahrge.paytm.PaytmTransactionStatus;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -38,9 +39,11 @@ public interface JsonConvertor {
 
     // https://api.pay2all.in/token
 
-    @POST("token")
-    @FormUrlEncoded
-    Call<Pay2All_authToken> getAuthToken(@FieldMap Map<String,String> params);
+    @GET("getPay2allToken")
+    Call<Pay2All_authToken> getAuthToken(
+            @Query("userName") String userName,
+            @Query("password") String password
+    );
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("providers")
@@ -55,9 +58,27 @@ public interface JsonConvertor {
             @Query("client_id") String ClientId
     );
 
-    @GET("getToken")
+    @POST("token") // Production
     Call<PaytmToken> getPaytmTransactionToken(
-            @Query("O_id") String O_id,
-            @Query("amount") String amount
+            @Query("orderId") String orderId,
+            @Query("amount") String amount,
+            @Query("uid") String uid
+    );
+
+    @GET("tokenStaging") // Staging
+    Call<PaytmToken> getPaytmTransactionToken_staging(
+            @Query("orderId") String orderId,
+            @Query("amount") String amount,
+            @Query("uid") String uid
+    );
+
+    @POST("getTransactionStatus") // Production
+    Call<PaytmTransactionStatus> getPaytmTransactionStatus(
+            @Query("orderID") String orderID
+    );
+
+    @GET("getTransactionStatusStaging") // Staging
+    Call<PaytmTransactionStatus> getPaytmTransactionStatus_staging(
+            @Query("orderID") String orderID
     );
 }

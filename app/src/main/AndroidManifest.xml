@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name="Ui_Front_and_Back_end.Policies"></activity>
+        <activity android:name="Ui_Front_and_Back_end.Transactions.NotificationTransactionDetails"></activity>
+        <activity android:name="Ui_Front_and_Back_end.Policies" />
         <activity android:name="Ui_Front_and_Back_end.Edit.Edit_profile" />
         <activity android:name="recahrge.contactList.contactList_activity" />
         <activity android:name="recahrge.plans.getRecahrgePlan" />

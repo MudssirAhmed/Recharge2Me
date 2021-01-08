@@ -1,7 +1,6 @@
 package Ui_Front_and_Back_end;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -21,47 +20,36 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.recharge2mePlay.recharge2me.R;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
-import LogInSignIn_Entry.EntryActivity;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
-import local_Databasse.providersData.Database_providers;
-import local_Databasse.providersData.Entity_providers;
-import recahrge.DataTypes.Paye2All.Pay2All_authToken;
-import recahrge.DataTypes.Paye2All.Pay2All_providers;
 import recahrge.DataTypes.rechargeFirbase.Order;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import Retrofit.JsonConvertor;
 
 public class Ui_Home extends Fragment {
 
     View view;
 
-    TextView tv_Home_Transacyion;
-
     ImageView iv_prePaid,
               iv_postPaid;
+
+    ProgressBar pb_uiHome_transactions;
 
     NestedScrollView ns_home;
 
@@ -73,12 +61,15 @@ public class Ui_Home extends Fragment {
     SharedPreferences.Editor editor;
 
     int touchFlag = 1;
-//    int providersFlag = 1;
 
     MyAnimation animation;
 
     LoadingDialog loadingDialog;
     CustomToast toast;
+
+    // Firebase
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
 
 
     public Ui_Home() {
@@ -91,8 +82,6 @@ public class Ui_Home extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_ui__home, container, false);
 
-        // TextView
-        tv_Home_Transacyion = view.findViewById(R.id.tv_Home_Transactions);
 
         // ImageView
         iv_postPaid = view.findViewById(R.id.iv_postPaid);
@@ -104,8 +93,15 @@ public class Ui_Home extends Fragment {
         // NestedScrollView
         ns_home = view.findViewById(R.id.ns_home);
 
+        // progressBar
+        pb_uiHome_transactions = view.findViewById(R.id.pb_uiHome_transactions);
+
         // Init onClick Animation
         animation = new MyAnimation();
+
+        // Firebase
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // custom
         loadingDialog = new LoadingDialog(getActivity());
@@ -116,12 +112,7 @@ public class Ui_Home extends Fragment {
         String check = sharedPreferences.getString("ProvidersData", "");
         Log.d("shardePrefrences", "msg" + check);
 
-        tv_Home_Transacyion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOutFromGoogle();
-            }
-        });
+
         iv_prePaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,6 +125,7 @@ public class Ui_Home extends Fragment {
                 prePaid(iv_postPaid);
             }
         });
+
 
         // These are for anime back the drawe if it is visible
         ns_home.setOnTouchListener(new View.OnTouchListener() {
@@ -165,149 +157,13 @@ public class Ui_Home extends Fragment {
             }
         });
 
-        setDataOnRecyclerView();
 
-        if(isNetworkAvailable()){
-            if(check.equals("Get")){
-//                getAuthToken_pay2All();
-            }
-        }
-        else {
-            toast.showToast("Please check your Internet connection");
-        }
-
+        getRechargeData();
 
         return view;
     }// End of onCreate()
 
-    private void getAuthToken_pay2All(){
-        loadingDialog.startLoading();
 
-        // Init Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.pay2all.in/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        // Init JsonConverter Interface
-        JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
-
-        Map<String, String> params = new HashMap<>();
-        params.put("email", "mudssira01@gmail.com");
-        params.put("password", "4nVztc");
-
-        Call<Pay2All_authToken> call = jsonConvertor.getAuthToken(params);
-
-        call.enqueue(new Callback<Pay2All_authToken>() {
-            @Override
-            public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
-                if(!response.isSuccessful()){
-                    toast.showToast("Please re-open Application!...");
-                    loadingDialog.stopLoading();
-                    return;
-                }
-
-                try {
-                    Pay2All_authToken pay2All_authToken = response.body();
-
-                    String authToken = pay2All_authToken.getAccess_token();
-
-
-                    if(isNetworkAvailable()){
-
-                        loadingDialog.stopLoading();
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                getAllProvides(authToken);
-                                Log.i("Providers", "Token");
-                            }
-                        }).start();
-
-                    }
-                    else {
-                        toast.showToast("Please Check Your Internet Connection!...");
-                        loadingDialog.stopLoading();
-                    }
-                }
-                catch (Exception e){
-                    Log.i("ErrorCatch", e.getMessage());
-                    loadingDialog.stopLoading();
-                    toast.showToast("Error! " + e.getMessage());
-                }
-
-            }
-            @Override
-            public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
-                Log.i("ErrorOnFailure", t.getMessage());
-                toast.showToast("Error! " + t.getMessage());
-                loadingDialog.stopLoading();
-            }
-        });
-    }// This will fetch the Auth Token
-    private void getAllProvides(String Token){
-
-        Retrofit retrofit  = new Retrofit.Builder()
-                    .baseUrl("https://api.pay2all.in/v1/app/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-        JsonConvertor jsonConvertor = retrofit.create(JsonConvertor.class);
-
-        Call<Pay2All_providers> call = jsonConvertor.getAllProviders("Bearer " + Token);
-        call.enqueue(new Callback<Pay2All_providers>() {
-            @Override
-            public void onResponse(Call<Pay2All_providers> call, Response<Pay2All_providers> response) {
-
-                if(!response.isSuccessful()){
-                    toast.showToast("Please re-open Application...");
-                    return;
-                }
-
-                try {
-                    Pay2All_providers pay2All_providers = response.body();
-
-                    List<Pay2All_providers.Providers> providers = pay2All_providers.getProviders();
-
-                    editor = sharedPreferences.edit();
-                    editor.putString("ProvidersData", "Have");
-                    editor.putString("Token", Token);
-                    editor.apply();
-
-                    Log.i("Providers", "Providers");
-
-                    saveInDatabase(providers);
-                }
-                catch (Exception e){
-                    toast.showToast("Error! " + e.getMessage());
-                }
-            }
-            @Override
-            public void onFailure(Call<Pay2All_providers> call, Throwable t) {
-                toast.showToast("providersFail " + t.getMessage());
-            }
-        });
-    } // This will fetch all Providers
-
-    // it will save providers Data in Database
-    private void saveInDatabase(List<Pay2All_providers.Providers> providers){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Entity_providers> list = new ArrayList<>();
-                for(Pay2All_providers.Providers provider: providers){
-                    Entity_providers p = new Entity_providers(0, provider.getId(), provider.getProvider_name());
-                    list.add(p);
-                }
-                Database_providers.getInstance(getContext())
-                        .providersDao()
-                        .insertProvider(list);
-                Log.i("Providers", "Database");
-
-            }
-        }).start();
-    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -345,10 +201,33 @@ public class Ui_Home extends Fragment {
         }
     }
 
-    // Set the data on RecyclerView
-    private void setDataOnRecyclerView(){
+    private void getRechargeData(){
+        CollectionReference colRef = db.collection("USERS").document(mAuth.getUid()).collection("Transactions");
 
-        List<Order> list = new ArrayList<>();
+        Query query = colRef.orderBy("orderId", Query.Direction.DESCENDING).limit(5);
+
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<Order> list = new ArrayList<>();
+
+                for(QueryDocumentSnapshot q: queryDocumentSnapshots){
+                    list.add(q.toObject(Order.class));
+                }
+                setDataOnRecyclerView(list);
+                pb_uiHome_transactions.setVisibility(View.GONE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                pb_uiHome_transactions.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    // Set the data on RecyclerView
+    private void setDataOnRecyclerView(List<Order> list){
 
         transactionAdapter = new TransactionAdapter( (Main_UserInterface) requireActivity(), list, getActivity(), view, "Home");
         rv_Home_Transaction.setAdapter(transactionAdapter);
@@ -356,31 +235,6 @@ public class Ui_Home extends Fragment {
 
     }
 
-    private void signOutFromGoogle() {
-
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient((Main_UserInterface) requireActivity(), gso);
-
-        // This code clears which account is connected to the app. To sign in again, the user must choose their account again.
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener((Main_UserInterface) requireActivity(), new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // It will go back on LogIn-SignIn Page.
-                        Intent intent = new Intent((Main_UserInterface) requireActivity(), EntryActivity.class);
-                        startActivity(intent);
-
-                        Toast.makeText((Main_UserInterface) requireActivity(), "You are Logged Out...", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-    } // End of signOutFromGoogle method;
 
     private void prePaid(View view){
         animation.onClickAnimation(view);
