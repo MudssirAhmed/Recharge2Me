@@ -12,7 +12,7 @@
         android:background="@color/ui_backGroundColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cL_txnDet_mainLayout"
+            android:id="@+id/cL_txnDetNot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageView15"
+                android:id="@+id/imageVdddiew15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/transaction_details"
@@ -31,7 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView50"
+                android:id="@+id/imageddsfView50"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
@@ -41,7 +41,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
-                android:id="@+id/ic_transactionDet_cross"
+                android:id="@+id/ic_txnDetNot_cross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -55,12 +55,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="100dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView15"
+                app:layout_constraintBottom_toBottomOf="@+id/imageVdddiew15"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <ImageView
-                    android:id="@+id/iv_txnDetails_operator"
+                    android:id="@+id/iv_txnDetNot_operator"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="32dp"
@@ -74,11 +74,11 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_txnDetails_operator"
+                    app:layout_constraintStart_toEndOf="@+id/iv_txnDetNot_operator"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/tv_txnDet_amount_1"
+                        android:id="@+id/tv_txnDetNot_amount_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/bold"
@@ -90,7 +90,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_txn_number"
+                        android:id="@+id/tv_txnDetNot_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/comfortaa_bold"
@@ -98,10 +98,10 @@
                         android:textColor="@color/whiteText"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_txnDet_amount_1" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_txnDetNot_amount_1" />
 
                     <TextView
-                        android:id="@+id/tv_txn_operator"
+                        android:id="@+id/tv_txnDetNot_operator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/comfortaa_bold"
@@ -109,13 +109,13 @@
                         android:textColor="@color/whiteText"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_txn_number" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_txnDetNot_number" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/selectedPlan"
+                android:id="@+id/tv_txnDetNotselectedPlan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -124,10 +124,10 @@
                 android:text="Selected plan"
                 android:textColor="@color/lightText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageView15" />
+                app:layout_constraintTop_toBottomOf="@id/imageVdddiew15" />
 
             <TextView
-                android:id="@+id/tv_txn_rechargeDetails"
+                android:id="@+id/tv_txnDetNot_rechargeDetails"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -140,10 +140,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/selectedPlan" />
+                app:layout_constraintTop_toBottomOf="@id/tv_txnDetNotselectedPlan" />
 
             <ImageView
-                android:id="@+id/shadow"
+                android:id="@+id/iv_txnDetNot_shadow"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginStart="24dp"
@@ -152,10 +152,10 @@
                 android:src="@drawable/shadow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_txn_rechargeDetails" />
+                app:layout_constraintTop_toBottomOf="@id/tv_txnDetNot_rechargeDetails" />
 
             <TextView
-                android:id="@+id/RechargeSucess"
+                android:id="@+id/tv__txnDetNot_RechargeSucess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -164,10 +164,10 @@
                 android:text="Recharge Success"
                 android:textColor="@color/lightText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/shadow" />
+                app:layout_constraintTop_toBottomOf="@id/iv_txnDetNot_shadow" />
 
             <TextView
-                android:id="@+id/tv_txnDet_amount_2"
+                android:id="@+id/tv_txnDetNot_amount_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -177,26 +177,26 @@
                 android:textColor="@color/secondaryPrimaryText"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/RechargeSucess" />
+                app:layout_constraintTop_toBottomOf="@id/tv__txnDetNot_RechargeSucess" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cL_RechargeStatus"
+                android:id="@+id/cL_txnDetNot_RechargeStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_txnDet_amount_2">
+                app:layout_constraintTop_toBottomOf="@id/tv_txnDetNot_amount_2">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cL_PaymentSucess"
+                    android:id="@+id/cL_txnDetNot_PaymentSucess"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/iv_txnDet_paymentSuccess"
+                        android:id="@+id/iv_txnDetNot_paymentSuccess"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -205,7 +205,7 @@
                         app:srcCompat="@drawable/verified_shadow" />
 
                     <TextView
-                        android:id="@+id/textView36"
+                        android:id="@+id/tv_txnDetNot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -213,21 +213,21 @@
                         android:text="Payment  success"
                         android:textColor="@color/secondaryPrimaryText"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iv_txnDet_paymentSuccess"
+                        app:layout_constraintStart_toEndOf="@+id/iv_txnDetNot_paymentSuccess"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cL_PaymentAccepted"
+                    android:id="@+id/cL_txnDetNot_PaymentAccepted"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cL_PaymentSucess">
+                    app:layout_constraintTop_toBottomOf="@+id/cL_txnDetNot_PaymentSucess">
 
                     <ImageView
-                        android:id="@+id/iv_txnDetails_paymentAccepted"
+                        android:id="@+id/iv_txnDetNot_paymentAccepted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -236,7 +236,7 @@
                         app:srcCompat="@drawable/verified_shadow" />
 
                     <TextView
-                        android:id="@+id/textView40"
+                        android:id="@+id/tv_txnDetNot_accepted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -244,20 +244,20 @@
                         android:text="Payment accepted"
                         android:textColor="@color/secondaryPrimaryText"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iv_txnDetails_paymentAccepted"
+                        app:layout_constraintStart_toEndOf="@+id/iv_txnDetNot_paymentAccepted"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cL_RechargeSuccess"
+                    android:id="@+id/cL_txnDetNot_RechargeSuccess"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cL_PaymentAccepted">
+                    app:layout_constraintTop_toBottomOf="@+id/cL_txnDetNot_PaymentAccepted">
 
                     <ImageView
-                        android:id="@+id/iv_txnDet_rechargeSuccess"
+                        android:id="@+id/iv_txnDetNot_rechargeSuccess"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -266,7 +266,7 @@
                         app:srcCompat="@drawable/verified_shadow" />
 
                     <TextView
-                        android:id="@+id/textView41"
+                        android:id="@+id/tv_txnDetNot_success"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -274,7 +274,7 @@
                         android:text="Recharge success"
                         android:textColor="@color/secondaryPrimaryText"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iv_txnDet_rechargeSuccess"
+                        app:layout_constraintStart_toEndOf="@+id/iv_txnDetNot_rechargeSuccess"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -282,7 +282,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/tv_txnDet_txnMessage"
+                android:id="@+id/tv_txnDetNot_txnMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
@@ -292,10 +292,10 @@
                 android:textColor="@color/secondaryPrimaryText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cL_RechargeStatus" />
+                app:layout_constraintTop_toBottomOf="@+id/cL_txnDetNot_RechargeStatus" />
 
             <ImageView
-                android:id="@+id/ImageView50"
+                android:id="@+id/iv_txnDetNot_sh"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginStart="24dp"
@@ -304,10 +304,10 @@
                 android:src="@drawable/shadow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_txnDet_txnMessage" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_txnDetNot_txnMessage" />
 
             <TextView
-                android:id="@+id/TextView42"
+                android:id="@+id/tv_txnDetNot_transactions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -316,10 +316,10 @@
                 android:text="Transaction ID"
                 android:textColor="@color/lightText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ImageView50" />
+                app:layout_constraintTop_toBottomOf="@id/iv_txnDetNot_sh" />
 
             <TextView
-                android:id="@+id/tv_txn_orderId"
+                android:id="@+id/tv_txnDetNot_orderId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -330,10 +330,10 @@
                 android:textColor="@color/secondaryPrimaryText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/TextView42" />
+                app:layout_constraintTop_toBottomOf="@id/tv_txnDetNot_transactions" />
 
             <TextView
-                android:id="@+id/TextView44"
+                android:id="@+id/tv__txnDetNot_reffrence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
@@ -342,10 +342,10 @@
                 android:text="Vi Prepaid Reference ID"
                 android:textColor="@color/lightText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_txn_orderId" />
+                app:layout_constraintTop_toBottomOf="@id/tv_txnDetNot_orderId" />
 
             <TextView
-                android:id="@+id/tv_txn_utr"
+                android:id="@+id/tv_txnDetNot_utr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -355,10 +355,10 @@
                 android:textColor="@color/secondaryPrimaryText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/TextView44" />
+                app:layout_constraintTop_toBottomOf="@id/tv__txnDetNot_reffrence" />
 
             <ImageView
-                android:id="@+id/shadow3"
+                android:id="@+id/iv_txnDetNot_sh3"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginStart="24dp"
@@ -367,10 +367,10 @@
                 android:src="@drawable/shadow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_txn_utr" />
+                app:layout_constraintTop_toBottomOf="@id/tv_txnDetNot_utr" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cL_txnDet_ContactR2m"
+                android:id="@+id/cL_txnDetNot_ContactR2m"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -378,10 +378,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/shadow3">
+                app:layout_constraintTop_toBottomOf="@id/iv_txnDetNot_sh3">
 
                 <ImageView
-                    android:id="@+id/imageView49"
+                    android:id="@+id/iv__txnDetNot_ticket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/tickets"
@@ -397,14 +397,14 @@
                     android:text="Contact Recharge2me Support"
                     android:textColor="@color/secondaryPrimaryText"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView49"
+                    app:layout_constraintStart_toEndOf="@+id/iv__txnDetNot_ticket"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
-            android:id="@+id/pb_txnDet_progressBar"
+            android:id="@+id/pb_txnDetNot_progressbar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -415,7 +415,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_txnDet_serverDown"
+            android:id="@+id/iv_txnDetNot_serverDown"
             android:layout_width="200dp"
             android:layout_height="150dp"
             android:layout_marginTop="250dp"

@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -57,6 +58,7 @@ import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import Global.custom_Loading_Dialog.proceedDialog;
 import Ui_Front_and_Back_end.Main_UserInterface;
+import Ui_Front_and_Back_end.Transactions.NotificationTransactionDetails;
 import local_Databasse.numberData.Database_numberJava;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
@@ -101,6 +103,7 @@ public class MobileDetailsFinder extends Fragment {
 
     // Integers:
     final int PAYTM_REQUEST_CODE = 121;
+    Integer ActivityRequestCode = 2;
     final int GOTO_PLAN = 8477;
     int circleId;
 
@@ -233,13 +236,30 @@ public class MobileDetailsFinder extends Fragment {
 
                  findDataInDataBase(tv_mobileNumber.getText().toString());
 
-                 sendNotification();
+                Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
+
+                intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
+                intent.putExtra("Operator", btn_operator.getText().toString().trim());
+                intent.putExtra("circle", btn_circle.getText().toString().trim());
+                intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
+                intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
+
+                startActivity(intent);
 
 //                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
 //                     customToast.showToast("Please select plan First!");
 //                 else {
 //                     if(isNetworkAvailable()){
-//                         getAuthToken_pay2All();
+//
+//                         Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
+//
+//                         intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
+//                         intent.putExtra("Operator", btn_operator.getText().toString().trim());
+//                         intent.putExtra("circle", btn_circle.getText().toString().trim());
+//                         intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
+//                         intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
+//
+//                         startActivity(intent);
 //                     }
 //                     else {
 //                         customToast.showToast("Please Check Your Internet Connection!...");
@@ -290,9 +310,11 @@ public class MobileDetailsFinder extends Fragment {
         String ContentText = "recharge successful on +91 8477055721";
 
         // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(getActivity(), Main_UserInterface.class);
+        Intent intent = new Intent(getActivity(), NotificationTransactionDetails.class);
+        intent.putExtra("OrderId", "order23234234");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, 0);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo_transparent_background)
@@ -819,7 +841,11 @@ public class MobileDetailsFinder extends Fragment {
                 }
             });// code statement);
 
-            transactionManager.startTransaction(getActivity(), PAYTM_REQUEST_CODE);
+            Log.i("Response: ", "after");
+
+            transactionManager.startTransaction(getActivity(), ActivityRequestCode);
+
+            Log.i("Response: ", "before");
         }
         private void getTransactonStatus(String ORDERID, String pay2AllToken){
 
@@ -1054,6 +1080,13 @@ public class MobileDetailsFinder extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == ActivityRequestCode && data != null) {
+            Toast.makeText((recharge_ui) requireActivity(), "Error: " + data.getStringExtra("nativeSdkForMerchantMessage") +
+                    data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
+
+            Log.i("Response", "Data: " + data.getStringExtra("response"));
+        }
+
         // when user come from planfragment
         if(requestCode == GOTO_PLAN){
             if(resultCode == Activity.RESULT_OK){
@@ -1072,14 +1105,6 @@ public class MobileDetailsFinder extends Fragment {
             Toast.makeText((recharge_ui) requireActivity(), "Come Back", Toast.LENGTH_SHORT).show();
         }
 
-        if (requestCode == PAYTM_REQUEST_CODE) {
-            Toast.makeText((recharge_ui) requireActivity(), "Error: " + data.getStringExtra("nativeSdkForMerchantMessage") +
-                    data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
-
-            Log.i("inActivityResult", "Data: " + data.getStringExtra("nativeSdkForMerchantMessage"));
-            Log.i("inActivityResult", "Response: " + data.getStringExtra("response"));
-
-        }
     } // End of onActivityResult
 
     // opId for pay2All

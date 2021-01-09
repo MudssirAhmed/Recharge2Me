@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.i("Main", e.getMessage());
                 toast.showToast(e.getMessage());
+                finish();
             }
         });
     }

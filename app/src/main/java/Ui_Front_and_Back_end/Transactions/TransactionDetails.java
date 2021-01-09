@@ -18,10 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,11 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
 import Ui_Front_and_Back_end.Main_UserInterface;
-import Ui_Front_and_Back_end.Transactions.TransactionDetailsArgs;
 import recahrge.DataTypes.rechargeFirbase.Order;
 import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
 import recahrge.DataTypes.rechargeFirbase.Pay2All_status;
-import recahrge.DataTypes.rechargeFirbase.Paytm_initiateTransaction;
 import recahrge.DataTypes.rechargeFirbase.Paytm_transactonStatus;
 
 
@@ -75,29 +71,29 @@ public class TransactionDetails extends Fragment {
         view = inflater.inflate(R.layout.fragment_transaction_details, container, false);
 
         // ImageView
-        iv_cross = view.findViewById(R.id.ic_transactionDet_cross);
-        iv_rechargeOperator = view.findViewById(R.id.iv_txnDetails_operator);
-        iv_paymentSuccess = view.findViewById(R.id.iv_txnDet_paymentSuccess);
-        iv_paymentAccepted = view.findViewById(R.id.iv_txnDetails_paymentAccepted);
-        iv_rechargeSuccess = view.findViewById(R.id.iv_txnDet_rechargeSuccess);
-        iv_serverDown = view.findViewById(R.id.iv_txnDet_serverDown);
+        iv_cross = view.findViewById(R.id.ic_txnDetNot_cross);
+        iv_rechargeOperator = view.findViewById(R.id.iv_txnDetNot_operator);
+        iv_paymentSuccess = view.findViewById(R.id.iv_txnDetNot_paymentSuccess);
+        iv_paymentAccepted = view.findViewById(R.id.iv_txnDetNot_paymentAccepted);
+        iv_rechargeSuccess = view.findViewById(R.id.iv_txnDetNot_rechargeSuccess);
+        iv_serverDown = view.findViewById(R.id.iv_txnDetNot_serverDown);
 
         // TextView
-        tv_txnAmt_1 = view.findViewById(R.id.tv_txnDet_amount_1);
-        tv_txnNumber = view.findViewById(R.id.tv_txn_number);
-        tv_txnOperator = view.findViewById(R.id.tv_txn_operator);
-        tv_txnAmt_2 = view.findViewById(R.id.tv_txnDet_amount_2);
-        tv_txnDetails = view.findViewById(R.id.tv_txn_rechargeDetails);
-        tv_txnOrderId = view.findViewById(R.id.tv_txn_orderId);
-        tv_txnUtr = view.findViewById(R.id.tv_txn_utr);
-        tv_txnMessage = view.findViewById(R.id.tv_txnDet_txnMessage);
+        tv_txnAmt_1 = view.findViewById(R.id.tv_txnDetNot_amount_1);
+        tv_txnNumber = view.findViewById(R.id.tv_txnDetNot_number);
+        tv_txnOperator = view.findViewById(R.id.tv_txnDetNot_operator);
+        tv_txnAmt_2 = view.findViewById(R.id.tv_txnDetNot_amount_2);
+        tv_txnDetails = view.findViewById(R.id.tv_txnDetNot_rechargeDetails);
+        tv_txnOrderId = view.findViewById(R.id.tv_txnDetNot_orderId);
+        tv_txnUtr = view.findViewById(R.id.tv_txnDetNot_utr);
+        tv_txnMessage = view.findViewById(R.id.tv_txnDetNot_txnMessage);
 
         // ConstraintLayout
-        cL_mainLayout = view.findViewById(R.id.cL_txnDet_mainLayout);
-        cL_contactR2m = view.findViewById(R.id.cL_txnDet_ContactR2m);
+        cL_mainLayout = view.findViewById(R.id.cL_txnDetNot);
+        cL_contactR2m = view.findViewById(R.id.cL_txnDetNot_ContactR2m);
 
         // progressBar
-        pb_load = view.findViewById(R.id.pb_txnDet_progressBar);
+        pb_load = view.findViewById(R.id.pb_txnDetNot_progressbar);
 
 
         fromHome = TransactionDetailsArgs.fromBundle(getArguments()).getFromHome();
