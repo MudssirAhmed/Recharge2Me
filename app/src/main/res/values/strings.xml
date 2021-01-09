@@ -15,7 +15,6 @@
     <string name="enter_mobile_number">Enter Mobile Number</string>
 
 
-
     <string-array name="circle">
         <item>Andhra Pradesh</item>
         <item>Assam</item>
@@ -40,6 +39,15 @@
         <item>UP East</item>
         <item>UP West Uttrakhand</item>
         <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="operator">
+        <item>Vodafone Idea</item>
+        <item>Airtel</item>
+        <item>Jio</item>
+        <item>BSNL</item>
+        <item>MTNL Delhi NCR</item>
+        <item>MTNL Mumbai</item>
     </string-array>
 
 </resources>

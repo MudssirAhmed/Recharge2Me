@@ -41,6 +41,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="30dp"
         android:paddingTop="20dp"
@@ -87,28 +88,12 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/iv_proceedRechareOperator"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@drawable/mobile_display" />
+            android:src="@drawable/bsnl" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_rechargePlan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/tv_background"
-        android:fontFamily="@font/comfortaa_regular"
-        android:gravity="center_horizontal"
-        android:text="Amount"
-        android:textColor="@color/perple"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_operator" />
 
     <TextView
         android:id="@+id/tv_socWarningText"
@@ -122,40 +107,9 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
-        android:id="@+id/tv_Circle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/tv_editbackground"
-        android:fontFamily="@font/comfortaa_regular"
-        android:gravity="center_horizontal"
-        android:hint="Your Circle"
-        android:textColor="@color/perple"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
-
-    <TextView
-        android:id="@+id/tv_operator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/tv_editbackground"
-        android:fontFamily="@font/comfortaa_regular"
-        android:gravity="center_horizontal"
-        android:hint="Your Operator"
-        android:textColor="@color/perple"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_Circle" />
-
-    <TextView
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:drawableEnd="@drawable/menu_arrow"
@@ -166,7 +120,60 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rechargePlan" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_rechargeAmount" />
+
+    <Button
+        android:id="@+id/btn_operator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/tv_editbackground"
+        android:fontFamily="@font/comfortaa_regular"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="Your Operator"
+        android:textAllCaps="false"
+        android:textColor="@color/perple"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_rechargeCircle" />
+
+    <Button
+        android:id="@+id/btn_rechargeCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/tv_editbackground"
+        android:ellipsize="end"
+        android:fontFamily="@font/comfortaa_regular"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="Your Circle"
+        android:maxLines="1"
+        android:textAllCaps="false"
+        android:textColor="@color/perple"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+    <Button
+        android:id="@+id/btn_rechargeAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/tv_editbackground"
+        android:fontFamily="@font/comfortaa_regular"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Amount"
+        android:textAllCaps="false"
+        android:textColor="@color/perple"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_operator" />
 
     <Button
         android:id="@+id/btn_Proceed"

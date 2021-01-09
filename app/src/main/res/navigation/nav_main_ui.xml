@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_ui__home" >
         <action
             android:id="@+id/action_ui_Home_to_recahrge_ui"
-            app:destination="@id/recahrge_ui" />
+            app:destination="@id/recahrge_ui"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/to_left_pop" />
     </fragment>
 
     <fragment
