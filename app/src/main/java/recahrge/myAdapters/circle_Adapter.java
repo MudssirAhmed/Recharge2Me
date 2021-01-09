@@ -7,15 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recharge2me.R;
-
-import recahrge.recharge_circle;
+import com.recharge2mePlay.recharge2me.R;
 
 public class circle_Adapter extends RecyclerView.Adapter<circle_Adapter.myViewHolder> {
 
@@ -67,7 +64,7 @@ public class circle_Adapter extends RecyclerView.Adapter<circle_Adapter.myViewHo
 
 
     // custom Interface
-
+    // Click Listner
     public interface ClickListener{
         public void onClick(View view, int position);
 //        public void onLongPress(View view, int position);
@@ -109,11 +106,8 @@ public class circle_Adapter extends RecyclerView.Adapter<circle_Adapter.myViewHo
         public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
             View child = rv.findChildViewUnder(e.getX(), e.getY());
-
             if(child!=null && clicklistener!=null && gestureDetector.onTouchEvent(e)){
-
                 clicklistener.onClick(child,rv.getChildAdapterPosition(child));
-
             }
 
             return false;

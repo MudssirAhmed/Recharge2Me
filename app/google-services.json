@@ -36,7 +36,44 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "113636748987-re8ht9630pre4ham9lragbtesi2jm5i2.apps.googleusercontent.com",
+              "client_id": "113636748987-er63f2dqf9ki4a10hvkineo2ejk6m2rc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113636748987:android:3d20d3911d25395dd5439e",
+        "android_client_info": {
+          "package_name": "com.recharge2mePlay.recharge2me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113636748987-0ve5ueeeibbu1r2d3qtbm3q5bffkt1ac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.recharge2mePlay.recharge2me",
+            "certificate_hash": "ceda3aee41f2d4f0ec8cfada552a5bca04567047"
+          }
+        },
+        {
+          "client_id": "113636748987-re8ht9630pre4ham9lragbtesi2jm5i2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQG7elPAQ-v5i__WlRRKp3TcffhAtm7EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113636748987-er63f2dqf9ki4a10hvkineo2ejk6m2rc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

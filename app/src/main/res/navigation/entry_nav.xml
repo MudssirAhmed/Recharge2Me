@@ -54,10 +54,6 @@
         <action
             android:id="@+id/action_signin_crearte_account_to_loginSignIn"
             app:destination="@id/loginSignIn" />
-        <action
-            android:id="@+id/action_signin_crearte_account_to_main_UserInterface"
-            app:destination="@id/main_UserInterface"
-            app:popUpToInclusive="false" />
     </fragment>
     <activity
         android:id="@+id/main_UserInterface"

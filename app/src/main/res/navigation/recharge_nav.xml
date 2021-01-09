@@ -17,6 +17,9 @@
             app:popEnterAnim="@anim/to_left_pop"
             app:popExitAnim="@anim/from_right_pop" />
         <argument android:name="recType" />
+        <action
+            android:id="@+id/action_prePaid3_to_contactList_activity"
+            app:destination="@id/contactList_activity" />
     </fragment>
     <fragment
         android:id="@+id/mobileDetailsFinder"
@@ -55,6 +58,25 @@
             android:name="operator"
             app:argType="string"
             android:defaultValue="Your Operator" />
+        <action
+            android:id="@+id/action_mobileDetailsFinder_to_recharge_Plan"
+            app:destination="@id/recharge_Plan"
+            app:enterAnim="@anim/to_right"
+            app:exitAnim="@anim/from_left"
+            app:popEnterAnim="@anim/to_left_pop"
+            app:popExitAnim="@anim/from_right_pop" />
+        <argument
+            android:name="numberData"
+            app:argType="local_Databasse.entity_numberDetails"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_mobileDetailsFinder_to_prePaid3"
+            app:destination="@id/prePaid3"
+            app:enterAnim="@anim/to_left_pop"
+            app:exitAnim="@anim/from_right_pop"
+            app:popUpTo="@id/prePaid3"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"
@@ -65,7 +87,10 @@
             android:id="@+id/action_recharge_circle_to_mobileDetailsFinder"
             app:destination="@id/mobileDetailsFinder"
             app:enterAnim="@anim/to_left_pop"
-            app:exitAnim="@anim/from_right_pop" />
+            app:exitAnim="@anim/from_right_pop"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/recharge_circle"
+            app:popUpToInclusive="true" />
         <argument android:name="userNumber"
             app:argType="string" />
     </fragment>
@@ -78,10 +103,23 @@
             android:id="@+id/action_recharge_selectOperator_to_mobileDetailsFinder"
             app:destination="@id/mobileDetailsFinder"
             app:enterAnim="@anim/to_left_pop"
-            app:exitAnim="@anim/from_right_pop" />
+            app:exitAnim="@anim/from_right_pop"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/recharge_selectOperator"
+            app:popUpToInclusive="true" />
         <argument
             android:name="userNoForOp"
             app:argType="string"
             android:defaultValue="userNoForOp" />
     </fragment>
+    <fragment
+        android:id="@+id/recharge_Plan"
+        android:name="recahrge.plans.recharge_Plan"
+        android:label="fragment_recharge__plan"
+        tools:layout="@layout/fragment_recharge__plan" />
+    <activity
+        android:id="@+id/contactList_activity"
+        android:name="recahrge.contactList.contactList_activity"
+        android:label="activity_contact_list"
+        tools:layout="@layout/activity_contact_list" />
 </navigation>

@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 
 public class operatorAdapter extends RecyclerView.Adapter<operatorAdapter.myViewHolder> {
 

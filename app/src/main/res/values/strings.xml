@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Recharge2Me</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="item">Item</string>
@@ -14,6 +13,10 @@
     <string name="send_reset_link">Send Reset Link</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
 
+    // RechApi
+    <string name="token">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
+    <string name="baseUrl_rechApi">http://api.rechapi.com/</string>
+
 
     <string-array name="circle">
         <item>Andhra Pradesh</item>
@@ -21,7 +24,7 @@
         <item>Bihar &amp; Jharkhand</item>
         <item>Chennai</item>
         <item>Delhi NCR</item>
-        <item>Gujrat</item>
+        <item>Gujarat</item>
         <item>Haryana</item>
         <item>Himachal Pradesh</item>
         <item>Jammu &amp; Kashmir</item>
@@ -42,12 +45,37 @@
     </string-array>
 
     <string-array name="operator">
-        <item>Vodafone Idea</item>
+        <item>Idea</item>
+        <item>Vodafone</item>
         <item>Airtel</item>
-        <item>Jio</item>
+        <item>Reliance Jio</item>
         <item>BSNL</item>
-        <item>MTNL Delhi NCR</item>
-        <item>MTNL Mumbai</item>
+    </string-array>
+
+    <string-array name="states">
+        <item>Delhi/NCR</item>
+        <item>Mumbai</item>
+        <item>Kolkata</item>
+        <item>Maharashtra</item>
+        <item>Andhra Pradesh</item>
+        <item>Tamil Nadu</item>
+        <item>Karnataka</item>
+        <item>Gujarat</item>
+        <item>Uttar Pradesh(E)</item>
+        <item>Madhya Pradesh</item>
+        <item>Uttar Pradesh(W)</item>
+        <item>West Bengal</item>
+        <item>Rajasthan</item>
+        <item>Kerala</item>
+        <item>Punjab</item>
+        <item>Haryana</item>
+        <item>Bihar &amp; Jharkhand</item>
+        <item>Orissa</item>
+        <item>Assam</item>
+        <item>North East</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Chennai</item>
     </string-array>
 
 </resources>

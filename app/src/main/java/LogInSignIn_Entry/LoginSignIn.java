@@ -1,8 +1,6 @@
 package LogInSignIn_Entry;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,16 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import com.example.recharge2me.R;
+import com.recharge2mePlay.recharge2me.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,10 +31,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import custom_Loading_Dialog.LoadingDialog;
+import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
+import LogInSignIn_Entry.DataTypes.Google_User_Details;
+import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
+import Global.custom_Loading_Dialog.LoadingDialog;
 
 
 public class LoginSignIn extends Fragment {
@@ -100,6 +94,7 @@ public class LoginSignIn extends Fragment {
             }
         });
 
+        // TODO Remove GoogleProfile feild from GooleUserDetails
         // This is an onClick listner on btnGoogle Button
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +102,7 @@ public class LoginSignIn extends Fragment {
                 goToLoginPage_FromGooleSignIn();
             }
         });
-
-
+        
         return view;
     }
 
@@ -126,6 +120,7 @@ public class LoginSignIn extends Fragment {
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient((EntryActivity) requireActivity(), gso);
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
@@ -142,16 +137,15 @@ public class LoginSignIn extends Fragment {
         }
     }
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
 
+        try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             loadingDialog.startLoading();
             FirebaseGoogleAuth(account);
-
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText((EntryActivity) requireActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText((EntryActivity) requireActivity(), "errf" + e.getStatusCode(), Toast.LENGTH_SHORT).show();
         }
     }
     private void FirebaseGoogleAuth(GoogleSignInAccount account) {
@@ -163,10 +157,7 @@ public class LoginSignIn extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
                             addSignInDataInFireStore();
-
-
                         } else {
                             Toast.makeText((EntryActivity) requireActivity(), "error! try Again...", Toast.LENGTH_SHORT).show();
                             loadingDialog.stopLoading();
@@ -175,8 +166,6 @@ public class LoginSignIn extends Fragment {
                 });
     }
     private void addSignInDataInFireStore(){
-
-
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getActivity());
         if (acct != null) {
@@ -187,12 +176,10 @@ public class LoginSignIn extends Fragment {
         }
 
 
-        CreateAccount_userDetails userDetails = new CreateAccount_userDetails(userName,userEmail);
+        CreateAccount_userDetails userDetails = new CreateAccount_userDetails(userName,userEmail,"0","0000000000");
         Google_User_Details googleDetails = new Google_User_Details(userId,userGooglePhotoUri.toString());
 
-        Map<String,Object> data = new HashMap<>();
-        data.put("userDetails",userDetails);
-        data.put("Google",googleDetails);
+        User_googleAndOwn data = new User_googleAndOwn(googleDetails, userDetails, mAuth.getUid(), 0);
 
 
         db.collection("USERS")
@@ -213,9 +200,6 @@ public class LoginSignIn extends Fragment {
                         loadingDialog.stopLoading();
                     }
                 });
-
-
-
     }
 
 
@@ -224,10 +208,15 @@ public class LoginSignIn extends Fragment {
         super.onStart();
 
         FirebaseUser user = mAuth.getCurrentUser();
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount((EntryActivity) requireActivity());
 
-        if(!user.equals(null)){
+        if(acct != null){
             Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
         }
+        else if (user != null){
+            Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
+        }
+
     }
 
     private void goToSignPage() {

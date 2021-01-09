@@ -7,26 +7,149 @@
     android:background="@color/whiteText"
     tools:context="Ui_Front_and_Back_end.Main_UserInterface">
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:visibility="gone"
+        app:headerLayout="@layout/nav_bar_header_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/nav_drawer_menu">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/imageView27"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="16dp"
+                    app:srcCompat="@drawable/shadow" />
+
+                <LinearLayout
+                    android:id="@+id/lL_navDrawer_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/nav_drawer_help_support" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/bold"
+                        android:paddingStart="25dp"
+                        android:text="Feedback"
+                        android:textColor="@color/primaryText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lL_tell_aFreind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/nav_drawer_tell_a_freind" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/bold"
+                        android:paddingLeft="25dp"
+                        android:text="Tell a Freind"
+                        android:textColor="@color/primaryText" />
+
+                </LinearLayout>
+
+                <!--                <LinearLayout-->
+                <!--                    android:id="@+id/lL__helpAndSupport"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginBottom="20dp"-->
+                <!--                    android:orientation="horizontal">-->
+
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="25dp"-->
+                <!--                        android:layout_height="25dp"-->
+                <!--                        android:background="@drawable/nav_drawer_help_support" />-->
+
+                <!--                    <TextView-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:fontFamily="@font/bold"-->
+                <!--                        android:paddingLeft="25dp"-->
+                <!--                        android:text="Help and Support"-->
+                <!--                        android:textColor="@color/primaryText"-->
+                <!--                        android:layout_gravity="center"/>-->
+                <!--                </LinearLayout>-->
+
+                <LinearLayout
+                    android:id="@+id/lL_policies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/policy" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bold"
+                        android:paddingLeft="25dp"
+                        android:text="Policies"
+                        android:textColor="@color/primaryText" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </com.google.android.material.navigation.NavigationView>
 
     <fragment
         android:id="@+id/nhf_mainUi"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/bnv_mainUi"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:navGraph="@navigation/nav_main_ui" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_mainUi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/nav_back"
         app:itemIconTint="@color/perple"
         app:itemTextColor="@color/perple"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +157,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/nav_bar_menu">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/bottom_navigation_background" />
+
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-
+    <ImageView
+        android:id="@+id/iv_navIcon_mainUi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/nav_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

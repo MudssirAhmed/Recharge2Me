@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/ui_Profile"
+        android:title="Profile"
+        android:icon="@drawable/nav_drawer_profile" />
+    <item
+        android:id="@+id/ui_Home"
+        android:title="Home"
+        android:icon="@drawable/nav_drawer_home"/>
+    <item
+        android:id="@+id/ui_Transactions"
+        android:title="Transactions"
+        android:icon="@drawable/nav_drawer_transactions"/>
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"
+        android:icon="@drawable/settings"/>
+    <item
+        android:id="@+id/drawer_signOut"
+        android:title="Sign Out"
+        android:icon="@drawable/nav_drawer_sign_out"/>
+
+
+
+
+
+</menu>
