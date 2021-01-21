@@ -154,7 +154,6 @@ public class MobileDetailsFinder extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_mobile_details_finder, container, false);
 
-        // TODO get providrs Data from Database and add token feild in providrsDatabase
 
         // TextView
         tv_mobileNumber = view.findViewById(R.id.tv_mobileNumber);
@@ -236,35 +235,33 @@ public class MobileDetailsFinder extends Fragment {
 
                  findDataInDataBase(tv_mobileNumber.getText().toString());
 
-                Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
+//                Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
+//                intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
+//                intent.putExtra("Operator", btn_operator.getText().toString().trim());
+//                intent.putExtra("circle", btn_circle.getText().toString().trim());
+//                intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
+//                intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
+//                startActivity(intent);
 
-                intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
-                intent.putExtra("Operator", btn_operator.getText().toString().trim());
-                intent.putExtra("circle", btn_circle.getText().toString().trim());
-                intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
-                intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
+                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
+                     customToast.showToast("Please select plan First!");
+                 else {
+                     if(isNetworkAvailable()){
 
-                startActivity(intent);
+                         Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
 
-//                 if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
-//                     customToast.showToast("Please select plan First!");
-//                 else {
-//                     if(isNetworkAvailable()){
-//
-//                         Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
-//
-//                         intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
-//                         intent.putExtra("Operator", btn_operator.getText().toString().trim());
-//                         intent.putExtra("circle", btn_circle.getText().toString().trim());
-//                         intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
-//                         intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
-//
-//                         startActivity(intent);
-//                     }
-//                     else {
-//                         customToast.showToast("Please Check Your Internet Connection!...");
-//                     }
-//                 }
+                         intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
+                         intent.putExtra("Operator", btn_operator.getText().toString().trim());
+                         intent.putExtra("circle", btn_circle.getText().toString().trim());
+                         intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
+                         intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
+
+                         startActivity(intent);
+                     }
+                     else {
+                         customToast.showToast("Please Check Your Internet Connection!...");
+                     }
+                 }
 
             }
         });
@@ -300,49 +297,6 @@ public class MobileDetailsFinder extends Fragment {
         return view;
     } // End of OnCreteView method;
 
-    private void sendNotification(){
-
-        Context contextNotification = getActivity().getApplicationContext();
-        final String CHANNEL_ID = "15";
-        final int notificationId = 123;
-        String Title = "Recharge2me";
-        String Subject = "prepaid recharge";
-        String ContentText = "recharge successful on +91 8477055721";
-
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(getActivity(), NotificationTransactionDetails.class);
-        intent.putExtra("OrderId", "order23234234");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.logo_transparent_background)
-                .setColor(R.color.perple)
-                .setContentTitle(Title)
-                .setContentText(ContentText)
-                .setFullScreenIntent(pendingIntent, true)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Recharge2me";
-            String description = "Prepaid recharge";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = contextNotification.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
-
-// notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notificationId, builder.build());
-    }
 
     private void setOperatorText(String operator){
         switch (operator){
@@ -607,417 +561,9 @@ public class MobileDetailsFinder extends Fragment {
 
         numberViewModel.updateNumberData(numberDetails);
     } // This will update the numberData in Database
-    // These functions are for showAlertDialog, payments and recharge
-        private void getAuthToken_pay2All(){
-        try {
-            loadingDialog.startLoading();
-            // Init Retrofit
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://recharge2me.herokuapp.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
 
-            // Init JsonConverter Interface
-            jsonConvertor = retrofit.create(JsonConvertor.class);
 
-            Call<Pay2All_authToken> call = jsonConvertor.getAuthToken("4zyhto93736jhskn56_htyxt", "4znthyt");
-            call.enqueue(new Callback<Pay2All_authToken>() {
-                @Override
-                public void onResponse(Call<Pay2All_authToken> call, Response<Pay2All_authToken> response) {
-                    if(!response.isSuccessful()){
-                        customToast.showToast("Error! " + response.code());
-                        loadingDialog.stopLoading();
-                        return;
-                    }
 
-                    try {
-                        Pay2All_authToken data = response.body();
-
-                        String authToken = data.getToken();
-                        int ballance = data.getBallance();
-
-                        String rechargeAmt = btn_recahargeAmount.getText().toString().trim();
-
-                        String s = "";
-
-                        char[] chars = rechargeAmt.toCharArray();
-                        for(int i=1; i<chars.length; i++){
-                            s += chars[i];
-                        }
-
-                        int rechargeAmount = Integer.parseInt(s);
-
-                        if(isNetworkAvailable()){
-                            loadingDialog.stopLoading();
-                            if(ballance < rechargeAmount){
-                                customToast.showToast("Error! please try again later");
-                            }
-                            else{
-                                String operator = btn_operator.getText().toString().trim();
-                                String opId = getOpId(btn_operator.getText().toString().trim());
-                                showAlertDialog(operator, authToken, rechargeAmt);
-                            }
-                        }
-                        else {
-                            customToast.showToast("Please Check Your Internet Connection!...");
-                            loadingDialog.stopLoading();
-                        }
-                    }
-                    catch (Exception e){
-                        loadingDialog.stopLoading();
-                        customToast.showToast("Error! " + e.getMessage());
-                    }
-
-                }
-                @Override
-                public void onFailure(Call<Pay2All_authToken> call, Throwable t) {
-                    customToast.showToast("Error! " + t.getMessage());
-                    loadingDialog.stopLoading();
-                }
-            });
-        }
-        catch (Exception e){
-            customToast.showToast("Error! " + e.getMessage());
-            loadingDialog.stopLoading();
-        }
-
-    }// This will fetch the Auth Token
-        private void showAlertDialog(String Operator, String Token, String Amount){
-
-        try {
-            // These are entities which shown on AlertDialog
-            String number = tv_mobileNumber.getText().toString();
-            String circle = btn_circle.getText().toString();
-            String operator = btn_operator.getText().toString().trim();
-
-            // make an object of proceedDialog
-            proceedDialog = new proceedDialog((recharge_ui) requireActivity());
-            Dialog dialog = proceedDialog.showProceedDialog(number, circle, operator, Amount, Details_dialoge, Validity_dialoge);
-
-            // proceedToPayment onClick Listner
-            String finalAmount = Amount;
-            dialog.findViewById(R.id.btn_dialogProceed).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                    if(isNetworkAvailable()){
-                        Toast.makeText((recharge_ui) requireActivity(), "Please Wait", Toast.LENGTH_SHORT).show();
-                        getPaymentsPaytm(Token);
-                    }
-                    else {
-                        customToast.showToast("Please Check Your Internet Connection!...");
-                    }
-
-                }
-            });
-
-        }
-        catch (Exception e){
-            customToast.showToast("Error! " + e.getMessage());
-        }
-
-    }// This will show the alert Dailoge to user.
-    // Paytm get paymnets
-        private void getPaymentsPaytm(String pay2AllToken){
-
-            String Amount = getTxtAnmount();
-
-            if(Amount == null){
-                return;
-            }
-
-            loadingDialog.startLoading();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://recharge2me.herokuapp.com/paytm/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            jsonConvertor = retrofit.create(JsonConvertor.class);
-
-            String orderId = getOrderId();
-
-            Call<PaytmToken> call = jsonConvertor.getPaytmTransactionToken(orderId, Amount, mAuth.getUid());
-//            Call<PaytmToken> call = jsonConvertor.getPaytmTransactionToken_staging(orderId, Amount, mAuth.getUid());
-
-            String finalAmount = Amount;
-
-            call.enqueue(new Callback<PaytmToken>() {
-                @Override
-                public void onResponse(Call<PaytmToken> call, Response<PaytmToken> response) {
-
-                    if(!response.isSuccessful()){
-                        customToast.showToast("Error! code: " + response.code());
-                        loadingDialog.stopLoading();
-                        return;
-                    }
-
-                    PaytmToken data = response.body();
-                    PaytmToken.Body body = data.getBody();
-                    String txnTokken = body.getTxnToken();
-
-                    startPaytmOrder(txnTokken, finalAmount, orderId, pay2AllToken);
-                }
-
-                @Override
-                public void onFailure(Call<PaytmToken> call, Throwable t) {
-                    customToast.showToast("Error! " + t.getMessage());
-                    loadingDialog.stopLoading();
-                }
-            });
-        }
-        private void startPaytmOrder(String token, String amount, String orderId, String pay2AllToken){
-
-
-            // poduction
-            String mid = "SIOyvP79178006245450";
-            String host = "\"https://securegw.paytm.in";
-
-            // Staging
-//            String host = "https://securegw-stage.paytm.in/";
-//            String mid = "HoZxEG20631541828490";
-
-            String callBackUrl = host + "/theia/paytmCallback?ORDER_ID="+orderId;
-            PaytmOrder paytmOrder = new PaytmOrder(orderId, mid, token, amount, callBackUrl);
-
-            loadingDialog.stopLoading();
-
-            TransactionManager transactionManager = new TransactionManager(paytmOrder, new PaytmPaymentTransactionCallback() {
-                @Override
-                public void onTransactionResponse(Bundle bundle) {
-
-                    String ORDERID = bundle.getString("ORDERID");
-                    String TXNID = bundle.getString("TXNID");
-                    String TXNAMOUNT = bundle.getString("TXNAMOUNT");
-                    String TXNDATE = bundle.getString("TXNDATE");
-
-                    String RESPCODE = bundle.getString("RESPCODE");
-                    String RESPMSG = bundle.getString("RESPMSG");
-
-                    if(RESPCODE.equals("01")){
-                        setOrderData(ORDERID, TXNID, TXNAMOUNT, "",
-                                TXNDATE, RESPCODE, RESPMSG);
-                    }
-                    else {
-                        tv_mF_planDetails.setText(RESPMSG);
-                        customToast.showToast("Error! please try again later");
-                    }
-
-                }
-
-                @Override
-                public void networkNotAvailable() {
-                    customToast.showToast("nerwork not avialable");
-                }
-
-                @Override
-                public void onErrorProceed(String s) {
-                    customToast.showToast("onErrorProceed! " + s);
-                }
-
-                @Override
-                public void clientAuthenticationFailed(String s) {
-                    customToast.showToast("Error! " + s);
-                }
-
-                @Override
-                public void someUIErrorOccurred(String s) {
-                    customToast.showToast("someUIErrorOccurred! " + s);
-                }
-
-                @Override
-                public void onErrorLoadingWebPage(int i, String s, String s1) {
-                    customToast.showToast("Error! " + s + "\n" + s1);
-                }
-
-                @Override
-                public void onBackPressedCancelTransaction() {
-                    customToast.showToast("Transaction Cancled");
-                }
-
-                @Override
-                public void onTransactionCancel(String s, Bundle bundle) {
-                    customToast.showToast("onTransactionCancel " + s);
-                }
-            });// code statement);
-
-            Log.i("Response: ", "after");
-
-            transactionManager.startTransaction(getActivity(), ActivityRequestCode);
-
-            Log.i("Response: ", "before");
-        }
-        private void getTransactonStatus(String ORDERID, String pay2AllToken){
-
-        // TODO: when any error occured then save orderId in firebase for further operations
-            loadingDialog.startLoading();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://recharge2me.herokuapp.com/Paytm/")
-                    .addConverterFactory(GsonConverterFactory
-                    .create())
-                    .build();
-
-            jsonConvertor = retrofit.create(JsonConvertor.class);
-
-            Call<PaytmTransactionStatus> call = jsonConvertor.getPaytmTransactionStatus(ORDERID);
-
-            call.enqueue(new Callback<PaytmTransactionStatus>() {
-                @Override
-                public void onResponse(Call<PaytmTransactionStatus> call, Response<PaytmTransactionStatus> response) {
-                    if(!response.isSuccessful()){
-                        customToast.showToast("Error!  " + response.code());
-                        loadingDialog.stopLoading();
-                        return;
-                    }
-
-                    PaytmTransactionStatus data = response.body();
-                    PaytmTransactionStatus.Body body = data.getBody();
-                    PaytmTransactionStatus.Body.ResultInfo resultInfo = body.getResultInfo();
-
-                    String RESPCODE = resultInfo.getResultCode();
-                    String RESPMSG = resultInfo.getResultMsg();
-
-                    String TXNID = body.getTxnId();
-                    String TXNAMOUNT = body.getTxnAmount();
-                    String REFAMOUNT = body.getRefundAmt();
-                    String TXNDATE = body.getTxnDate();
-
-//                    setOrderData(ORDERID, TXNID, TXNAMOUNT, REFAMOUNT, TXNDATE, RESPCODE, RESPMSG);
-
-                }
-
-                @Override
-                public void onFailure(Call<PaytmTransactionStatus> call, Throwable t) {
-                    customToast.showToast("Error! ** " + t.getMessage());
-                    loadingDialog.stopLoading();
-                }
-            });
-
-        }
-    // set paytm orderData in DataBbase
-        private void setOrderData(String ORDERID, String paytm_TXNID, String paytm_TXNAMOUNT, String paytm_REFAMOUNT, String paytm_TXNDATE, String
-                paytm_RESPCODE, String paytm_RESPMSG){
-
-            String Amount = btn_recahargeAmount.getText().toString().trim();
-            String operator = btn_operator.getText().toString().trim();
-            String Number = tv_mobileNumber.getText().toString().trim();
-            String Details = tv_mF_planDetails.getText().toString().trim();
-
-
-            PaytmTransactionData paytm = new PaytmTransactionData(paytm_RESPCODE, paytm_RESPMSG, paytm_TXNID, paytm_TXNAMOUNT, paytm_REFAMOUNT, paytm_TXNDATE);
-
-            // TODO remove number, operator, amount and details from Pay2allRecharge_firebase class
-            Map<String, Object> order = new HashMap<>();
-            order.put("Paytm", paytm);
-            order.put("amount", Amount);
-            order.put("operator", operator);
-            order.put("number", Number);
-            order.put("details", Details);
-
-
-            DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
-
-            docRef.collection("Transactions")
-                    .document(ORDERID)
-                    .set(order)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                            Toast.makeText((recharge_ui) requireActivity(),"save",Toast.LENGTH_SHORT).show();
-//                            loadingDialog.stopLoading();
-
-//                            doRecharge(pay2allToken, "", "", "");
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    setOrderData(ORDERID, paytm_TXNID, paytm_TXNAMOUNT, paytm_REFAMOUNT, paytm_TXNDATE, paytm_RESPCODE, paytm_RESPMSG);
-                }
-            });
-
-        }
-    // Get Payments before do Recharge Process
-        private void doRecharge(String Token, String Number, String Amount, String ProviderId){
-
-            loadingDialog.startLoading();
-
-            // Init Retrofit
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://recharge2me.herokuapp.com/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            // Init JsonConverter Interface
-            jsonConvertor = retrofit.create(JsonConvertor.class);
-
-            Call<Pay2All_recharge> call = jsonConvertor.doRecharge(Token, Number, Amount, ProviderId, "UID_923749237492");
-            call.enqueue(new Callback<Pay2All_recharge>() {
-                @Override
-                public void onResponse(Call<Pay2All_recharge> call, Response<Pay2All_recharge> response) {
-
-                    if(!response.isSuccessful()){
-                        customToast.showToast(String.valueOf(response.code()));
-                        Log.d("Fail", "" + response.body() + response.code());
-                        loadingDialog.stopLoading();
-                        return;
-                    }
-
-                    Pay2All_recharge recharge = response.body();
-
-                    Log.d("sucess", "" + response.body());
-
-                    //    "status": 2,
-                    //    "status_id": 2,
-                    //    "utr": "",
-                    //    "report_id": "",
-                    //    "orderid": "",
-                    //    "message": "Check Wallet"
-
-                    tv_mF_planDetails.setText("Status: " + recharge.getStatus()
-                            +"\nstatus_id: " + recharge.getStatus_id() +
-                            "\nutr: " + recharge.getUtr() +
-                            "\nreport_id: " + recharge.getReport_id() +
-                            "\norderId: " + recharge.getOrderid() +
-                            "\nmessage: " + recharge.getMessage() +
-                            "\nresponceCode: " + response.code());
-
-                    loadingDialog.stopLoading();
-
-                }
-
-                @Override
-                public void onFailure(Call<Pay2All_recharge> call, Throwable t) {
-    //                Toast.makeText((recharge_ui) requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-                    customToast.showToast(t.getMessage());
-                    Log.d("exceptionOnFail", "" + t.getMessage());
-                    loadingDialog.stopLoading();
-                }
-            });
-
-    }// Do Recharge
-
-
-
-    private String getTxtAnmount(){
-
-        if(btn_recahargeAmount.getText().toString().equals("Amount")){
-            customToast.showToast("Please select plan ");
-            return null;
-        }
-        else{
-            String amount = btn_recahargeAmount.getText().toString().trim();
-            char[] charArray = amount.toCharArray();
-            amount = "";
-            for (int i = 1; i <charArray.length; i++){
-                amount += charArray[i];
-            }
-            amount += ".00";
-            return amount;
-        }
-    }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 =  (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1025,67 +571,13 @@ public class MobileDetailsFinder extends Fragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-    private String getOrderId() {
-        DateFormat dateFormat = new SimpleDateFormat("_ddMMyyyyHHmmss");
-        Date date = new Date();
-
-        String dateTime =  dateFormat.format(date);
-        String uid = mAuth.getUid();
-
-        String orderId = uid.substring(0, (uid.length()/2)) + dateTime;
-
-        Log.i("orderid", orderId);
-
-        return orderId;
-    }
 
 
-    private void getCounterInUserProfile(DocumentReference docRef){
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User_googleAndOwn data = documentSnapshot.toObject(User_googleAndOwn.class);
-                int count = data.getTransaction();
-                setCounterToUserProfile(docRef, count, data);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-    }
-    private void setCounterToUserProfile(DocumentReference docRef, int count, User_googleAndOwn data){
-        count += 1;
-        Log.i("Counter", "Count: " + count);
-
-        data.setTransaction(count);
-
-        docRef.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText((recharge_ui) requireActivity(),"save",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-    }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ActivityRequestCode && data != null) {
-            Toast.makeText((recharge_ui) requireActivity(), "Error: " + data.getStringExtra("nativeSdkForMerchantMessage") +
-                    data.getStringExtra("response"), Toast.LENGTH_SHORT).show();
-
-            Log.i("Response", "Data: " + data.getStringExtra("response"));
-        }
 
         // when user come from planfragment
         if(requestCode == GOTO_PLAN){
@@ -1108,15 +600,6 @@ public class MobileDetailsFinder extends Fragment {
     } // End of onActivityResult
 
     // opId for pay2All
-    private String getOpId(String key){
-        Map<String, String> operators = new HashMap<>();
-        operators.put("AIRTEL", "1");
-        operators.put("VODAFONE", "2");
-        operators.put("IDEA", "3");
-        operators.put("BSNL", "8");
-        operators.put("Jio", "88");
-        return operators.get(key);
-    }
     // operatod Data/codes
     private String operatorData(String key){
 
@@ -1124,6 +607,7 @@ public class MobileDetailsFinder extends Fragment {
 
         op.put("AIRTEL", "1");
         op.put("Vodafone Idea", "10");
+        op.put("VODAFONE", "10");
         op.put("IDEA", "10");
         op.put("Jio", "93");
         op.put("BSNL", "4");

@@ -13,6 +13,7 @@
     <string name="send_reset_link">Send Reset Link</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
 
+    //facebook 
     // RechApi
     <string name="token">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
     <string name="baseUrl_rechApi">http://api.rechapi.com/</string>

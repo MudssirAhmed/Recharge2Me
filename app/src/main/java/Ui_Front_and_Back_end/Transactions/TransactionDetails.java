@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +27,9 @@ import com.recharge2mePlay.recharge2me.R;
 
 import Ui_Front_and_Back_end.Main_UserInterface;
 import recahrge.DataTypes.rechargeFirbase.Order;
-import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
-import recahrge.DataTypes.rechargeFirbase.Pay2All_status;
-import recahrge.DataTypes.rechargeFirbase.Paytm_transactonStatus;
+import recahrge.DataTypes.rechargeFirbase.Pay2All.Pay2All_rechargeFirebase;
+import recahrge.DataTypes.rechargeFirbase.Paytm.PaytmRefundData;
+import recahrge.DataTypes.rechargeFirbase.Paytm.PaytmTransactionData;
 
 
 public class TransactionDetails extends Fragment {
@@ -71,7 +70,7 @@ public class TransactionDetails extends Fragment {
         view = inflater.inflate(R.layout.fragment_transaction_details, container, false);
 
         // ImageView
-        iv_cross = view.findViewById(R.id.ic_txnDetNot_cross);
+        iv_cross = view.findViewById(R.id.iv_txnDetNot_cross);
         iv_rechargeOperator = view.findViewById(R.id.iv_txnDetNot_operator);
         iv_paymentSuccess = view.findViewById(R.id.iv_txnDetNot_paymentSuccess);
         iv_paymentAccepted = view.findViewById(R.id.iv_txnDetNot_paymentAccepted);
@@ -106,7 +105,6 @@ public class TransactionDetails extends Fragment {
                 gotoHomeUi();
             }
         });
-
         cL_contactR2m.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,14 +133,19 @@ public class TransactionDetails extends Fragment {
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Order order = documentSnapshot.toObject(Order.class);
+                    if(documentSnapshot.exists()){
+                        Order order = documentSnapshot.toObject(Order.class);
+                        setOrderData(order);
+                    }
+                    else {
+                        pb_load.setVisibility(View.GONE);
+                    }
 
-                    setOrderData(order);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
+                    pb_load.setVisibility(View.GONE);
                 }
             });
         }
@@ -151,21 +154,15 @@ public class TransactionDetails extends Fragment {
     private void setOrderData(Order order){
 
         String operator = order.getOperator();
-        String amount = order.getAmount();
+        String amount_1 = order.getRecAmt();
+        String amount_2 = order.getPaytm().getTXNAMOUNT();
         String number = order.getNumber();
-        String details = order.getDetails();
-
-        Pay2All_rechargeFirebase recharge = order.getRecharge();
-        Pay2All_status status = order.getStatus();
-
-        Paytm_transactonStatus transactonStatus = order.getTransactonStatus();
+        String details = order.getRecDet();
 
         // first set recharge data
         setOperator(operator);
-        setRechargeDetails(operator, amount, number, details);
-
-        setTransactionStatus(transactonStatus, recharge, status); // step 2: set Transaction status
-
+        setRechargeDetails(operator, amount_1, amount_2, number, details);
+        setTransactionDetails(order);
 
         pb_load.setVisibility(View.GONE);
         iv_serverDown.setVisibility(View.GONE);
@@ -190,76 +187,66 @@ public class TransactionDetails extends Fragment {
         }
 
     }
-    private void setRechargeDetails(String operator, String amount, String number, String details){
+    private void setRechargeDetails(String operator, String amount_1, String amount_2, String number, String details){
 
-        tv_txnAmt_1.setText(amount);
+        tv_txnAmt_1.setText("₹ " + amount_1);
         tv_txnNumber.setText("+91 " + number);
         tv_txnDetails.setText(details);
-        tv_txnAmt_2.setText(amount);
+        tv_txnAmt_2.setText("₹ " + amount_2);
         tv_txnOrderId.setText(orderId);
     }
 
+    private void setTransactionDetails(Order order){
 
-    private void setTransactionStatus(Paytm_transactonStatus transactonStatus, Pay2All_rechargeFirebase recharge,
-                                      Pay2All_status status){
+        String paytmStatus = order.getPaytmStatus();
 
-        String resultCode = transactonStatus.getResultCode();
-        String resultStatus = transactonStatus.getResultStatus();
-        String resultMessage = transactonStatus.getResultMsg();
+        if(paytmStatus.equals("1")){
+            PaytmTransactionData paytmData = order.getPaytm();
+            String resCode = paytmData.getRESPCODE();
+            if(resCode.equals("01")){
+                iv_paymentSuccess.setImageResource(R.drawable.verified);
+                iv_paymentAccepted.setImageResource(R.drawable.verified);
+                String pay2allStatus = order.getPay2allStatus();
+                if(pay2allStatus.equals("1")){
+                    Pay2All_rechargeFirebase pay2all = order.getPay2all();
+                    int statusId = pay2all.getStatus_id();
+                    String message = pay2all.getMessage();
+                    String utr = pay2all.getUtr();
 
-        switch (resultCode){
-            case "01":  iv_paymentSuccess.setImageResource(R.drawable.verified);
-                iv_paymentAccepted.setImageResource(R.drawable.verified); // if only transaction is success then do/chek recharge
-                setPay2allRechargeDetails(recharge, status); // step 3: set Recharge details
-                break;
-        }
+                    if(statusId == 0 || statusId == 1){ // success
+                        iv_rechargeSuccess.setImageResource(R.drawable.verified);
+                        tv_txnUtr.setText(pay2all.getUtr());
+                    }
+                    else if(statusId == 2){// Failed
+                        iv_rechargeSuccess.setImageResource(R.drawable.verified_shadow);
+                        tv_txnMessage.setText(message);
+                    }
+                    else if(statusId == 3){ // in Pending state
+                        iv_rechargeSuccess.setImageResource(R.drawable.verified_shadow);
+                        tv_txnMessage.setText(message);
+                    }
 
-        if(!resultMessage.equals("Txn Success")){
-            tv_txnMessage.setVisibility(View.VISIBLE);
-            tv_txnMessage.setText(resultMessage);
-        }
+                    String PaytmrefundStatus = order.getPaytmRefundStatus();
+                    if(PaytmrefundStatus.equals("1")){
+                        PaytmRefundData refundData = order.getPaytmRefund();
+                        String refundStatus = refundData.getRefundStatus();
 
-    }
+                        if(refundStatus.equals("1")){
+                            String resultmsg = refundData.getResultMsg();
+                            String ExpectedDate = refundData.getExpectedDate();
 
+                            tv_txnMessage.setText(resultmsg + "\nExpected Date: " + ExpectedDate);
 
-    private void setPay2allRechargeDetails(Pay2All_rechargeFirebase recharge, Pay2All_status status){
-
-        String statusId = recharge.getStatus_id();
-        String message = recharge.getMessage();
-        String utr = recharge.getUtr();
-
-        Log.i("statusidpay2all", statusId);
-
-        if(statusId.equals("0") || statusId.equals("1")){ // success
-            iv_rechargeSuccess.setImageResource(R.drawable.verified);
-        }
-        else if(statusId.equals("2")){// Failed
-            iv_rechargeSuccess.setImageResource(R.drawable.verified_shadow);
-            tv_txnMessage.setText(message);
-        }
-        else if(statusId.equals("3")){ // in Pending state
-            iv_rechargeSuccess.setImageResource(R.drawable.verified_shadow);
-            tv_txnMessage.setText(message);
-//            setRechargeStatus_pay2all_status(status);
-        }
-
-        tv_txnUtr.setText(utr);
-    }
-    private void setRechargeStatus_pay2all_status(Pay2All_status status){
-
-        String statusId = status.getStatus_id();
-
-        if(statusId.equals("0") || statusId.equals("1")){// Success
-            iv_rechargeSuccess.setImageResource(R.drawable.verified);
-        }
-        else if(statusId.equals("2")){ // failed
-            tv_txnMessage.setText("Recharge Failed");
-        }
-        else if(statusId.equals("3")){ // pending
-            tv_txnMessage.setText("Recharge is in pending state");
-        }
-        else if(statusId.equals("4")){ // refund
-            tv_txnMessage.setText("Refund request raised");
+                        }
+                        else {
+                            tv_txnMessage.setText(refundData.getResultMsg());
+                        }
+                    }
+                }
+            }
+            else {
+                tv_txnMessage.setText(paytmData.getRESPMSG());
+            }
         }
 
     }

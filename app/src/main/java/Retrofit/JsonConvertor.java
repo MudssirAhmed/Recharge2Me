@@ -2,6 +2,7 @@ package Retrofit;
 
 import java.util.Map;
 
+import Ui_Front_and_Back_end.firebase.DeleteUser;
 import recahrge.DataTypes.planDataTypes.PlanData;
 import recahrge.DataTypes.Paye2All.Pay2All_authToken;
 import recahrge.DataTypes.Paye2All.Pay2All_providers;
@@ -51,34 +52,32 @@ public interface JsonConvertor {
 
     @GET("recharge")
     Call<Pay2All_recharge> doRecharge(
-            @Query("token") String Token,
-            @Query("number") String Number,
-            @Query("amount") String Amount,
-            @Query("provider_id") String ProviderId,
-            @Query("client_id") String ClientId
+            @Query("number") String number,
+            @Query("amount") String amount,
+            @Query("providerId") String providerId,
+            @Query("clientId") String orderId
     );
 
     @POST("token") // Production
     Call<PaytmToken> getPaytmTransactionToken(
             @Query("orderId") String orderId,
             @Query("amount") String amount,
-            @Query("uid") String uid
-    );
+            @Query("uid") String uid,
 
-    @GET("tokenStaging") // Staging
-    Call<PaytmToken> getPaytmTransactionToken_staging(
-            @Query("orderId") String orderId,
-            @Query("amount") String amount,
-            @Query("uid") String uid
-    );
+            @Query("recAmt") String recAmt,
+            @Query("recDet") String recDet,
+            @Query("number") String number,
+            @Query("operator") String operator,
+            @Query("opId") String opId
+            );
 
     @POST("getTransactionStatus") // Production
     Call<PaytmTransactionStatus> getPaytmTransactionStatus(
             @Query("orderID") String orderID
     );
 
-    @GET("getTransactionStatusStaging") // Staging
-    Call<PaytmTransactionStatus> getPaytmTransactionStatus_staging(
-            @Query("orderID") String orderID
+    @POST("delete")
+    Call<DeleteUser> deleteUser(
+            @Query("uid") String uid
     );
 }

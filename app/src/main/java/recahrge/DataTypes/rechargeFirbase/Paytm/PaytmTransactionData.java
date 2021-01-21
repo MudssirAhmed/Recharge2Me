@@ -4,30 +4,32 @@ import recahrge.paytm.PaytmTransactionStatus;
 
 public class PaytmTransactionData {
 
-    //        order.put("ORDERID", paytm_ORDERID);
-    //        order.put("RESPCODE", paytm_RESPCODE);
-    //        order.put("RESPMSG", paytm_RESPMSG);
-    //        order.put("TXNID", paytm_TXNID);
-    //        order.put("TXNAMOUNT", paytm_TXNAMOUNT);
-    //        order.put("REFAMOUNT", paytm_REFAMOUNT);
-    //        order.put("TXNDATE", paytm_TXNDATE);
-
+    String ORDERID;
     String RESPCODE;
     String RESPMSG;
-    String TXNID;
+    String STATUS;
     String TXNAMOUNT;
-    String REFAMOUNT;
-    String TXNDATE ;
+    String TXNDATETIME;
+    String TXNID;
 
     public PaytmTransactionData(){}
 
-    public PaytmTransactionData(String RESPCODE, String RESPMSG, String TXNID, String TXNAMOUNT, String REFAMOUNT, String TXNDATE) {
+    public PaytmTransactionData(String ORDERID, String RESPCODE, String RESPMSG, String STATUS, String TXNAMOUNT, String TXNDATETIME, String TXNID) {
+        this.ORDERID = ORDERID;
         this.RESPCODE = RESPCODE;
         this.RESPMSG = RESPMSG;
-        this.TXNID = TXNID;
+        this.STATUS = STATUS;
         this.TXNAMOUNT = TXNAMOUNT;
-        this.REFAMOUNT = REFAMOUNT;
-        this.TXNDATE = TXNDATE;
+        this.TXNDATETIME = TXNDATETIME;
+        this.TXNID = TXNID;
+    }
+
+    public String getORDERID() {
+        return ORDERID;
+    }
+
+    public void setORDERID(String ORDERID) {
+        this.ORDERID = ORDERID;
     }
 
     public String getRESPCODE() {
@@ -46,12 +48,12 @@ public class PaytmTransactionData {
         this.RESPMSG = RESPMSG;
     }
 
-    public String getTXNID() {
-        return TXNID;
+    public String getSTATUS() {
+        return STATUS;
     }
 
-    public void setTXNID(String TXNID) {
-        this.TXNID = TXNID;
+    public void setSTATUS(String STATUS) {
+        this.STATUS = STATUS;
     }
 
     public String getTXNAMOUNT() {
@@ -62,19 +64,19 @@ public class PaytmTransactionData {
         this.TXNAMOUNT = TXNAMOUNT;
     }
 
-    public String getREFAMOUNT() {
-        return REFAMOUNT;
+    public String getTXNDATETIME() {
+        return TXNDATETIME;
     }
 
-    public void setREFAMOUNT(String REFAMOUNT) {
-        this.REFAMOUNT = REFAMOUNT;
+    public void setTXNDATETIME(String TXNDATETIME) {
+        this.TXNDATETIME = TXNDATETIME;
     }
 
-    public String getTXNDATE() {
-        return TXNDATE;
+    public String getTXNID() {
+        return TXNID;
     }
 
-    public void setTXNDATE(String TXNDATE) {
-        this.TXNDATE = TXNDATE;
+    public void setTXNID(String TXNID) {
+        this.TXNID = TXNID;
     }
 }

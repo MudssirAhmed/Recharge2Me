@@ -1,7 +1,10 @@
 package Ui_Front_and_Back_end;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,13 +23,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,12 +50,17 @@ import java.util.List;
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.proceedDialog;
+import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
+import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
 import recahrge.DataTypes.rechargeFirbase.Order;
 
 public class Ui_Home extends Fragment {
 
     View view;
+
+    TextView tv_rewards;
 
     ImageView iv_prePaid,
               iv_postPaid;
@@ -64,6 +80,7 @@ public class Ui_Home extends Fragment {
 
     MyAnimation animation;
 
+    // Customs
     LoadingDialog loadingDialog;
     CustomToast toast;
 
@@ -82,6 +99,17 @@ public class Ui_Home extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_ui__home, container, false);
 
+//        //Facebook adds
+//        adView = new AdView(getActivity(), "IMG_16_9_APP_INSTALL#748059209467827_748063486134066", AdSize.BANNER_HEIGHT_50);
+//        // Find the Ad Container
+//        LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.fragContainer);
+//        // Add the ad view to your activity layout
+//        adContainer.addView(adView);
+//        // Request an ad
+//        adView.loadAd();
+
+        //TextView
+        tv_rewards = view.findViewById(R.id.tv_home_rewards);
 
         // ImageView
         iv_postPaid = view.findViewById(R.id.iv_postPaid);
@@ -116,15 +144,17 @@ public class Ui_Home extends Fragment {
         iv_prePaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prePaid(iv_prePaid);
+                FirebaseUser user = mAuth.getCurrentUser();
+                if(user != null){
+                    prePaid(iv_prePaid);
+                }
             }
         });
-        iv_postPaid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                prePaid(iv_postPaid);
-            }
-        });
+//        iv_postPaid.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//        });
 
 
         // These are for anime back the drawe if it is visible
@@ -159,10 +189,29 @@ public class Ui_Home extends Fragment {
 
 
         getRechargeData();
+        setRewardsData();
 
         return view;
     }// End of onCreate()
 
+    private void setRewardsData(){
+        DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User_googleAndOwn user = documentSnapshot.toObject(User_googleAndOwn.class);
+                CreateAccount_userDetails userDetails = user.getUser_details();
+                String rewards = userDetails.getRewards();
+                tv_rewards.setText("₹ " + rewards + ".00");
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toast.showToast("Error! " + e.getMessage());
+            }
+        });
+    }
 
 
     private boolean isNetworkAvailable() {
@@ -221,6 +270,7 @@ public class Ui_Home extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 pb_uiHome_transactions.setVisibility(View.GONE);
+                toast.showToast("Error!  " + e.getMessage());
             }
         });
 

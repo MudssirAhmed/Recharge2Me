@@ -67,12 +67,21 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center_horizontal"
+                    android:text="Currently we are processed only prepaid recharges"
+                    android:textColor="@color/whiteText" />
+
                 <RadioGroup
                     android:id="@+id/rb_preAndPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="30dp"
                     android:layout_weight="1"
@@ -95,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:buttonTint="@color/whiteText"
+                        android:clickable="false"
                         android:fontFamily="@font/comfortaa_regular"
                         android:text="Postpaid"
                         android:textColor="@color/whiteText"

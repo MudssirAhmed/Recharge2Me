@@ -228,10 +228,10 @@ public class Ui_Transactions extends Fragment{
         List<Order> filteredList = new ArrayList<>();
 
         for(Order order: orders){
-            String date = order.getDate();
-            if(date.toLowerCase().contains(text.toLowerCase())){
-                filteredList.add(order);
-            }
+//            String date = order.getDate();
+//            if(date.toLowerCase().contains(text.toLowerCase())){
+//                filteredList.add(order);
+//            }
         }
 
         if(filteredList.isEmpty()){

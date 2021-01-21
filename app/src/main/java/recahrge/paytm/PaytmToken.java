@@ -37,7 +37,7 @@ public class PaytmToken {
             return resultInfo;
         }
 
-        private class ResultInfo{
+        public class ResultInfo{
             String resultStatus;
             String resultCode;
             String resultMsg;

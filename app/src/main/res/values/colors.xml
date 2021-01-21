@@ -15,11 +15,14 @@
     <color name="lightText">#9D9D9D</color>
     <color name="secondaryText">#9E9E9E</color>
 
+<!--    warning colors  -->
+    <color name="Warning_text">#FD1100</color>
+    <color name="warning_light">#FF857C</color>
+    <color name="warning_extraLight">#FFDEDC</color>
 
     <color name="buttons_color">#8F4EFF</color>
     <color name="perple">#8F4EFF</color>
     <color name="perpleLight">#AEA978FD</color>
     <color name="perpleSecondary">#DFCEFC</color>
-    <color name="Warning_text">#FD1100</color>
     <color name="hh"></color>
 </resources>

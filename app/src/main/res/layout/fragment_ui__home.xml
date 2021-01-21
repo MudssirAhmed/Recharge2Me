@@ -34,6 +34,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
+            android:id="@+id/linearLayout11"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -53,12 +54,12 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tv_home_rewards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/comfortaa_bold"
-                android:text="₹ 1000.00"
+                android:fontFamily="@font/fira_sans_bold_800"
+                android:text="₹ 0.00"
                 android:textColor="@color/whiteText"
                 android:textSize="30sp" />
         </LinearLayout>
@@ -136,11 +137,23 @@
             tools:ignore="OnClick" />
 
         <LinearLayout
+            android:id="@+id/lL_faceeboobAds_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions"></LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:orientation="vertical"
@@ -148,7 +161,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions"
+            app:layout_constraintTop_toBottomOf="@+id/lL_faceeboobAds_banner"
             app:layout_constraintVertical_bias="0.0">
 
             <ProgressBar
