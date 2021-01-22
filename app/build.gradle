@@ -45,6 +45,7 @@ repositories {
 
 dependencies {
     implementation 'androidx.work:work-runtime:2.3.4'
+    implementation fileTree(dir: 'D:\\Recharge2Me\\unity-ads', include: ['*.aar', '*.jar'], exclude: [])
     def nav_version = "2.3.0"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'

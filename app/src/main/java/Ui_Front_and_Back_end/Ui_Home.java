@@ -1,10 +1,7 @@
 package Ui_Front_and_Back_end;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,13 +23,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -50,11 +44,15 @@ import java.util.List;
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
-import Global.custom_Loading_Dialog.proceedDialog;
 import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
 import recahrge.DataTypes.rechargeFirbase.Order;
+
+import com.unity3d.ads.UnityAds;
+import com.unity3d.services.banners.BannerErrorInfo;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
 public class Ui_Home extends Fragment {
 
@@ -89,6 +87,20 @@ public class Ui_Home extends Fragment {
     FirebaseFirestore db;
 
 
+    // Unity Adds
+    LinearLayout lL_middleBanner,
+                 lL_downBanner;
+    String gameId = "3982333";
+    Boolean testMode = true;
+    Boolean enableLoad = true;
+    String bannerPlacement = "Banner";
+    // Listener for banner events:
+    UnityBannerListener bannerListener = new UnityBannerListener();
+    // This banner view object will be placed at the top of the screen:
+    BannerView middleBanner;
+    // This banner view object will be placed at the bottom of the screen:
+    BannerView bottomBanner;
+
     public Ui_Home() {
         // Required empty public constructor
     }
@@ -99,14 +111,22 @@ public class Ui_Home extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_ui__home, container, false);
 
-//        //Facebook adds
-//        adView = new AdView(getActivity(), "IMG_16_9_APP_INSTALL#748059209467827_748063486134066", AdSize.BANNER_HEIGHT_50);
-//        // Find the Ad Container
-//        LinearLayout adContainer = (LinearLayout) view.findViewById(R.id.fragContainer);
-//        // Add the ad view to your activity layout
-//        adContainer.addView(adView);
-//        // Request an ad
-//        adView.loadAd();
+        // Unity Adds
+        UnityAds.initialize(getActivity(), gameId, null, testMode, enableLoad);
+        lL_middleBanner = view.findViewById(R.id.lL_home_middleBanner); // LinearLayout middleBanner
+        lL_downBanner = view.findViewById(R.id.lL_home_bottomBanner);  // LinearLayout downBanner
+
+        middleBanner = new BannerView(getActivity(), bannerPlacement, new UnityBannerSize(320, 50)); // Getting BannerViews
+        bottomBanner = new BannerView(getActivity(), bannerPlacement, new UnityBannerSize(320, 50)); // Getting BannerViews
+
+        middleBanner.setListener(bannerListener); // Adding Listener
+        bottomBanner.setListener(bannerListener);  // Adding Listener
+        middleBanner.load(); // Load Add on view
+        bottomBanner.load();  // load Add on view
+
+        lL_middleBanner.addView(middleBanner);  // Adding BannerView on middleLinearLayout
+        lL_downBanner.addView(bottomBanner);  // Adding BannerView on downLinearLayout
+
 
         //TextView
         tv_rewards = view.findViewById(R.id.tv_home_rewards);
@@ -193,6 +213,32 @@ public class Ui_Home extends Fragment {
 
         return view;
     }// End of onCreate()
+
+
+    private class UnityBannerListener implements BannerView.IListener {
+        @Override
+
+        public void onBannerLoaded(BannerView bannerAdView) {
+            // Called when the banner is loaded.
+        }
+
+        @Override
+        public void onBannerFailedToLoad(BannerView bannerAdView, BannerErrorInfo errorInfo) {
+            Log.d("SupportTest", "Banner Error" + errorInfo.errorMessage);
+            // Note that the BannerErrorInfo object can indicate a no fill (see API documentation).
+        }
+
+        @Override
+        public void onBannerClick(BannerView bannerAdView) {
+            // Called when a banner is clicked.
+        }
+
+        @Override
+        public void onBannerLeftApplication(BannerView bannerAdView) {
+            // Called when the banner links out of the application.
+        }
+    }
+
 
     private void setRewardsData(){
         DocumentReference docRef = db.collection("USERS").document(mAuth.getUid());

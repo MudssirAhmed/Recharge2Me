@@ -137,16 +137,17 @@
             tools:ignore="OnClick" />
 
         <LinearLayout
-            android:id="@+id/lL_faceeboobAds_banner"
+            android:id="@+id/lL_home_middleBanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions"></LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions"/>
 
         <LinearLayout
             android:id="@+id/linearLayout5"
@@ -161,7 +162,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lL_faceeboobAds_banner"
+            app:layout_constraintTop_toBottomOf="@+id/lL_home_middleBanner"
             app:layout_constraintVertical_bias="0.0">
 
             <ProgressBar
@@ -176,6 +177,14 @@
                 android:id="@+id/rv_home_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/lL_home_bottomBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
