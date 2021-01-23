@@ -88,18 +88,19 @@ public class Ui_Home extends Fragment {
 
 
     // Unity Adds
-    LinearLayout lL_middleBanner,
-                 lL_downBanner;
-    String gameId = "3982333";
-    Boolean testMode = true;
+    LinearLayout lL_middleBanner, // LinearLayout for middleBanner
+                 lL_downBanner;  // LinearLayout for bottomBanner
+
+    String gameId = "3982333";  // GameId
+    Boolean testMode = true; // TODO: false for production mode
     Boolean enableLoad = true;
-    String bannerPlacement = "Banner";
-    // Listener for banner events:
-    UnityBannerListener bannerListener = new UnityBannerListener();
-    // This banner view object will be placed at the top of the screen:
-    BannerView middleBanner;
-    // This banner view object will be placed at the bottom of the screen:
-    BannerView bottomBanner;
+    // Placements
+    String topBannerPlacement = "Banner";  // TopBannerPlacement
+    String bottomBannerPlacement = "bottomBanner";  // bottomBannerPlacement
+    UnityBannerListener bannerListener = new UnityBannerListener();    // Listener for banner events:
+    BannerView middleBanner;    // This banner view object will be placed at the top of the screen:
+    BannerView bottomBanner;    // This banner view object will be placed at the bottom of the screen:
+
 
     public Ui_Home() {
         // Required empty public constructor
@@ -111,21 +112,10 @@ public class Ui_Home extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_ui__home, container, false);
 
-        // Unity Adds
-        UnityAds.initialize(getActivity(), gameId, null, testMode, enableLoad);
         lL_middleBanner = view.findViewById(R.id.lL_home_middleBanner); // LinearLayout middleBanner
         lL_downBanner = view.findViewById(R.id.lL_home_bottomBanner);  // LinearLayout downBanner
-
-        middleBanner = new BannerView(getActivity(), bannerPlacement, new UnityBannerSize(320, 50)); // Getting BannerViews
-        bottomBanner = new BannerView(getActivity(), bannerPlacement, new UnityBannerSize(320, 50)); // Getting BannerViews
-
-        middleBanner.setListener(bannerListener); // Adding Listener
-        bottomBanner.setListener(bannerListener);  // Adding Listener
-        middleBanner.load(); // Load Add on view
-        bottomBanner.load();  // load Add on view
-
-        lL_middleBanner.addView(middleBanner);  // Adding BannerView on middleLinearLayout
-        lL_downBanner.addView(bottomBanner);  // Adding BannerView on downLinearLayout
+        // Unity Adds
+        setBannerAds();
 
 
         //TextView
@@ -154,11 +144,6 @@ public class Ui_Home extends Fragment {
         // custom
         loadingDialog = new LoadingDialog(getActivity());
         toast = new CustomToast(getActivity());
-
-        // SharedPrefrences
-        sharedPreferences = getActivity().getSharedPreferences("Providers", Context.MODE_PRIVATE);
-        String check = sharedPreferences.getString("ProvidersData", "");
-        Log.d("shardePrefrences", "msg" + check);
 
 
         iv_prePaid.setOnClickListener(new View.OnClickListener() {
@@ -215,11 +200,25 @@ public class Ui_Home extends Fragment {
     }// End of onCreate()
 
 
+    private void setBannerAds(){
+        UnityAds.initialize((Main_UserInterface) requireActivity(), gameId, null, testMode, enableLoad);  // Init unityAds
+        middleBanner = new BannerView((Main_UserInterface) requireActivity(), topBannerPlacement, new UnityBannerSize(320, 50)); // Getting BannerViews
+        bottomBanner = new BannerView((Main_UserInterface) requireActivity(), bottomBannerPlacement, new UnityBannerSize(320, 50)); // Getting BannerViews
+        middleBanner.setListener(bannerListener); // Adding Listener
+        bottomBanner.setListener(bannerListener);  // Adding Listener
+        middleBanner.load(); // Load Add on view
+        bottomBanner.load();  // load Add on view
+
+        lL_middleBanner.addView(middleBanner);  // Adding BannerView on middleLinearLayout
+        lL_downBanner.addView(bottomBanner);  // Adding BannerView on downLinearLayout
+    }
+
     private class UnityBannerListener implements BannerView.IListener {
         @Override
 
         public void onBannerLoaded(BannerView bannerAdView) {
             // Called when the banner is loaded.
+            Log.d("SupportTest", "HOME: Banner Loaded  id: " + bannerAdView.getPlacementId());
         }
 
         @Override

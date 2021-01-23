@@ -30,6 +30,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,9 @@ import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.paytm.pgsdk.TransactionManager;
 import com.recharge2mePlay.recharge2me.R;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,6 +55,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import Global.Unity.BannerListner;
 import Global.customAnimation.MyAnimation;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
 import Retrofit.JsonConvertor;
@@ -59,6 +64,7 @@ import Global.custom_Loading_Dialog.LoadingDialog;
 import Global.custom_Loading_Dialog.proceedDialog;
 import Ui_Front_and_Back_end.Main_UserInterface;
 import Ui_Front_and_Back_end.Transactions.NotificationTransactionDetails;
+import Ui_Front_and_Back_end.Ui_Home;
 import local_Databasse.numberData.Database_numberJava;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
@@ -133,6 +139,20 @@ public class MobileDetailsFinder extends Fragment {
 
     View view;
 
+    // Unity Ads fields
+    LinearLayout lL_topBanner, // LinearLayout for middleBanner
+                 lL_bottomBanner;  // LinearLayout for bottomBanner
+
+    String gameId = "3982333";  // GameId
+    Boolean testMode = true;  // TODO: false for production mode
+    Boolean enableLoad = true;
+    // Placements
+    String topBannerPlacement = "Banner";  // TopBannerPlacement
+    String bottomBannerPlacement = "bottomBanner";  // bottomBannerPlacement
+    BannerListner bannerListener = new BannerListner("MOBILE_DETAILS_FINDER");    // Listener for banner events:
+    BannerView topBanner;    // This banner view object will be placed at the top of the screen:
+    BannerView bottomBanner;    // This banner view object will be placed at the bottom of the screen:
+
     public MobileDetailsFinder() {
         // Required empty public constructor
     }
@@ -154,6 +174,9 @@ public class MobileDetailsFinder extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_mobile_details_finder, container, false);
 
+
+        //setUnityAdds
+        setUnityAdds();
 
         // TextView
         tv_mobileNumber = view.findViewById(R.id.tv_mobileNumber);
@@ -235,14 +258,6 @@ public class MobileDetailsFinder extends Fragment {
 
                  findDataInDataBase(tv_mobileNumber.getText().toString());
 
-//                Intent intent = new Intent(getActivity(), StartPaymentPaytm.class);
-//                intent.putExtra("Number", tv_mobileNumber.getText().toString().trim());
-//                intent.putExtra("Operator", btn_operator.getText().toString().trim());
-//                intent.putExtra("circle", btn_circle.getText().toString().trim());
-//                intent.putExtra("Details", tv_mF_planDetails.getText().toString().trim());
-//                intent.putExtra("Amount", btn_recahargeAmount.getText().toString().trim());
-//                startActivity(intent);
-
                  if(btn_recahargeAmount.getText().toString().equals("Amount") || btn_recahargeAmount.getText().toString().isEmpty())
                      customToast.showToast("Please select plan First!");
                  else {
@@ -296,6 +311,23 @@ public class MobileDetailsFinder extends Fragment {
 
         return view;
     } // End of OnCreteView method;
+
+    private void setUnityAdds(){
+        lL_topBanner = view.findViewById(R.id.lL_mobileDetailsFinder_topBanner);
+        lL_bottomBanner = view.findViewById(R.id.lL_mobileDetailsFinder_bottomBanner);
+
+        UnityAds.initialize((recharge_ui) getActivity(), gameId, null, testMode, enableLoad);
+        topBanner = new BannerView((recharge_ui) requireActivity(), topBannerPlacement, new UnityBannerSize(320, 50));
+        bottomBanner = new BannerView((recharge_ui) requireActivity(), bottomBannerPlacement, new UnityBannerSize(320, 50));
+        topBanner.setListener(bannerListener);
+        bottomBanner.setListener(bannerListener);
+        topBanner.load();
+        bottomBanner.load();
+
+
+        lL_topBanner.addView(topBanner);
+        lL_bottomBanner.addView(bottomBanner);
+    }
 
 
     private void setOperatorText(String operator){

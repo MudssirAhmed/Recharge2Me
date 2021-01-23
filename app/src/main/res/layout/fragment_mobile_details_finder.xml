@@ -41,6 +41,17 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lL_mobileDetailsFinder_topBanner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"></LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,10 +61,9 @@
             android:paddingTop="20dp"
             android:paddingRight="30dp"
             android:paddingBottom="20dp"
-            app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+            app:layout_constraintTop_toBottomOf="@id/lL_mobileDetailsFinder_topBanner">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -201,7 +211,8 @@
             android:id="@+id/btn_mobileFinder_Proceed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/btn_proceed"
             android:fontFamily="@font/comfortaa_bold"
             android:gravity="center_horizontal|center_vertical"
@@ -209,10 +220,20 @@
             android:textAllCaps="false"
             android:textColor="@color/whiteText"
             android:textSize="20sp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/lL_mobileDetailsFinder_bottomBanner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_mf_planDetails" />
+
+        <LinearLayout
+            android:id="@+id/lL_mobileDetailsFinder_bottomBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

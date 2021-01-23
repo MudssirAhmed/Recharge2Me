@@ -147,7 +147,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions" />
 
         <LinearLayout
             android:id="@+id/linearLayout5"

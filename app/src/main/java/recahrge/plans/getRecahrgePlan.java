@@ -9,12 +9,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
 import com.google.android.material.tabs.TabLayout;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
+import Global.Unity.BannerListner;
 import Global.customAnimation.MyAnimation;
 import recahrge.plans.Data_Fragment;
 import recahrge.plans.Ftt_Fragment;
@@ -46,6 +51,15 @@ public class getRecahrgePlan extends AppCompatActivity {
            Validity,
            Details;
 
+    // Unity Ads
+    BannerListner bannerListner = new BannerListner("GET_RECHARGE_PLAN");
+    String gameId = "3982333";  // GameId
+    Boolean testMode = true; // TODO: false for production mode
+    Boolean enableLoad = true;
+    // Placements
+    String topBannerPlacement = "Banner";  // TopBannerPlacement
+    BannerView topBanner;
+
     public void getRecahrgePlan(String Amount, String Validity, String Details){
             this.Amount = Amount;
             this.Validity = Validity;
@@ -57,6 +71,7 @@ public class getRecahrgePlan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_recahrge_plan);
 
+        setBannerAds();
 
         tabLayout = findViewById(R.id.tabLayout_plans);
         viewPager = findViewById(R.id.viewPager_plans);
@@ -106,6 +121,15 @@ public class getRecahrgePlan extends AppCompatActivity {
         catch (Exception e){
             Log.i("FragmentAnother", "Fragment" + e.getMessage());
         }
+    }
+
+    private void setBannerAds(){
+        LinearLayout lL_topBanner = findViewById(R.id.lL_getRecharge_topBanner);
+        UnityAds.initialize(this, gameId, null, testMode, enableLoad);
+        topBanner = new BannerView(this, topBannerPlacement, new UnityBannerSize(320, 50));
+        topBanner.setListener(bannerListner);
+        topBanner.load();
+        lL_topBanner.addView(topBanner);
     }
 
     public void showProgressBar(){

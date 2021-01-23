@@ -24,11 +24,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +40,11 @@ import java.util.List;
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Ui_Front_and_Back_end.Main_UserInterface;
+import Ui_Front_and_Back_end.Ui_Home;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
 import recahrge.myAdapters.dbNumberDetails_adapter;
+import Global.Unity.BannerListner;
 
 public class prePaid extends Fragment {
 
@@ -72,6 +78,19 @@ public class prePaid extends Fragment {
     dbNumberDetails_adapter mAdpter_numberDetails;
     List<entity_numberDetails> list = new ArrayList<>();
 
+    LinearLayout lL_prePaid_topBanner,
+                 lL_prePaid_bottomBanner;
+    // Unity Adds
+    String gameId = "3982333";  // GameId
+    Boolean testMode = true;   // TODO: false for production mode
+    Boolean enableLoad = true;
+    // Placements
+    String topBannerPlacement = "Banner";  // TopBannerPlacement
+    String bottomBannerPlacement = "bottomBanner";  // bottomBannerPlacement
+    BannerView topBanner;    // This banner view object will be placed at the top of the screen:
+    BannerView bottomBanner;    // This banner view object will be placed at the bottom of the screen:
+    BannerListner bannerListener = new BannerListner("PRE_PAID");    // Listener for banner events:
+
     public prePaid() {
         // Required empty public constructor
     }
@@ -82,10 +101,24 @@ public class prePaid extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_pre_paid, container, false);
 
+        // Unity Ads
+        lL_prePaid_topBanner = view.findViewById(R.id.lL_prePaid_topBanner);
+        lL_prePaid_bottomBanner = view.findViewById(R.id.lL_prePaid_bottomBaner);
+        UnityAds.initialize((recharge_ui) requireActivity(), gameId, null, testMode, enableLoad);
+        topBanner = new BannerView((recharge_ui) requireActivity(), topBannerPlacement, new UnityBannerSize(320, 50));
+        bottomBanner = new BannerView((recharge_ui) requireActivity(), bottomBannerPlacement, new UnityBannerSize(320, 50));
+        topBanner.setListener(bannerListener);
+        bottomBanner.setListener(bannerListener);
+        topBanner.load();
+        bottomBanner.load();
+        lL_prePaid_topBanner.addView(topBanner);
+        lL_prePaid_bottomBanner.addView(bottomBanner);
+
+
+
         et_EnterMobileNumber = view.findViewById(R.id.et_EnterMobileNumber);
         btn_fetchMobileDetails = view.findViewById(R.id.btn_fetchMobileDetails);
         tv_rechargeWarningText = view.findViewById(R.id.tv_rechargeWarningText);
-//        iv_prePiad_back = view.findViewById(R.id.iv_prePaid_back);
 
         radioGroup = view.findViewById(R.id.rb_preAndPost);
         radioButton_prePaid = view.findViewById(R.id.radioButton_prePaid);
