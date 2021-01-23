@@ -58,13 +58,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         Order order = list.get(position);
 
         tv_number.setText(order.getNumber());
-        tv_Amount.setText(order.getAmount());
+        tv_Amount.setText("₹ " + order.getRecAmt());
         tv_Date.setText(order.getDate());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void  onClick(View view) {
                 NavigateToTransactionDetailsFragment(order.getOrderId());
             }
         });

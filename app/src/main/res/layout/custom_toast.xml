@@ -9,12 +9,11 @@
         android:id="@+id/imageView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/custom_toast_back" />
+        app:srcCompat="@drawable/custom_toast" />
 
     <ImageView
         android:id="@+id/imageView32"
@@ -24,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView20"
         app:layout_constraintStart_toStartOf="@+id/imageView20"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/danger_icon" />
+        app:srcCompat="@drawable/custom_toast_icon" />
 
     <TextView
         android:id="@+id/tv_customToast_message"
@@ -33,7 +32,7 @@
         android:fontFamily="@font/comfortaa_bold"
         android:gravity="center_horizontal"
         android:text="Please select plan, First!"
-        android:textColor="@color/whiteText"
+        android:textColor="@color/Warning_text"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView20"
         app:layout_constraintEnd_toEndOf="@+id/imageView20"

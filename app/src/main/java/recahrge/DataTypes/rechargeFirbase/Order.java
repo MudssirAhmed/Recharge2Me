@@ -1,117 +1,136 @@
 package recahrge.DataTypes.rechargeFirbase;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.google.common.collect.Ordering;
+import recahrge.DataTypes.rechargeFirbase.Pay2All.Pay2All_rechargeFirebase;
+import recahrge.DataTypes.rechargeFirbase.Paytm.PaytmRefundData;
+import recahrge.DataTypes.rechargeFirbase.Paytm.PaytmTransactionData;
 
 public class Order {
 
-    private String orderId;
-    private String amount;
-    private String operator;
+    private Pay2All_rechargeFirebase Pay2all;
+    private PaytmTransactionData Paytm;
+    private PaytmRefundData PaytmRefund;
+
     private String number;
-    private String details;
+    private String operator;
+    private String pay2allStatus;
+    private String paytmRefundStatus;
+    private String paytmStatus;
+    private String recAmt;
+    private String recDet;
     private String date;
+    private String orderId;
 
+    public Order() { }
 
-    private Pay2All_rechargeFirebase recharge;
-    private Pay2All_status status;
-    private Paytm_initiateTransaction initiateTransaction;
-    private Paytm_transactonStatus transactonStatus;
-    private Paytm_refund refund;
-    private Paytm_refundStatus refundStatus;
-
-    public Order() {
-    }
-
-
-    public Order(String orderId, String operator, Pay2All_rechargeFirebase recharge, Pay2All_status status, Paytm_initiateTransaction initiateTransaction,
-                 Paytm_transactonStatus transactonStatus, Paytm_refund refund, Paytm_refundStatus refundStatus) {
-        this.orderId = orderId;
+    public Order(Pay2All_rechargeFirebase pay2all, PaytmTransactionData paytm, PaytmRefundData paytmRefund, String number, String orderId,
+                 String operator, String pay2allStatus, String paytmRefundStatus, String paytmStatus, String recAmt, String recDet, String date) {
+        Pay2all = pay2all;
+        Paytm = paytm;
+        PaytmRefund = paytmRefund;
+        this.number = number;
         this.operator = operator;
-        this.recharge = recharge;
-        this.status = status;
-        this.initiateTransaction = initiateTransaction;
-        this.transactonStatus = transactonStatus;
-        this.refund = refund;
-        this.refundStatus = refundStatus;
+        this.pay2allStatus = pay2allStatus;
+        this.paytmRefundStatus = paytmRefundStatus;
+        this.paytmStatus = paytmStatus;
+        this.recAmt = recAmt;
+        this.recDet = recDet;
+        this.date = date;
+        this.orderId  =  orderId;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
     public String getDate() {
         return date;
     }
-    public String getAmount() {
-        return amount;
-    }
-    public String getNumber() {
-        return number;
-    }
-    public String getDetails() {
-        return details;
-    }
-    public String getOrderId() {
-        return orderId;
-    }
-    public String getOperator() {
-        return operator;
-    }
-    public Pay2All_rechargeFirebase getRecharge() {
-        return recharge;
-    }
-    public Pay2All_status getStatus() {
-        return status;
-    }
-    public Paytm_initiateTransaction getInitiateTransaction() {
-        return initiateTransaction;
-    }
-    public Paytm_transactonStatus getTransactonStatus() {
-        return transactonStatus;
-    }
-    public Paytm_refund getRefund() {
-        return refund;
-    }
-    public Paytm_refundStatus getRefundStatus() {
-        return refundStatus;
-    }
-
 
     public void setDate(String date) {
         this.date = date;
     }
-    public void setAmount(String amount) {
-        this.amount = amount;
+
+    public Pay2All_rechargeFirebase getPay2all() {
+        return Pay2all;
     }
+
+    public void setPay2all(Pay2All_rechargeFirebase pay2all) {
+        Pay2all = pay2all;
+    }
+
+    public PaytmTransactionData getPaytm() {
+        return Paytm;
+    }
+
+    public void setPaytm(PaytmTransactionData paytm) {
+        Paytm = paytm;
+    }
+
+    public PaytmRefundData getPaytmRefund() {
+        return PaytmRefund;
+    }
+
+    public void setPaytmRefund(PaytmRefundData paytmRefund) {
+        PaytmRefund = paytmRefund;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
     public void setNumber(String number) {
         this.number = number;
     }
-    public void setDetails(String details) {
-        this.details = details;
+
+    public String getOperator() {
+        return operator;
     }
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+
     public void setOperator(String operator) {
         this.operator = operator;
     }
-    public void setRecharge(Pay2All_rechargeFirebase recharge) {
-        this.recharge = recharge;
-    }
-    public void setStatus(Pay2All_status status) {
-        this.status = status;
-    }
-    public void setInitiateTransaction(Paytm_initiateTransaction initiateTransaction) {
-        this.initiateTransaction = initiateTransaction;
-    }
-    public void setTransactonStatus(Paytm_transactonStatus transactonStatus) {
-        this.transactonStatus = transactonStatus;
-    }
-    public void setRefund(Paytm_refund refund) {
-        this.refund = refund;
-    }
-    public void setRefundStatus(Paytm_refundStatus refundStatus) {
-        this.refundStatus = refundStatus;
+
+    public String getPay2allStatus() {
+        return pay2allStatus;
     }
 
+    public void setPay2allStatus(String pay2allStatus) {
+        this.pay2allStatus = pay2allStatus;
+    }
+
+    public String getPaytmRefundStatus() {
+        return paytmRefundStatus;
+    }
+
+    public void setPaytmRefundStatus(String paytmRefundStatus) {
+        this.paytmRefundStatus = paytmRefundStatus;
+    }
+
+    public String getPaytmStatus() {
+        return paytmStatus;
+    }
+
+    public void setPaytmStatus(String paytmStatus) {
+        this.paytmStatus = paytmStatus;
+    }
+
+    public String getRecAmt() {
+        return recAmt;
+    }
+
+    public void setRecAmt(String recAmt) {
+        this.recAmt = recAmt;
+    }
+
+    public String getRecDet() {
+        return recDet;
+    }
+
+    public void setRecDet(String recDet) {
+        this.recDet = recDet;
+    }
 }

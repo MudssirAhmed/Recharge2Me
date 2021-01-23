@@ -1,6 +1,7 @@
 package Global.custom_Loading_Dialog;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class CustomToast {
         toast = new Toast(activity.getApplicationContext());
         toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
+
         toast.setView(view);
 
         toast.show();

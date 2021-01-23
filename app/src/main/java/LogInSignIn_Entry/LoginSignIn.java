@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,6 @@ public class LoginSignIn extends Fragment {
             }
         });
 
-        // TODO Remove GoogleProfile feild from GooleUserDetails
         // This is an onClick listner on btnGoogle Button
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +211,7 @@ public class LoginSignIn extends Fragment {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount((EntryActivity) requireActivity());
 
         if(acct != null){
+            Log.i("Google-Logout", "not-null");
             Navigation.findNavController(view).navigate(R.id.action_loginSignIn_to_main_UserInterface);
         }
         else if (user != null){

@@ -1,44 +1,63 @@
 package recahrge.DataTypes.Paye2All;
 
+import java.util.Date;
+
 public class Pay2All_recharge {
 
-    private int status;
-    private int status_id;
-    private String utr;
-    private String report_id;
-    private String orderid;
-    private String message;
+    //    "data": {
+    //        "status": "",
+    //        "status_id": "",
+    //        "utr": "",
+    //        "report_id": "",
+    //        "orderid": "",
+    //        "message": ""
+    //    },
+    //    "Error": "Low ballance"
 
-    public Pay2All_recharge(int status, int status_id, String utr, String report_id, String orderid, String message) {
-        this.status = status;
-        this.status_id = status_id;
-        this.utr = utr;
-        this.report_id = report_id;
-        this.orderid = orderid;
-        this.message = message;
+    private Data data;
+    private String Error;
+
+    public Data getData() {
+        return data;
     }
 
-    public int getStatus() {
-        return status;
+    public String getError() {
+        return Error;
     }
 
-    public int getStatus_id() {
-        return status_id;
+
+    public class Data{
+        private int status;
+        private int status_id;
+        private String utr;
+        private String report_id;
+        private String orderid;
+        private String message;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public int getStatus_id() {
+            return status_id;
+        }
+
+        public String getUtr() {
+            return utr;
+        }
+
+        public String getReport_id() {
+            return report_id;
+        }
+
+        public String getOrderid() {
+            return orderid;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
-    public String getUtr() {
-        return utr;
-    }
 
-    public String getReport_id() {
-        return report_id;
-    }
-
-    public String getOrderid() {
-        return orderid;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

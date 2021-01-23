@@ -26,18 +26,149 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/man_payment" />
 
-        <TextView
-            android:id="@+id/tv_payments_mobileNumber"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cL_payments_status"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/comfortaa_bold"
-            android:text="+91 0000000000"
-            android:textColor="@color/secondaryPrimaryText"
-            android:textSize="18sp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="42dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView14">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_payments_paytm"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:layout_constraintBottom_toBottomOf="@id/lv_payments_paytm"
+                    app:layout_constraintEnd_toEndOf="@+id/lv_payments_paytm"
+                    app:layout_constraintStart_toStartOf="@+id/lv_payments_paytm"
+                    app:layout_constraintTop_toTopOf="@id/lv_payments_paytm"
+                    app:srcCompat="@drawable/transaction_paytm_icon" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lv_payments_paytm"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="loading_circle.json"
+                    app:lottie_loop="true" />
+
+                <TextView
+                    android:id="@+id/tv_payments_paytmStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/comfortaa_bold"
+                    android:text="Getting payment status"
+                    android:textColor="@color/secondaryPrimaryText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/lv_payments_paytm"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cL_payments_rechardeStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout10">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lv_payments_recharge"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="loading_circle.json"
+                    app:lottie_loop="true" />
+
+                <ImageView
+                    android:id="@+id/iv_payments_operator"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:layout_constraintBottom_toBottomOf="@id/lv_payments_recharge"
+                    app:layout_constraintEnd_toEndOf="@+id/lv_payments_recharge"
+                    app:layout_constraintStart_toStartOf="@+id/lv_payments_recharge"
+                    app:layout_constraintTop_toTopOf="@id/lv_payments_recharge"
+                    app:srcCompat="@drawable/idea" />
+
+                <TextView
+                    android:id="@+id/tv_payments_rechargeStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="@font/comfortaa_bold"
+                    android:text="Getting recharge status"
+                    android:textColor="@color/secondaryPrimaryText"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/lv_payments_recharge"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_payments_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/comfortaa_bold"
+                android:textColor="@color/secondaryPrimaryText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cL_payments_rechardeStatus" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout9"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cL_payments_status">
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/comfortaa_bold"
+                android:text="+91 "
+                android:textColor="@color/secondaryPrimaryText"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_payments_mobileNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/comfortaa_bold"
+                android:text="0000000000"
+                android:textColor="@color/secondaryPrimaryText"
+                android:textSize="18sp" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_payments_operator"
@@ -53,7 +184,7 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_payments_mobileNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
 
         <TextView
             android:id="@+id/tv_payments_circle"
@@ -66,13 +197,14 @@
             android:text="UP west"
             android:textColor="@color/secondaryPrimaryText"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_payments_operator" />
 
         <TextView
             android:id="@+id/tv_payments_planDetails"
             android:layout_width="0dp"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="32dp"
@@ -86,16 +218,29 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_payments_circle" />
 
         <TextView
+            android:id="@+id/tv_payments_recharge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/comfortaa_bold"
+            android:textColor="@color/primaryText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payments_planDetails" />
+
+        <TextView
             android:id="@+id/textView31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/fira_sans_bold_800"
             android:text="Ammount to be paid"
             android:textColor="@color/perple"
             app:layout_constraintBottom_toTopOf="@+id/cL_payments_getPayments"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_payments_planDetails" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_payments_recharge" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cL_payments_getPayments"

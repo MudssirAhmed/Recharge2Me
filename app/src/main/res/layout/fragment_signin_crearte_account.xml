@@ -127,8 +127,7 @@
             <EditText
                 android:id="@+id/et_createAccount_Name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_height="65dp"
                 android:background="@drawable/sign_in_indicator"
                 android:ems="10"
                 android:fontFamily="@font/comfortaa_regular"
@@ -136,13 +135,14 @@
                 android:inputType="textPersonName"
                 android:maxLength="20"
                 android:paddingLeft="20dp"
+                android:paddingTop="15dp"
                 android:textColor="@color/primaryText"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_LogIn_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/group_10"
                 android:ems="10"
@@ -152,12 +152,12 @@
                 android:maxLength="50"
                 android:paddingLeft="20dp"
                 android:textColor="@color/primaryText"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_signIn_number"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/group_10"
                 android:ems="10"
@@ -167,12 +167,12 @@
                 android:maxLength="10"
                 android:paddingLeft="20dp"
                 android:textColor="@color/primaryText"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/et_LogIn_password"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/group_10"
                 android:ems="10"
@@ -182,7 +182,7 @@
                 android:maxLength="30"
                 android:paddingLeft="20dp"
                 android:textColor="@color/primaryText"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_createAccount_excaption"

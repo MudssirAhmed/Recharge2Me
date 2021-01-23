@@ -73,8 +73,11 @@ public class signin_crearte_account extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_signin_crearte_account, container, false);
 
+        // TextView
         tvSignIn_LogIn = view.findViewById(R.id.tvSignIn_LogIn);
         tv_CreateAccount_Reset = view.findViewById(R.id.tv_CreateAccount_Reset);
+        tv_createAccount_exception = view.findViewById(R.id.tv_createAccount_excaption);
+
         btn_Signin_CreateAccount = view.findViewById(R.id.btn_Signin_CreateAccount);
         cb_createAcc_showPassword = view.findViewById(R.id.cb_crearreAcc_showPassword);
 
@@ -149,6 +152,7 @@ public class signin_crearte_account extends Fragment {
     private void Reset_fields() {
         et_createAccount_Name.setText(null);
         et_createAccount_Email.setText(null);
+        et_createAccount_Number.setText(null);
         et_createAccount_Password.setText(null);
     }
 
@@ -197,6 +201,7 @@ public class signin_crearte_account extends Fragment {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 loadingDialog.stopLoading();
+                                tv_createAccount_exception.setText(task.getException().getMessage());
                                 toast.showToast("Error! " + task.getException().getMessage());
                             }
                         }

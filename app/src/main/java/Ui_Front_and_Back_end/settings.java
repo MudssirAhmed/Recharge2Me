@@ -1,5 +1,6 @@
 package Ui_Front_and_Back_end;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,12 +39,24 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
+import org.w3c.dom.Document;
+
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
+import Global.custom_Loading_Dialog.proceedDialog;
 import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
 import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
+import LogInSignIn_Entry.EntryActivity;
 import Ui_Front_and_Back_end.Edit.Edit_profile;
+import Ui_Front_and_Back_end.firebase.DeleteUser;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.Retrofit.Builder;
+import retrofit2.converter.gson.GsonConverterFactory;
+import Retrofit.JsonConvertor;
 
 
 public class settings extends Fragment {
@@ -55,6 +74,8 @@ public class settings extends Fragment {
 
     ImageView iv_settingsVerify,
               iv_settingCross;
+
+    Button btn_deleteMyAccount;
 
     NestedScrollView ns_settings;
 
@@ -104,6 +125,9 @@ public class settings extends Fragment {
         cL_tellAFreind = view.findViewById(R.id.cL_tellAFreind);
         cL_settingsFeedback = view.findViewById(R.id.cL_settingFeedback);
         cL_settingsRaiseTicket = view.findViewById(R.id.cL_settingRaiseTicket);
+
+        //Buttons
+        btn_deleteMyAccount = view.findViewById(R.id.btn_settings_deleteMyAccount);
 
         // Init Customs
         animation = new MyAnimation();
@@ -176,11 +200,136 @@ public class settings extends Fragment {
             }
         });
 
+        btn_deleteMyAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkForDeleteAccount();
+            }
+        });
+
 
         getUserDataFromFirebase();
         checkVerifiedOrNot();
 
         return view;
+    }
+
+    private void checkForDeleteAccount(){
+        proceedDialog proceedDialog = new proceedDialog(getActivity());
+        Dialog dialog = proceedDialog.showProceedDialog();
+        CheckBox cb_deleteMyAccount = dialog.findViewById(R.id.cb_reaunthicate_check);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.btn_dialog_deleteAccount).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TextInputLayout til_email = dialog.findViewById(R.id.et_reaunthicate_emailFeild);
+                TextInputLayout til_password = dialog.findViewById(R.id.et_reaunthicate_password);
+                TextView tv_error = dialog.findViewById(R.id.tv_reaunthicate_error);
+                String email = til_email.getEditText().getText().toString();
+                String password = til_password.getEditText().getText().toString();
+
+                if(email.isEmpty() || password.isEmpty()){
+                    toast.showToast("please enter all feilds carefully!");
+                }
+                else {
+                    if(cb_deleteMyAccount.isChecked()){
+                        dialog.dismiss();
+                        loadingDialog.startLoading();
+                        reAunthiancateUser(email, password, tv_error);
+                    }
+                    else {
+                        toast.showToast("please check the box");
+                    }
+                }
+
+            }
+        });
+    }
+
+    private void reAunthiancateUser(String email, String password, TextView tv_error){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(email, password);
+
+        user.reauthenticate(credential).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                deleteData(user.getUid());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i("user",e.getMessage());
+                tv_error.setText(e.getMessage());
+                loadingDialog.stopLoading();
+            }
+        });
+
+    }
+
+    private void deleteData(String uid){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://recharge2me.herokuapp.com/firebase/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonConvertor  jsonConvertor = retrofit.create(JsonConvertor.class);
+
+        Call<DeleteUser> call = jsonConvertor.deleteUser(uid);
+
+        call.enqueue(new Callback<DeleteUser>() {
+            @Override
+            public void onResponse(Call<DeleteUser> call, Response<DeleteUser> response) {
+
+                if(!response.isSuccessful()){
+                    toast.showToast("Error! please try again");
+                    loadingDialog.stopLoading();
+                    return;
+                }
+
+                DeleteUser data = response.body();
+                String msg = data.getMsg();
+
+                if(msg.equals("Successfully Deleted")){
+                    Log.i("DeleteUser", data.getMsg());
+                    deleteAccount();
+                }
+                else {
+                    toast.showToast(msg);
+                    loadingDialog.stopLoading();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<DeleteUser> call, Throwable t) {
+                toast.showToast("Error! " + t.getMessage());
+                loadingDialog.stopLoading();
+            }
+        });
+    }
+
+    private  void deleteAccount(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                loadingDialog.stopLoading();
+                Toast.makeText(getActivity(), "Account Deleted", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), EntryActivity.class);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toast.showToast("Please try again");
+                loadingDialog.stopLoading();
+            }
+        });
     }
 
     private void gotoProfileUi(String check){

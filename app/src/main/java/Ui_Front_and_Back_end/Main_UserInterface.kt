@@ -56,7 +56,6 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     private lateinit var lL_policies: LinearLayout
 
 
-
     private lateinit var listner: NavController.OnDestinationChangedListener
 
     // Custom
@@ -78,7 +77,6 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
     lateinit var auth: FirebaseAuth
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main__user_interface)
@@ -89,6 +87,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         // Navigation view
         nav_icon = findViewById<ImageView>(R.id.iv_navIcon_mainUi)
         nav_drawer = findViewById<NavigationView>(R.id.nav_drawer)
+
 
         // LinearLayout
         lL_feedBack = nav_drawer.findViewById(R.id.lL_navDrawer_feedback);
@@ -143,7 +142,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         nav_drawer.setupWithNavController(navController)
 
         // It will listen the destinations and animate the drawer
-        listner = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+        listner = NavController.OnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.ui_Profile){
                 if(nav_drawer.isVisible){
                         lifecycleScope.launch {
@@ -228,6 +227,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         return true
     }
 
+    // Signing out
     private fun signOut() {
         val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
         val acct = GoogleSignIn.getLastSignedInAccount(this)
@@ -239,9 +239,19 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
             val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
             // This code clears which account is connected to the app. To sign in again, the user must choose their account again.
+//            mGoogleSignInClient.signOut()
+//                    .addOnCompleteListener(this) { // It will go back on LogIn-SignIn Page.
+//                            gotoLogninSignUi()
+//                    }
+
             mGoogleSignInClient.signOut()
-                    .addOnCompleteListener(this) { // It will go back on LogIn-SignIn Page.
+                    .addOnSuccessListener {
+                        mAuth.signOut()
                         gotoLogninSignUi()
+
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Error! please try again...", Toast.LENGTH_SHORT).show()
                     }
         }
         else {
@@ -253,11 +263,10 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
             }
         }
     } // End of signOut method;
-
     private fun gotoLogninSignUi() {
-        val intent = Intent(this, EntryActivity::class.java)
-        startActivity(intent)
-        Toast.makeText(this, "You are Logged Out...", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, EntryActivity::class.java)
+            startActivity(intent)
+            Toast.makeText(this, "You are Logged Out...", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -295,7 +304,6 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         }
     } // Tell a freind
     private fun onShareClicked(link: String) {
-        Log.i("link", "link: " + link)
 
         lL_tell_aFreind.isEnabled = true
         lL_tell_aFreind.isClickable = true
@@ -305,8 +313,6 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
         if (link.equals("null")) {
             link = "https://play.google.com/store/apps/details?id=com.recharge2mePlay.recharge2me"
         }
-
-        val uri = Uri.parse(link)
 
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
