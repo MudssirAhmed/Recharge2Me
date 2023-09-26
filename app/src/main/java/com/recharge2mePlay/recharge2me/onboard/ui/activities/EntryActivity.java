@@ -1,4 +1,4 @@
-package LogInSignIn_Entry;
+package com.recharge2mePlay.recharge2me.onboard.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

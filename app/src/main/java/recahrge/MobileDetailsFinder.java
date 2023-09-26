@@ -3,7 +3,6 @@ package recahrge;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,7 +34,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -52,13 +50,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Global.customAnimation.MyAnimation;
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
 import Retrofit.JsonConvertor;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 import Global.custom_Loading_Dialog.proceedDialog;
-import Ui_Front_and_Back_end.Main_UserInterface;
-import Ui_Front_and_Back_end.Transactions.NotificationTransactionDetails;
+import com.recharge2mePlay.recharge2me.home.ui.activities.NotificationTransactionDetailsActivity;
 import local_Databasse.numberData.Database_numberJava;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
@@ -310,7 +307,7 @@ public class MobileDetailsFinder extends Fragment {
         String ContentText = "recharge successful on +91 8477055721";
 
         // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(getActivity(), NotificationTransactionDetails.class);
+        Intent intent = new Intent(getActivity(), NotificationTransactionDetailsActivity.class);
         intent.putExtra("OrderId", "order23234234");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

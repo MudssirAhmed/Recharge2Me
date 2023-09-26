@@ -1,4 +1,4 @@
-package LogInSignIn_Entry;
+package com.recharge2mePlay.recharge2me.onboard.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -25,12 +25,13 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 
 import java.util.List;
 
 import Global.custom_Loading_Dialog.LoadingDialog;
 
-public class Forgot_Password extends Fragment {
+public class ForgotPasswordFragment extends Fragment {
 
     View view;
     EditText et_forgot_email;
@@ -45,7 +46,7 @@ public class Forgot_Password extends Fragment {
     CollectionReference user;
     FirebaseAuth mAuth;
 
-    public Forgot_Password() {
+    public ForgotPasswordFragment() {
         // Required empty public constructor
     }
 

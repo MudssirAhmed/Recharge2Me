@@ -1,4 +1,4 @@
-package LogInSignIn_Entry;
+package com.recharge2mePlay.recharge2me.onboard.ui.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -30,14 +30,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 
-import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
-import LogInSignIn_Entry.DataTypes.Google_User_Details;
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
+import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
+import com.recharge2mePlay.recharge2me.onboard.models.Google_User_Details;
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
 import Global.custom_Loading_Dialog.LoadingDialog;
 
 
-public class LoginSignIn extends Fragment {
+public class LoginSignInFragment extends Fragment {
 
     Button btnLogIn,btnSignIn,btnGoogle;
     View view;
@@ -53,7 +54,7 @@ public class LoginSignIn extends Fragment {
     private FirebaseAuth mAuth;
 
 
-    public LoginSignIn() {
+    public LoginSignInFragment() {
         // Required empty public constructor
     }
 

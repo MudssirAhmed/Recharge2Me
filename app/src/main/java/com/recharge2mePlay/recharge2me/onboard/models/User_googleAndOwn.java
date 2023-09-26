@@ -1,4 +1,7 @@
-package LogInSignIn_Entry.DataTypes;
+package com.recharge2mePlay.recharge2me.onboard.models;
+
+import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
+import com.recharge2mePlay.recharge2me.onboard.models.Google_User_Details;
 
 public class User_googleAndOwn {
 

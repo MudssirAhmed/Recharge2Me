@@ -1,13 +1,11 @@
-package Ui_Front_and_Back_end.Edit;
+package com.recharge2mePlay.recharge2me.home.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,13 +21,13 @@ import com.recharge2mePlay.recharge2me.R;
 
 import Global.Validation.Validate;
 import Global.customAnimation.MyAnimation;
-import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
-import LogInSignIn_Entry.DataTypes.Google_User_Details;
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
+import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
+import com.recharge2mePlay.recharge2me.onboard.models.Google_User_Details;
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
 
-public class Edit_profile extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity {
 
     EditText et_edit_name,
              et_edit_number;
@@ -155,7 +153,7 @@ public class Edit_profile extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(Edit_profile.this, "Updated successfully ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileActivity.this, "Updated successfully ", Toast.LENGTH_SHORT).show();
                             loadingDialog.stopLoading();
                         }
                     })

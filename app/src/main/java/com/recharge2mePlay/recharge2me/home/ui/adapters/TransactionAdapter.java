@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end.Adapters;
+package com.recharge2mePlay.recharge2me.home.ui.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.recharge2mePlay.recharge2me.R;
+import com.recharge2mePlay.recharge2me.home.ui.fragments.HomeFragmentDirections;
+import com.recharge2mePlay.recharge2me.home.ui.fragments.TransactionsFragmentDirections;
 
 import java.util.List;
 
-import Ui_Front_and_Back_end.Ui_HomeDirections;
-import Ui_Front_and_Back_end.Transactions.Ui_TransactionsDirections;
 import recahrge.DataTypes.rechargeFirbase.Order;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.myViewHolder> {
@@ -113,19 +113,17 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     private void NavigateToTransactionDetailsFragment(String orderId){
-
         if(check.equals("Transactions")){
-
-            Ui_TransactionsDirections.ActionUiTransactionsToTransactionDetails action =
-                    Ui_TransactionsDirections.actionUiTransactionsToTransactionDetails();
+            TransactionsFragmentDirections.ActionUiTransactionsToTransactionDetails action =
+                    TransactionsFragmentDirections.actionUiTransactionsToTransactionDetails();
             action.setOrderId(orderId);
             action.setFromTransactions("Transactions");
 
             Navigation.findNavController(view).navigate(action);
         }
         else if(check.equals("Home")){
-            Ui_HomeDirections.ActionUiHomeToTransactionDetails action =
-                    Ui_HomeDirections.actionUiHomeToTransactionDetails();
+            HomeFragmentDirections.ActionUiHomeToTransactionDetails action =
+                    HomeFragmentDirections.actionUiHomeToTransactionDetails();
             action.setFromHome("Home");
             action.setOrderId(orderId);
 

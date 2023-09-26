@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end.Transactions;
+package com.recharge2mePlay.recharge2me.home.ui.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -26,14 +26,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
-import Ui_Front_and_Back_end.Main_UserInterface;
+import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 import recahrge.DataTypes.rechargeFirbase.Order;
 import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
 import recahrge.DataTypes.rechargeFirbase.Pay2All_status;
 import recahrge.DataTypes.rechargeFirbase.Paytm_transactonStatus;
 
 
-public class TransactionDetails extends Fragment {
+public class TransactionDetailsFragment extends Fragment {
 
     View view;
 
@@ -59,7 +59,7 @@ public class TransactionDetails extends Fragment {
                      cL_contactR2m;
 
     String fromHome, fromTransaction, orderId;
-    public TransactionDetails() {
+    public TransactionDetailsFragment() {
         // Required empty public constructor
     }
 
@@ -96,9 +96,9 @@ public class TransactionDetails extends Fragment {
         pb_load = view.findViewById(R.id.pb_txnDetNot_progressbar);
 
 
-        fromHome = TransactionDetailsArgs.fromBundle(getArguments()).getFromHome();
-        fromTransaction = TransactionDetailsArgs.fromBundle(getArguments()).getFromTransactions();
-        orderId = TransactionDetailsArgs.fromBundle(getArguments()).getOrderId();
+        fromHome = TransactionDetailsFragmentArgs.fromBundle(getArguments()).getFromHome();
+        fromTransaction = TransactionDetailsFragmentArgs.fromBundle(getArguments()).getFromTransactions();
+        orderId = TransactionDetailsFragmentArgs.fromBundle(getArguments()).getOrderId();
 
         iv_cross.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +111,7 @@ public class TransactionDetails extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText((Main_UserInterface) requireActivity(), "mail us for any Query!", Toast.LENGTH_SHORT).show();
+                Toast.makeText((HomeActivity) requireActivity(), "mail us for any Query!", Toast.LENGTH_SHORT).show();
 
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "recharge2me.help@gmail.com", null));

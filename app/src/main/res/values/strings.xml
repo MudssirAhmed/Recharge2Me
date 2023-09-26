@@ -16,6 +16,13 @@
     // RechApi
     <string name="token">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
     <string name="baseUrl_rechApi">http://api.rechapi.com/</string>
+    <string name="login_or_create_account">You need to Login or create an account</string>
+    <string name="hello">Hello</string>
+    <string name="reset">Reset</string>
+    <string name="full_name">Full name</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log in</string>
+    <string name="create_account">Create Account</string>
 
 
     <string-array name="circle">

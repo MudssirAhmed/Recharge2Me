@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end;
+package com.recharge2mePlay.recharge2me.home.ui.fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -35,12 +35,14 @@ import com.recharge2mePlay.recharge2me.R;
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
-import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
-import Ui_Front_and_Back_end.Edit.Edit_profile;
+
+import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
+import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
+import com.recharge2mePlay.recharge2me.home.ui.activities.EditProfileActivity;
 
 
-public class settings extends Fragment {
+public class SettingsFragment extends Fragment {
 
 
     View view;
@@ -75,7 +77,7 @@ public class settings extends Fragment {
     FirebaseUser user;
 
 
-    public settings() {
+    public SettingsFragment() {
         // Required empty public constructor
     }
 
@@ -118,7 +120,7 @@ public class settings extends Fragment {
         iv_settingCross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoProfileUi(settingsArgs.fromBundle(getArguments()).getFromProfile());
+                gotoProfileUi(SettingsFragmentArgs.fromBundle(getArguments()).getFromProfile());
             }
         });
 
@@ -275,7 +277,7 @@ public class settings extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getActivity(), Edit_profile.class);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 startActivity(intent);
             }
         }, 50);
@@ -285,7 +287,7 @@ public class settings extends Fragment {
 // Verify Emial
     // send verification email
     public void sendVerificationEmail(){
-        Toast.makeText((Main_UserInterface) requireActivity(), "we send a verification link on your registeres mail", Toast.LENGTH_SHORT).show();
+        Toast.makeText((HomeActivity) requireActivity(), "we send a verification link on your registeres mail", Toast.LENGTH_SHORT).show();
 
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -309,7 +311,7 @@ public class settings extends Fragment {
     }
 // give Feedback
     private void giveFeedBack(){
-        Toast.makeText((Main_UserInterface) requireActivity(), "Give your Valuable Feedback", Toast.LENGTH_SHORT).show();
+        Toast.makeText((HomeActivity) requireActivity(), "Give your Valuable Feedback", Toast.LENGTH_SHORT).show();
 
         final String appPackageName = getActivity().getPackageName(); // getPackageName() from Context or Activity object
         try {
@@ -321,7 +323,7 @@ public class settings extends Fragment {
 // Rase a ticket
     private void raiseTicket(){
 
-        Toast.makeText((Main_UserInterface) requireActivity(), "mail us for any Query!", Toast.LENGTH_SHORT).show();
+        Toast.makeText((HomeActivity) requireActivity(), "mail us for any Query!", Toast.LENGTH_SHORT).show();
 
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "recharge2me.help@gmail.com", null));

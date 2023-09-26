@@ -1,4 +1,4 @@
-package LogInSignIn_Entry.DataTypes;
+package com.recharge2mePlay.recharge2me.onboard.models;
 
 public class Google_User_Details {
 

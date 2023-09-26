@@ -35,7 +35,6 @@ import java.util.List;
 
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
-import Ui_Front_and_Back_end.Main_UserInterface;
 import local_Databasse.entity_numberDetails;
 import local_Databasse.numberData.numberViewModel;
 import recahrge.myAdapters.dbNumberDetails_adapter;

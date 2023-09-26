@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteText"
-    tools:context="Ui_Front_and_Back_end.Main_UserInterface">
+    tools:context=".home.ui.activities.HomeActivity">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_drawer"
@@ -175,4 +175,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/nav_icon" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

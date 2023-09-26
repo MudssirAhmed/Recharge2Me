@@ -1,4 +1,4 @@
-package LogInSignIn_Entry;
+package com.recharge2mePlay.recharge2me.onboard.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -23,11 +23,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 
 import Global.custom_Loading_Dialog.LoadingDialog;
 
 
-public class login_EnterEmailAndPassword extends Fragment {
+public class LoginWithEmailFragment extends Fragment {
 
     TextView tvLogIn_SignIn,tv_Login_Reset,tv_LogIn_warning;
     TextView tv_LogIn_ForgotPassword;
@@ -43,7 +44,7 @@ public class login_EnterEmailAndPassword extends Fragment {
     // Firebase Fields:-
     private FirebaseAuth mAuth;
 
-    public login_EnterEmailAndPassword() {
+    public LoginWithEmailFragment() {
         // Required empty public constructor
     }
 

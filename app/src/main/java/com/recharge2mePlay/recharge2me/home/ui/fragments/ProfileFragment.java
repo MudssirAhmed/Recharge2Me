@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end;
+package com.recharge2mePlay.recharge2me.home.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,15 +28,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
-import java.util.HashMap;
-
 import Global.customAnimation.MyAnimation;
-import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
-import Ui_Front_and_Back_end.Edit.Edit_profile;
+
+import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
+import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
+import com.recharge2mePlay.recharge2me.home.ui.activities.EditProfileActivity;
 import Global.custom_Loading_Dialog.LoadingDialog;
 
-public class Ui_Profile extends Fragment {
+public class ProfileFragment extends Fragment {
 
     View view;
 
@@ -62,7 +62,7 @@ public class Ui_Profile extends Fragment {
     int touchFlag = 1;
 
 
-    public Ui_Profile() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -82,7 +82,7 @@ public class Ui_Profile extends Fragment {
         iv_profile_edt = view.findViewById(R.id.iv_profile_edit);
 
         // Init loading Dialog
-        loadingDialog = new LoadingDialog((Main_UserInterface) requireActivity());
+        loadingDialog = new LoadingDialog((HomeActivity) requireActivity());
 
         // NestedScroolView
         sv_profile = view.findViewById(R.id.sv_profile);
@@ -167,8 +167,8 @@ public class Ui_Profile extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Ui_ProfileDirections.ActionUiProfileToSettings action =
-                        Ui_ProfileDirections.actionUiProfileToSettings();
+                ProfileFragmentDirections.ActionUiProfileToSettings action =
+                        ProfileFragmentDirections.actionUiProfileToSettings();
                 action.setFromProfile("Profile");
 
                 Navigation.findNavController(view).navigate(action);
@@ -200,7 +200,7 @@ public class Ui_Profile extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getActivity(), Edit_profile.class);
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 startActivityForResult(intent, EDIT_PROFILE);
             }
         }, 125);
@@ -231,7 +231,7 @@ public class Ui_Profile extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 loadingDialog.stopLoading();
-                Toast.makeText((Main_UserInterface) requireActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((HomeActivity) requireActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

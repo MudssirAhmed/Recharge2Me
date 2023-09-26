@@ -1,8 +1,7 @@
-package Ui_Front_and_Back_end.Transactions;
+package com.recharge2mePlay.recharge2me.home.ui.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,13 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -24,12 +21,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,16 +32,15 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import Global.custom_Loading_Dialog.CustomToast;
-import Ui_Front_and_Back_end.Adapters.DropDown_month;
-import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
-import Ui_Front_and_Back_end.Main_UserInterface;
+import com.recharge2mePlay.recharge2me.home.ui.adapters.DropDownMonthAdapter;
+import com.recharge2mePlay.recharge2me.home.ui.adapters.TransactionAdapter;
+import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 import recahrge.DataTypes.rechargeFirbase.Order;
 
 
-public class Ui_Transactions extends Fragment{
+public class TransactionsFragment extends Fragment{
 
     RecyclerView rv_uiTransactions;
     TransactionAdapter transactionAdapter;
@@ -71,7 +64,7 @@ public class Ui_Transactions extends Fragment{
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
-    public Ui_Transactions() {
+    public TransactionsFragment() {
         // Required empty public constructor
     }
 
@@ -87,7 +80,7 @@ public class Ui_Transactions extends Fragment{
         spinner_months.setPrompt("Select Month");
 
         // Custom
-        toast = new CustomToast((Main_UserInterface) requireActivity());
+        toast = new CustomToast((HomeActivity) requireActivity());
 
         // ImageView
         iv_noTransactions = view.findViewById(R.id.iv_setting_noTransaction);
@@ -133,7 +126,7 @@ public class Ui_Transactions extends Fragment{
                     spinner_months.setBackground(getResources().getDrawable((R.drawable.transaction_filter_month)));
                     String month = tv_spinner.getText().toString().trim();
                     setFilteredTransactionList_month(month.substring(0,3));
-                    Toast.makeText((Main_UserInterface) requireActivity(), month.substring(0,3), Toast.LENGTH_SHORT).show();
+                    Toast.makeText((HomeActivity) requireActivity(), month.substring(0,3), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -197,9 +190,9 @@ public class Ui_Transactions extends Fragment{
 
         orders = list;
 
-        transactionAdapter = new TransactionAdapter((Main_UserInterface)requireActivity(), list, getActivity(), view, "Transactions");
+        transactionAdapter = new TransactionAdapter((HomeActivity)requireActivity(), list, getActivity(), view, "Transactions");
         rv_uiTransactions.setAdapter(transactionAdapter);
-        rv_uiTransactions.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
+        rv_uiTransactions.setLayoutManager(new LinearLayoutManager((HomeActivity) requireActivity()));
 
     }
 
@@ -262,7 +255,7 @@ public class Ui_Transactions extends Fragment{
         month.add("November");
         month.add("December");
 
-        DropDown_month adapter = new DropDown_month((Main_UserInterface) requireActivity(), month);
+        DropDownMonthAdapter adapter = new DropDownMonthAdapter((HomeActivity) requireActivity(), month);
         spinner_months.setAdapter(adapter);
     }
 

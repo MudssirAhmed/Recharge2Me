@@ -1,9 +1,7 @@
-package Ui_Front_and_Back_end
+package com.recharge2mePlay.recharge2me.home.ui.activities
 
 import Global.custom_Loading_Dialog.CustomToast
 import Global.custom_Loading_Dialog.LoadingDialog
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn
-import LogInSignIn_Entry.EntryActivity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -35,12 +33,14 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
-import kotlinx.android.synthetic.main.activity_main__user_interface.*
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn
+import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
+class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
 
 
     private var backpressedTime : Long = 0
@@ -81,7 +81,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main__user_interface)
+        setContentView(R.layout.activity_home)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bnv_mainUi);
         navController = findNavController(R.id.nhf_mainUi);
@@ -134,7 +134,7 @@ class Main_UserInterface : AppCompatActivity(), MenuItem.OnMenuItemClickListener
 //            helpAndSupport()
 //        }
         lL_policies.setOnClickListener {
-            val intent: Intent = Intent(this, Policies::class.java)
+            val intent: Intent = Intent(this, PolicyActivity::class.java)
             intent.putExtra("Details", "fromMainUi")
             startActivity(intent)
         }

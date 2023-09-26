@@ -1,4 +1,4 @@
-package LogInSignIn_Entry;
+package com.recharge2mePlay.recharge2me.onboard.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,18 +26,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.regex.Pattern;
+import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 
 import Global.Validation.Validate;
 import Global.custom_Loading_Dialog.CustomToast;
-import LogInSignIn_Entry.DataTypes.CreateAccount_userDetails;
-import LogInSignIn_Entry.DataTypes.Google_User_Details;
-import LogInSignIn_Entry.DataTypes.User_googleAndOwn;
+import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
+import com.recharge2mePlay.recharge2me.onboard.models.Google_User_Details;
+import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
 import Global.custom_Loading_Dialog.LoadingDialog;
-import Ui_Front_and_Back_end.Policies;
+import com.recharge2mePlay.recharge2me.home.ui.activities.PolicyActivity;
 
-public class signin_crearte_account extends Fragment {
+public class SignUpUsingEmailFragment extends Fragment {
 
     View view;
 
@@ -63,7 +61,7 @@ public class signin_crearte_account extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    public signin_crearte_account() {
+    public SignUpUsingEmailFragment() {
         // Required empty public constructor
     }
 
@@ -149,6 +147,7 @@ public class signin_crearte_account extends Fragment {
     private void Reset_fields() {
         et_createAccount_Name.setText(null);
         et_createAccount_Email.setText(null);
+        et_createAccount_Number.setText(null);
         et_createAccount_Password.setText(null);
     }
 
@@ -228,7 +227,7 @@ public class signin_crearte_account extends Fragment {
                         public void onSuccess(Void aVoid) {
                             loadingDialog.stopLoading();
 
-                            Intent intent = new Intent((EntryActivity) requireActivity(), Policies.class);
+                            Intent intent = new Intent((EntryActivity) requireActivity(), PolicyActivity.class);
                             intent.putExtra("Details", "fromCreateAccount");
                             startActivity(intent);
                         }

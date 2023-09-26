@@ -5,7 +5,7 @@
     android:id="@+id/sv_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Ui_Front_and_Back_end.Ui_Profile">
+    tools:context=".home.ui.fragments.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

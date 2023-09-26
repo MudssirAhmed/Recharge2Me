@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/ui_Home"
-        android:name="Ui_Front_and_Back_end.Ui_Home"
+        android:name="com.recharge2mePlay.recharge2me.home.ui.fragments.HomeFragment"
         android:label="fragment_ui__home"
-        tools:layout="@layout/fragment_ui__home" >
+        tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_ui_Home_to_recahrge_ui"
             app:destination="@id/recahrge_ui"
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/ui_Profile"
-        android:name="Ui_Front_and_Back_end.Ui_Profile"
+        android:name="com.recharge2mePlay.recharge2me.home.ui.fragments.ProfileFragment"
         android:label="fragment_ui__profile"
         tools:layout="@layout/fragment_ui__profile" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/ui_Transactions"
-        android:name="Ui_Front_and_Back_end.Transactions.Ui_Transactions"
+        android:name="com.recharge2mePlay.recharge2me.home.ui.fragments.TransactionsFragment"
         android:label="fragment_ui__transactions"
         tools:layout="@layout/fragment_ui__transactions" >
         <action
@@ -57,7 +57,7 @@
         tools:layout="@layout/activity_recahrge_ui" />
     <fragment
         android:id="@+id/settings"
-        android:name="Ui_Front_and_Back_end.settings"
+        android:name="com.recharge2mePlay.recharge2me.home.ui.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/transactionDetails"
-        android:name="Ui_Front_and_Back_end.Transactions.TransactionDetails"
+        android:name="com.recharge2mePlay.recharge2me.home.ui.fragments.TransactionDetailsFragment"
         android:label="fragment_transaction_details"
         tools:layout="@layout/fragment_transaction_details" >
         <action

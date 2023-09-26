@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ui_backGroundColor"
-    tools:context="Ui_Front_and_Back_end.Transactions.Ui_Transactions">
+    tools:context=".home.ui.fragments.TransactionsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"

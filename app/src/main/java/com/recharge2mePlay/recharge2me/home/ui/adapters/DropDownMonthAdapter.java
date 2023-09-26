@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end.Adapters;
+package com.recharge2mePlay.recharge2me.home.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,12 +11,12 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-public class DropDown_month extends BaseAdapter {
+public class DropDownMonthAdapter extends BaseAdapter {
 
     Context context;
     List<String> month;
 
-    public DropDown_month(Context context, List<String> month){
+    public DropDownMonthAdapter(Context context, List<String> month){
         this.context = context;
         this.month = month;
     }

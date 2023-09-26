@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end;
+package com.recharge2mePlay.recharge2me.home.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,10 +12,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
+import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 
 import Global.custom_Loading_Dialog.CustomToast;
 
-public class Policies extends AppCompatActivity {
+public class PolicyActivity extends AppCompatActivity {
 
     TextView tv_RC,
              tv_TAC,
@@ -33,7 +34,7 @@ public class Policies extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_policies);
+        setContentView(R.layout.activity_policy);
 
         // TextView
         tv_RC = findViewById(R.id.RefundAndCancelation);
@@ -156,7 +157,7 @@ public class Policies extends AppCompatActivity {
 
     private void Agree(){
         if(check()){
-                Intent intent = new Intent(this, Main_UserInterface.class);
+                Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
         }else {
             toast.showToast("Please Check All the Boxes");

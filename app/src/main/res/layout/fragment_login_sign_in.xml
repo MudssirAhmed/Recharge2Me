@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/forgot_backgorund_gradient"
-    tools:context="LogInSignIn_Entry.LoginSignIn">
+    tools:context=".onboard.ui.fragments.LoginSignInFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

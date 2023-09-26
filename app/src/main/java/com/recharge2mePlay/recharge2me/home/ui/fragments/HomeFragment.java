@@ -1,4 +1,4 @@
-package Ui_Front_and_Back_end;
+package com.recharge2mePlay.recharge2me.home.ui.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -32,6 +32,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.recharge2mePlay.recharge2me.R;
+import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +40,10 @@ import java.util.List;
 import Global.customAnimation.MyAnimation;
 import Global.custom_Loading_Dialog.CustomToast;
 import Global.custom_Loading_Dialog.LoadingDialog;
-import Ui_Front_and_Back_end.Adapters.TransactionAdapter;
+import com.recharge2mePlay.recharge2me.home.ui.adapters.TransactionAdapter;
 import recahrge.DataTypes.rechargeFirbase.Order;
 
-public class Ui_Home extends Fragment {
+public class HomeFragment extends Fragment {
 
     View view;
 
@@ -72,7 +73,7 @@ public class Ui_Home extends Fragment {
     FirebaseFirestore db;
 
 
-    public Ui_Home() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -80,7 +81,7 @@ public class Ui_Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =  inflater.inflate(R.layout.fragment_ui__home, container, false);
+        view =  inflater.inflate(R.layout.fragment_home, container, false);
 
 
         // ImageView
@@ -229,9 +230,9 @@ public class Ui_Home extends Fragment {
     // Set the data on RecyclerView
     private void setDataOnRecyclerView(List<Order> list){
 
-        transactionAdapter = new TransactionAdapter( (Main_UserInterface) requireActivity(), list, getActivity(), view, "Home");
+        transactionAdapter = new TransactionAdapter( (HomeActivity) requireActivity(), list, getActivity(), view, "Home");
         rv_Home_Transaction.setAdapter(transactionAdapter);
-        rv_Home_Transaction.setLayoutManager(new LinearLayoutManager((Main_UserInterface) requireActivity()));
+        rv_Home_Transaction.setLayoutManager(new LinearLayoutManager((HomeActivity) requireActivity()));
 
     }
 
