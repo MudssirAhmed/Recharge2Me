@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
 
-import Global.custom_Loading_Dialog.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 
 public class StartPaymentPaytm extends AppCompatActivity {
 

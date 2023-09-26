@@ -1,7 +1,7 @@
 package com.recharge2mePlay.recharge2me.home.ui.activities
 
-import Global.custom_Loading_Dialog.CustomToast
-import Global.custom_Loading_Dialog.LoadingDialog
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri

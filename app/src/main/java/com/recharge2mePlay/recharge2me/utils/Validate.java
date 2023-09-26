@@ -1,14 +1,10 @@
-package Global.Validation;
+package com.recharge2mePlay.recharge2me.utils;
 
 import android.app.Activity;
-import android.util.Log;
 
 import java.util.regex.Pattern;
 
-import javax.xml.validation.Validator;
-
-import Global.custom_Loading_Dialog.CustomToast;
-import recahrge.recharge_ui;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 
 public class Validate {
 

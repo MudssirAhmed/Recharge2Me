@@ -1,4 +1,4 @@
-package Global.customAnimation;
+package com.recharge2mePlay.recharge2me.utils;
 
 import android.os.Handler;
 import android.view.View;

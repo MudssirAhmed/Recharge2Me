@@ -32,9 +32,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
-import Global.customAnimation.MyAnimation;
-import Global.custom_Loading_Dialog.CustomToast;
-import Global.custom_Loading_Dialog.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 
 import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;

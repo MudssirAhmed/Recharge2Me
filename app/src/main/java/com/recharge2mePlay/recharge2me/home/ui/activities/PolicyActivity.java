@@ -12,9 +12,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
-import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 
-import Global.custom_Loading_Dialog.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 
 public class PolicyActivity extends AppCompatActivity {
 

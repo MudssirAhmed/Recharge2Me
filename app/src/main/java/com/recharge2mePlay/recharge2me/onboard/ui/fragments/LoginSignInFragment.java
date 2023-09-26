@@ -35,7 +35,7 @@ import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
 import com.recharge2mePlay.recharge2me.onboard.models.Google_User_Details;
 import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
-import Global.custom_Loading_Dialog.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 
 
 public class LoginSignInFragment extends Fragment {

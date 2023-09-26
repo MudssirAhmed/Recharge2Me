@@ -1,4 +1,4 @@
-package Retrofit;
+package recahrge.DataTypes;
 
 public class MobileDetailsFinder_Data {
 

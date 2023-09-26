@@ -33,10 +33,10 @@ import com.recharge2mePlay.recharge2me.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import Global.customAnimation.MyAnimation;
-import Global.custom_Loading_Dialog.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import local_Databasse.entity_numberDetails;
-import local_Databasse.numberData.numberViewModel;
+import com.recharge2mePlay.recharge2me.database.models.numberViewModel;
 import recahrge.myAdapters.dbNumberDetails_adapter;
 
 public class prePaid extends Fragment {

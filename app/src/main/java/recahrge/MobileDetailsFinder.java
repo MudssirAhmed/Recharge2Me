@@ -49,16 +49,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import Global.customAnimation.MyAnimation;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
-import Retrofit.JsonConvertor;
-import Global.custom_Loading_Dialog.CustomToast;
-import Global.custom_Loading_Dialog.LoadingDialog;
-import Global.custom_Loading_Dialog.proceedDialog;
+import com.recharge2mePlay.recharge2me.webservices.JsonConvertor;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.dialogs.proceedDialog;
 import com.recharge2mePlay.recharge2me.home.ui.activities.NotificationTransactionDetailsActivity;
-import local_Databasse.numberData.Database_numberJava;
+import com.recharge2mePlay.recharge2me.database.Database_numberJava;
 import local_Databasse.entity_numberDetails;
-import local_Databasse.numberData.numberViewModel;
+import com.recharge2mePlay.recharge2me.database.models.numberViewModel;
 import recahrge.DataTypes.Paye2All.Pay2All_authToken;
 import recahrge.DataTypes.Paye2All.Pay2All_recharge;
 import recahrge.DataTypes.rechargeFirbase.Paytm.PaytmTransactionData;
@@ -70,7 +70,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import Retrofit.MobileDetailsFinder_Data;
+import recahrge.DataTypes.MobileDetailsFinder_Data;
 
 import static com.google.android.gms.tasks.Tasks.await;
 
@@ -104,7 +104,7 @@ public class MobileDetailsFinder extends Fragment {
     final int GOTO_PLAN = 8477;
     int circleId;
 
-    private local_Databasse.numberData.numberViewModel numberViewModel;
+    private com.recharge2mePlay.recharge2me.database.models.numberViewModel numberViewModel;
 
 // customes
     // Animations

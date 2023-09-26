@@ -15,13 +15,7 @@ import android.widget.TextView;
 import com.recharge2mePlay.recharge2me.R;
 import com.google.android.material.tabs.TabLayout;
 
-import Global.customAnimation.MyAnimation;
-import recahrge.plans.Data_Fragment;
-import recahrge.plans.Ftt_Fragment;
-import recahrge.plans.Rmg_Fragment;
-import recahrge.plans.Spl_Fragment;
-import recahrge.plans.Tup_Fragment;
-import recahrge.plans.ViewPagerAdapter;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 
 public class getRecahrgePlan extends AppCompatActivity {
 

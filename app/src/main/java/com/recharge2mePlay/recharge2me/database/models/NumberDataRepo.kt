@@ -1,6 +1,7 @@
-package local_Databasse.numberData
+package com.recharge2mePlay.recharge2me.database.models
 
 import androidx.lifecycle.LiveData
+import com.recharge2mePlay.recharge2me.database.Dao_numberDetails
 import local_Databasse.entity_numberDetails
 
 class numberDataRepo(private val numberDao: Dao_numberDetails) {

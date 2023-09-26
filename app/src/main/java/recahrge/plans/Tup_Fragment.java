@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import Retrofit.JsonConvertor;
+import com.recharge2mePlay.recharge2me.webservices.JsonConvertor;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Tup_Fragment extends Fragment {

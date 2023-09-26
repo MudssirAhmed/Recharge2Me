@@ -29,7 +29,7 @@ import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 
 import java.util.List;
 
-import Global.custom_Loading_Dialog.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 
 public class ForgotPasswordFragment extends Fragment {
 

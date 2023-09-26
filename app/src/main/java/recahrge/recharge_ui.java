@@ -2,16 +2,13 @@ package recahrge;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.recharge2mePlay.recharge2me.R;
 
-import Global.customAnimation.MyAnimation;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 
 public class recharge_ui extends AppCompatActivity {
 

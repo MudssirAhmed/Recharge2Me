@@ -37,9 +37,9 @@ import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import Global.customAnimation.MyAnimation;
-import Global.custom_Loading_Dialog.CustomToast;
-import Global.custom_Loading_Dialog.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 import com.recharge2mePlay.recharge2me.home.ui.adapters.TransactionAdapter;
 import recahrge.DataTypes.rechargeFirbase.Order;
 

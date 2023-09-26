@@ -1,4 +1,4 @@
-package Global.custom_Loading_Dialog;
+package com.recharge2mePlay.recharge2me.utils.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;

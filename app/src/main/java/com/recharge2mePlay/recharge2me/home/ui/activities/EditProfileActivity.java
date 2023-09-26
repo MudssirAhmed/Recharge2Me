@@ -19,13 +19,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
-import Global.Validation.Validate;
-import Global.customAnimation.MyAnimation;
+import com.recharge2mePlay.recharge2me.utils.Validate;
+import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 import com.recharge2mePlay.recharge2me.onboard.models.CreateAccount_userDetails;
 import com.recharge2mePlay.recharge2me.onboard.models.Google_User_Details;
 import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn;
-import Global.custom_Loading_Dialog.CustomToast;
-import Global.custom_Loading_Dialog.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 
 public class EditProfileActivity extends AppCompatActivity {
 

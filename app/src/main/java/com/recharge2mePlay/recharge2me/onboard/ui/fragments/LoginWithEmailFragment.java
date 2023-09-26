@@ -25,7 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity;
 
-import Global.custom_Loading_Dialog.LoadingDialog;
+import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 
 
 public class LoginWithEmailFragment extends Fragment {

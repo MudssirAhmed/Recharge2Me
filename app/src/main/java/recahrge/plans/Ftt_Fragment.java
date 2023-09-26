@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +19,7 @@ import com.recharge2mePlay.recharge2me.R;
 
 import java.util.List;
 
-import Global.custom_Loading_Dialog.CustomToast;
+import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import recahrge.DataTypes.planDataTypes.PlanData;
 import recahrge.DataTypes.planDataTypes.recType_FTT;
 import recahrge.myAdapters.PlanAdapter;
@@ -28,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import Retrofit.JsonConvertor;
+import com.recharge2mePlay.recharge2me.webservices.JsonConvertor;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Ftt_Fragment extends Fragment {
