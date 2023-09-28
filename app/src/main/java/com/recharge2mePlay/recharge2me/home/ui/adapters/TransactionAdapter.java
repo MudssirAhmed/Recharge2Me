@@ -19,7 +19,7 @@ import com.recharge2mePlay.recharge2me.home.ui.fragments.TransactionsFragmentDir
 
 import java.util.List;
 
-import recahrge.DataTypes.rechargeFirbase.Order;
+import com.recharge2mePlay.recharge2me.recharge.models.Order;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.myViewHolder> {
 

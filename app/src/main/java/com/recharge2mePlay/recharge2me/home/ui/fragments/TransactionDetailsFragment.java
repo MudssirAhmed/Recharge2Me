@@ -27,10 +27,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.recharge2mePlay.recharge2me.R;
 
 import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
-import recahrge.DataTypes.rechargeFirbase.Order;
-import recahrge.DataTypes.rechargeFirbase.Pay2All_rechargeFirebase;
-import recahrge.DataTypes.rechargeFirbase.Pay2All_status;
-import recahrge.DataTypes.rechargeFirbase.Paytm_transactonStatus;
+import com.recharge2mePlay.recharge2me.recharge.models.Order;
+import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllRechargeFirebase;
+import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllStatus;
+import com.recharge2mePlay.recharge2me.recharge.models.PaytmTransactionStatus;
 
 
 public class TransactionDetailsFragment extends Fragment {
@@ -155,10 +155,10 @@ public class TransactionDetailsFragment extends Fragment {
         String number = order.getNumber();
         String details = order.getDetails();
 
-        Pay2All_rechargeFirebase recharge = order.getRecharge();
-        Pay2All_status status = order.getStatus();
+        Pay2AllRechargeFirebase recharge = order.getRecharge();
+        Pay2AllStatus status = order.getStatus();
 
-        Paytm_transactonStatus transactonStatus = order.getTransactonStatus();
+        PaytmTransactionStatus transactonStatus = order.getTransactonStatus();
 
         // first set recharge data
         setOperator(operator);
@@ -200,8 +200,8 @@ public class TransactionDetailsFragment extends Fragment {
     }
 
 
-    private void setTransactionStatus(Paytm_transactonStatus transactonStatus, Pay2All_rechargeFirebase recharge,
-                                      Pay2All_status status){
+    private void setTransactionStatus(PaytmTransactionStatus transactonStatus, Pay2AllRechargeFirebase recharge,
+                                      Pay2AllStatus status){
 
         String resultCode = transactonStatus.getResultCode();
         String resultStatus = transactonStatus.getResultStatus();
@@ -222,7 +222,7 @@ public class TransactionDetailsFragment extends Fragment {
     }
 
 
-    private void setPay2allRechargeDetails(Pay2All_rechargeFirebase recharge, Pay2All_status status){
+    private void setPay2allRechargeDetails(Pay2AllRechargeFirebase recharge, Pay2AllStatus status){
 
         String statusId = recharge.getStatus_id();
         String message = recharge.getMessage();
@@ -245,7 +245,7 @@ public class TransactionDetailsFragment extends Fragment {
 
         tv_txnUtr.setText(utr);
     }
-    private void setRechargeStatus_pay2all_status(Pay2All_status status){
+    private void setRechargeStatus_pay2all_status(Pay2AllStatus status){
 
         String statusId = status.getStatus_id();
 

@@ -52,7 +52,7 @@
     </fragment>
     <activity
         android:id="@+id/recahrge_ui"
-        android:name="recahrge.recharge_ui"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.activities.RechargeUiActivity"
         android:label="activity_recahrge_ui"
         tools:layout="@layout/activity_recahrge_ui" />
     <fragment

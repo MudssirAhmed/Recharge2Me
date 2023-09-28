@@ -41,7 +41,7 @@ import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 import com.recharge2mePlay.recharge2me.home.ui.adapters.TransactionAdapter;
-import recahrge.DataTypes.rechargeFirbase.Order;
+import com.recharge2mePlay.recharge2me.recharge.models.Order;
 
 public class HomeFragment extends Fragment {
 

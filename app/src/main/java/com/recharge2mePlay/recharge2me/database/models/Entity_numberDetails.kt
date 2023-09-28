@@ -4,8 +4,8 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
-@Parcelize
 @Entity(tableName = "numberDetails")
 data class entity_numberDetails(
 
@@ -14,4 +14,4 @@ data class entity_numberDetails(
         val circle: String,
         val operator: String,
 
-): Parcelable
+): Serializable

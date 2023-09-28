@@ -1,12 +1,12 @@
 package com.recharge2mePlay.recharge2me.webservices;
 
-import recahrge.DataTypes.MobileDetailsFinder_Data;
-import recahrge.DataTypes.planDataTypes.PlanData;
-import recahrge.DataTypes.Paye2All.Pay2All_authToken;
-import recahrge.DataTypes.Paye2All.Pay2All_providers;
-import recahrge.DataTypes.Paye2All.Pay2All_recharge;
-import recahrge.paytm.PaytmToken;
-import recahrge.paytm.PaytmTransactionStatus;
+import com.recharge2mePlay.recharge2me.recharge.models.MobileDetailFinderData;
+import com.recharge2mePlay.recharge2me.recharge.models.PlanData;
+import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllAuthToken;
+import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllProviders;
+import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllRecharge;
+import com.recharge2mePlay.recharge2me.recharge.models.PaytmToken;
+import com.recharge2mePlay.recharge2me.recharge.models.PaytmRechargeTransactionStatus;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -18,7 +18,7 @@ public interface JsonConvertor {
 
     // mobile details finder
     @GET("mob_details.php")
-    Call<MobileDetailsFinder_Data> getMobileF(
+    Call<MobileDetailFinderData> getMobileF(
             @Query("format") String format,
             @Query("token") String token,
             @Query("mobile") String mobile
@@ -37,17 +37,17 @@ public interface JsonConvertor {
     // https://api.pay2all.in/token
 
     @GET("getPay2allToken")
-    Call<Pay2All_authToken> getAuthToken(
+    Call<Pay2AllAuthToken> getAuthToken(
             @Query("userName") String userName,
             @Query("password") String password
     );
 
     @Headers({ "Content-Type: application/json;charset=UTF-8"})
     @GET("providers")
-    Call<Pay2All_providers> getAllProviders(@Header("Authorization") String auth);
+    Call<Pay2AllProviders> getAllProviders(@Header("Authorization") String auth);
 
     @GET("recharge")
-    Call<Pay2All_recharge> doRecharge(
+    Call<Pay2AllRecharge> doRecharge(
             @Query("token") String Token,
             @Query("number") String Number,
             @Query("amount") String Amount,
@@ -70,12 +70,12 @@ public interface JsonConvertor {
     );
 
     @POST("getTransactionStatus") // Production
-    Call<PaytmTransactionStatus> getPaytmTransactionStatus(
+    Call<PaytmRechargeTransactionStatus> getPaytmTransactionStatus(
             @Query("orderID") String orderID
     );
 
     @GET("getTransactionStatusStaging") // Staging
-    Call<PaytmTransactionStatus> getPaytmTransactionStatus_staging(
+    Call<PaytmRechargeTransactionStatus> getPaytmTransactionStatus_staging(
             @Query("orderID") String orderID
     );
 }

@@ -37,7 +37,7 @@ import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import com.recharge2mePlay.recharge2me.home.ui.adapters.DropDownMonthAdapter;
 import com.recharge2mePlay.recharge2me.home.ui.adapters.TransactionAdapter;
 import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
-import recahrge.DataTypes.rechargeFirbase.Order;
+import com.recharge2mePlay.recharge2me.recharge.models.Order;
 
 
 public class TransactionsFragment extends Fragment{

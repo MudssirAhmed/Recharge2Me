@@ -6,7 +6,7 @@
     app:startDestination="@id/prePaid3">
     <fragment
         android:id="@+id/prePaid3"
-        android:name="recahrge.prePaid"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.fragments.PrePaidFragment"
         android:label="fragment_pre_paid"
         tools:layout="@layout/fragment_pre_paid" >
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/mobileDetailsFinder"
-        android:name="recahrge.MobileDetailsFinder"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.fragments.MobileDetailsFinderFragment"
         android:label="fragment_mobile_details_finder"
         tools:layout="@layout/fragment_mobile_details_finder" >
         <argument
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/recharge_circle"
-        android:name="recahrge.recharge_circle"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.fragments.RechargeCircleFragment"
         android:label="fragment_recharge_circle"
         tools:layout="@layout/fragment_recharge_circle" >
         <action
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/recharge_selectOperator"
-        android:name="recahrge.recharge_selectOperator"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.fragments.RechargeSelectOperatorFragment"
         android:label="fragment_recharge_select_operator"
         tools:layout="@layout/fragment_recharge_select_operator" >
         <action
@@ -114,12 +114,12 @@
     </fragment>
     <fragment
         android:id="@+id/recharge_Plan"
-        android:name="recahrge.plans.recharge_Plan"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.fragments.RechargePlanFragment"
         android:label="fragment_recharge__plan"
         tools:layout="@layout/fragment_recharge__plan" />
     <activity
         android:id="@+id/contactList_activity"
-        android:name="recahrge.contactList.contactList_activity"
+        android:name="com.recharge2mePlay.recharge2me.recharge.ui.activities.ContactListActivity"
         android:label="activity_contact_list"
         tools:layout="@layout/activity_contact_list" />
 </navigation>
