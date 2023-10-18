@@ -7,64 +7,45 @@
     tools:context=".recharge.ui.activities.GetRechargePlanActivity"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include android:id="@+id/header" layout="@layout/back_toolbar"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp">
 
         <ImageView
-            android:id="@+id/iv_plan_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.011"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/back_arrow_black" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/comfortaa_bold"
-            android:text="Browse Plans"
-            android:textColor="@color/primaryText"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_plan_back" />
+            android:id="@+id/ivOperatorIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            tools:src="@drawable/idea"/>
 
         <TextView
             android:id="@+id/tv_planOperator"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/comfortaa_light"
-            android:text="for Airtel UP West"
-            android:textColor="@color/secondaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/comfortaa_bold"
+            tools:text="Airtel UP West"
+            android:textSize="16sp"
+            android:textColor="@color/primaryText" />
+
+    </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_plans"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/colorAccent"
         app:tabIndicatorGravity="bottom"
         app:tabMode="scrollable"
         app:tabTextColor="@color/perple"
-        app:tabTextAppearance="@style/tab_text">
-    </com.google.android.material.tabs.TabLayout>
+        app:tabTextAppearance="@style/tab_text"/>
 
     <ImageView
         android:id="@+id/imageView18"
@@ -72,20 +53,27 @@
         android:layout_height="5dp"
         app:srcCompat="@drawable/shadow" />
 
-    <ProgressBar
-        android:id="@+id/progressBar_getRechargePlan"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animationResolution="50"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/perple"
-        android:progress="25" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager_plans"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </androidx.viewpager.widget.ViewPager>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager_plans"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginHorizontal="50dp"
+            android:textColor="@color/Warning_text"
+            tools:text="some error"/>
+
+    </FrameLayout>
 
 </LinearLayout>

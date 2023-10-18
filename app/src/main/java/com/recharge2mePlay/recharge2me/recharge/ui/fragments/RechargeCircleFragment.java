@@ -17,6 +17,7 @@ import com.recharge2mePlay.recharge2me.R;
 
 import local_Databasse.entity_numberDetails;
 
+import com.recharge2mePlay.recharge2me.constants.AppConstants;
 import com.recharge2mePlay.recharge2me.recharge.ui.activities.RechargeUiActivity;
 import com.recharge2mePlay.recharge2me.recharge.ui.adapters.CircleAdapter;
 
@@ -35,7 +36,6 @@ public class RechargeCircleFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class RechargeCircleFragment extends Fragment {
         CircleAdapter circle_adapter = new CircleAdapter((RechargeUiActivity) requireActivity(), circle);
 
         // Init onClick Animation
-        animation = AnimationUtils.loadAnimation((RechargeUiActivity) requireActivity(), R.anim.click);
+        animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.click);
 
         rv_circle.setAdapter(circle_adapter);
         rv_circle.setLayoutManager(new LinearLayoutManager((RechargeUiActivity) requireActivity()));
@@ -57,34 +57,12 @@ public class RechargeCircleFragment extends Fragment {
         number = RechargeCircleFragmentArgs.fromBundle(getArguments()).getUserNumber();
 
         // click Listener
-        rv_circle.addOnItemTouchListener(new CircleAdapter.RecyclerTouchListener((RechargeUiActivity) requireActivity(),
-                rv_circle, new CircleAdapter.ClickListener() {
-
-            @Override
-            public void onClick(View view, final int position) {
-
-//                Toast.makeText((recahrge_ui) requireActivity(), "gg:"+circle[position], Toast.LENGTH_SHORT).show();
-
-                view.startAnimation(animation);
-
-                entity_numberDetails a = null;
-
-                RechargeCircleFragmentDirections.ActionRechargeCircleToMobileDetailsFinder
-                        action = RechargeCircleFragmentDirections
-                        .actionRechargeCircleToMobileDetailsFinder("formCircle", number);
-
-                action.setUserCircle(circle[position]);
-
-                Navigation.findNavController(view).navigate(action);
-            }
-
-            // This is for LongPress Events
-//            @Override
-//            public void onLongPress(View view, int position){
-//                Toast.makeText((recahrge_ui) requireActivity(), " LongPress on: " + circle[position] , Toast.LENGTH_SHORT).show();
-//            }
-
-        }));
+        rv_circle.addOnItemTouchListener(new CircleAdapter.RecyclerTouchListener(requireActivity(),
+                rv_circle, (view, position) -> {
+                    view.startAnimation(animation);
+                    Navigation.findNavController(view).getPreviousBackStackEntry().getSavedStateHandle().set(AppConstants.SELECTED_CIRCLE, circle[position]);
+                    Navigation.findNavController(view).popBackStack();
+                }));
 
 
         return view;

@@ -1,6 +1,8 @@
 package com.recharge2mePlay.recharge2me.webservices;
 
+import com.recharge2mePlay.recharge2me.constants.AppConstants;
 import com.recharge2mePlay.recharge2me.recharge.models.MobileDetailFinderData;
+import com.recharge2mePlay.recharge2me.recharge.models.MobileRechargePlansResponse;
 import com.recharge2mePlay.recharge2me.recharge.models.PlanData;
 import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllAuthToken;
 import com.recharge2mePlay.recharge2me.recharge.models.Pay2AllProviders;
@@ -14,7 +16,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface JsonConvertor {
+public interface ApiService {
 
     // mobile details finder
     @GET("mob_details.php")
@@ -77,5 +79,11 @@ public interface JsonConvertor {
     @GET("getTransactionStatusStaging") // Staging
     Call<PaytmRechargeTransactionStatus> getPaytmTransactionStatus_staging(
             @Query("orderID") String orderID
+    );
+
+    @GET(AppConstants.GET_MOBILE_RECHARGE_PLANS)
+    Call<MobileRechargePlansResponse> getMobileRechargePlans(
+        @Query("operatorCode") String operatorCode,
+        @Query("circleCode") String circleCode
     );
 }

@@ -50,14 +50,14 @@
         <argument
             android:name="userCircle"
             app:argType="string"
-            android:defaultValue="Your Circle" />
+            android:defaultValue="" />
         <argument
             android:name="userNumberFromCircle"
             app:argType="string" />
         <argument
             android:name="operator"
             app:argType="string"
-            android:defaultValue="Your Operator" />
+            android:defaultValue="" />
         <action
             android:id="@+id/action_mobileDetailsFinder_to_recharge_Plan"
             app:destination="@id/recharge_Plan"
@@ -83,14 +83,6 @@
         android:name="com.recharge2mePlay.recharge2me.recharge.ui.fragments.RechargeCircleFragment"
         android:label="fragment_recharge_circle"
         tools:layout="@layout/fragment_recharge_circle" >
-        <action
-            android:id="@+id/action_recharge_circle_to_mobileDetailsFinder"
-            app:destination="@id/mobileDetailsFinder"
-            app:enterAnim="@anim/to_left_pop"
-            app:exitAnim="@anim/from_right_pop"
-            app:launchSingleTop="true"
-            app:popUpTo="@id/recharge_circle"
-            app:popUpToInclusive="true" />
         <argument android:name="userNumber"
             app:argType="string" />
     </fragment>

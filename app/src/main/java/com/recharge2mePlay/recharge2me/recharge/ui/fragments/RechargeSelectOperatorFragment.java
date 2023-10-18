@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.recharge2mePlay.recharge2me.R;
 
+import com.recharge2mePlay.recharge2me.constants.AppConstants;
 import com.recharge2mePlay.recharge2me.recharge.ui.activities.RechargeUiActivity;
 import com.recharge2mePlay.recharge2me.recharge.ui.adapters.OperatorAdapter;
 
@@ -67,17 +68,9 @@ public class RechargeSelectOperatorFragment extends Fragment {
 
                     @Override
                     public void onClick(View v, int position) {
-
                         v.startAnimation(animation);
-
-                        RechargeSelectOperatorFragmentDirections.ActionRechargeSelectOperatorToMobileDetailsFinder
-                                        action = RechargeSelectOperatorFragmentDirections
-                                .actionRechargeSelectOperatorToMobileDetailsFinder("formCircle", number);
-
-                        action.setOperator(recOp[position]);
-
-                        Navigation.findNavController(view).navigate(action);
-
+                        Navigation.findNavController(view).getPreviousBackStackEntry().getSavedStateHandle().set(AppConstants.SELECTED_OPERATOR, recOp[position]);
+                        Navigation.findNavController(view).popBackStack();
                     }
                 }));
 

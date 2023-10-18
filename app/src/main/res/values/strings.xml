@@ -23,6 +23,8 @@
     <string name="sign_up">Sign Up</string>
     <string name="log_in">Log in</string>
     <string name="create_account">Create Account</string>
+    <string name="browse_plans">Browse Plans</string>
+    <string name="something_went_wrong">Something went wrong, Please try again later</string>
 
 
     <string-array name="circle">
