@@ -15,15 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name="recahrge.StartPaymentPaytm"></activity>
-        <activity android:name="Ui_Front_and_Back_end.Transactions.NotificationTransactionDetails" />
-        <activity android:name="Ui_Front_and_Back_end.Policies" />
-        <activity android:name="Ui_Front_and_Back_end.Edit.Edit_profile" />
-        <activity android:name="recahrge.contactList.contactList_activity" />
-        <activity android:name="recahrge.plans.getRecahrgePlan" />
-        <activity android:name="recahrge.recharge_ui" />
-        <activity android:name="Ui_Front_and_Back_end.Main_UserInterface" />
-        <activity android:name="LogInSignIn_Entry.EntryActivity" />
+        <activity android:name=".recharge.ui.activities.StartPaymentPaytmActivity"></activity>
+        <activity android:name=".home.ui.activities.NotificationTransactionDetailsActivity" />
+        <activity android:name=".home.ui.activities.PolicyActivity" />
+        <activity android:name=".home.ui.activities.EditProfileActivity" />
+        <activity android:name=".recharge.ui.activities.ContactListActivity" />
+        <activity android:name=".recharge.ui.activities.GetRechargePlanActivity" />
+        <activity android:name=".recharge.ui.activities.RechargeUiActivity" />
+        <activity android:name=".home.ui.activities.HomeActivity" />
+        <activity android:name=".onboard.ui.activities.EntryActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

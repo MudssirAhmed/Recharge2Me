@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="recahrge.contactList.contactList_activity">
+    tools:context=".recharge.ui.activities.ContactListActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout8"

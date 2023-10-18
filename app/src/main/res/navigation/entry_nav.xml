@@ -6,7 +6,7 @@
     app:startDestination="@id/loginSignIn">
     <fragment
         android:id="@+id/loginSignIn"
-        android:name="LogInSignIn_Entry.LoginSignIn"
+        android:name="com.recharge2mePlay.recharge2me.onboard.ui.fragments.LoginSignInFragment"
         android:label="fragment_login_sign_in"
         tools:layout="@layout/fragment_login_sign_in" >
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/login_EnterEmailAndPassword"
-        android:name="LogInSignIn_Entry.login_EnterEmailAndPassword"
+        android:name="com.recharge2mePlay.recharge2me.onboard.ui.fragments.LoginWithEmailFragment"
         android:label="fragment_login__enter_email_and_password"
         tools:layout="@layout/fragment_login__enter_email_and_password" >
         <action
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/signin_crearte_account"
-        android:name="LogInSignIn_Entry.signin_crearte_account"
+        android:name="com.recharge2mePlay.recharge2me.onboard.ui.fragments.SignUpUsingEmailFragment"
         android:label="fragment_signin_crearte_account"
         tools:layout="@layout/fragment_signin_crearte_account" >
         <action
@@ -57,12 +57,12 @@
     </fragment>
     <activity
         android:id="@+id/main_UserInterface"
-        android:name="Ui_Front_and_Back_end.Main_UserInterface"
+        android:name="com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity"
         android:label="activity_main__user_interface"
-        tools:layout="@layout/activity_main__user_interface" />
+        tools:layout="@layout/activity_home" />
     <fragment
         android:id="@+id/forgot_Password"
-        android:name="LogInSignIn_Entry.Forgot_Password"
+        android:name="com.recharge2mePlay.recharge2me.onboard.ui.fragments.ForgotPasswordFragment"
         android:label="fragment_forgot__password"
         tools:layout="@layout/fragment_forgot__password" />
 </navigation>
