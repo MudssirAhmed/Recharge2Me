@@ -33,172 +33,113 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
+import com.recharge2mePlay.recharge2me.databinding.ActivityHomeBinding
 import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn
 import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
 
+    // Binding
+    private lateinit var mBinding: ActivityHomeBinding
 
     private var backpressedTime : Long = 0
     private var backToast: Toast? = null;
 
     private lateinit var navController: NavController
-    private lateinit var nav_drawer: NavigationView
-    private lateinit var nav_icon: ImageView
-
-    private lateinit var lL_tell_aFreind: LinearLayout
-//    private lateinit var lL_helpAndSupport: LinearLayout
-    private lateinit var lL_feedBack: LinearLayout
-    private lateinit var lL_policies: LinearLayout
-
-
-
     private lateinit var listner: NavController.OnDestinationChangedListener
-
-    // Custom
     private lateinit var toast: CustomToast
     private lateinit var loadingDialog: LoadingDialog
-
-    // Initegers
     private var flag:Int = 0
     private var onBackPressedFlag: Int = 1;
     private var onTouchFlag: Int = 1
-
-    // Strings
     private var set: String = ""
     private var setP: String = ""
     private var trx: String = ""
-
-    // Firebase
     lateinit var db: FirebaseFirestore
     lateinit var auth: FirebaseAuth
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        mBinding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bnv_mainUi);
+        val bottomNavigationView = mBinding.bnvMainUi
         navController = findNavController(R.id.nhf_mainUi);
-
-        // Navigation view
-        nav_icon = findViewById<ImageView>(R.id.iv_navIcon_mainUi)
-        nav_drawer = findViewById<NavigationView>(R.id.nav_drawer)
-
-        // LinearLayout
-        lL_feedBack = nav_drawer.findViewById(R.id.lL_navDrawer_feedback);
-        lL_tell_aFreind = nav_drawer.findViewById(R.id.lL_tell_aFreind);
-//        lL_helpAndSupport = nav_drawer.findViewById(R.id.lL__helpAndSupport);
-        lL_policies = nav_drawer.findViewById(R.id.lL_policies);
-
-        // custom
         toast = CustomToast(this)
         loadingDialog = LoadingDialog(this)
-
-        // Firebase
-         db = FirebaseFirestore.getInstance()
+        db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        nav_drawer.visibility = GONE
+        setData()
+        setEventListeners()
+    }
 
-        if(flag == 0){
-            nav_drawer.animate().translationXBy(-100f)
+    private fun setData() {
+        mBinding.navDrawer.visibility = GONE
+        if(flag == 0) {
+            mBinding.navDrawer.animate().translationXBy(-100f)
             flag = 1;
         }
-
-        // OnClickListner
-        nav_icon.setOnClickListener{
-            lifecycleScope.launch {
-                setDataOnNavDrawer()
-                appyAnimtionOnNavIcon()
-            }
-            applyOpenAnimation()
-        }
-
-
-        nav_drawer.getHeaderView(0).setOnClickListener {
-            Toast.makeText(this, "Header", Toast.LENGTH_SHORT).show()
-        }
-        lL_feedBack.setOnClickListener {
-            giveFeedBack()
-        }
-        lL_tell_aFreind.setOnClickListener{
-            getLinkFromFirebase()
-        }
-//        lL_helpAndSupport.setOnClickListener {
-//            helpAndSupport()
-//        }
-        lL_policies.setOnClickListener {
-            val intent: Intent = Intent(this, PolicyActivity::class.java)
-            intent.putExtra("Details", "fromMainUi")
-            startActivity(intent)
-        }
-
-        bottomNavigationView.setupWithNavController(navController);
-        nav_drawer.setupWithNavController(navController)
-
-        // It will listen the destinations and animate the drawer
+        mBinding.bnvMainUi.setupWithNavController(navController);
+        mBinding.navDrawer.setupWithNavController(navController)
         listner = NavController.OnDestinationChangedListener { controller, destination, arguments ->
             if(destination.id == R.id.ui_Profile){
-                if(nav_drawer.isVisible){
-                        lifecycleScope.launch {
-                            appyCloseAnimation()
-                        }
-                }
-                bottomNavigationView.visibility = VISIBLE
-                nav_icon.visibility = VISIBLE
-                set = "Profile"
-            }
-            else if(destination.id == R.id.ui_Home){
-                if(nav_drawer.isVisible){
+                if(mBinding.navDrawer.isVisible){
                     lifecycleScope.launch {
                         appyCloseAnimation()
                     }
                 }
-                bottomNavigationView.visibility = VISIBLE
-                nav_icon.visibility = VISIBLE
+                mBinding.bnvMainUi.visibility = VISIBLE
+                mBinding.ivNavIconMainUi.visibility = VISIBLE
+                set = "Profile"
+            }
+            else if(destination.id == R.id.ui_Home){
+                if(mBinding.navDrawer.isVisible){
+                    lifecycleScope.launch {
+                        appyCloseAnimation()
+                    }
+                }
+                mBinding.bnvMainUi.visibility = VISIBLE
+                mBinding.ivNavIconMainUi.visibility = VISIBLE
                 set = "Home"
                 trx = "Home"
             }
             else if(destination.id == R.id.ui_Transactions){
-                if(nav_drawer.isVisible){
+                if(mBinding.navDrawer.isVisible){
                     lifecycleScope.launch {
                         appyCloseAnimation()
                     }
                 }
-                bottomNavigationView.visibility = VISIBLE
-                nav_icon.visibility = VISIBLE
+                mBinding.bnvMainUi.visibility = VISIBLE
+                mBinding.ivNavIconMainUi.visibility = VISIBLE
                 trx = "Transactions"
             }
             else if(destination.id == R.id.settings){
-                if(nav_drawer.isVisible){
+                if(mBinding.navDrawer.isVisible){
                     lifecycleScope.launch {
                         appyCloseAnimation()
                     }
                 }
-                bottomNavigationView.visibility = GONE
-                nav_icon.visibility = GONE
+                mBinding.bnvMainUi.visibility = GONE
+                mBinding.ivNavIconMainUi.visibility = GONE
                 if(set == "Home"){
                     set = "Go_Home"
                 }
                 else if(set == "Profile"){
                     set = "Go_Profile"
                 }
-
             }
             else if(destination.id == R.id.transactionDetails){
-                if(nav_drawer.isVisible){
+                if(mBinding.navDrawer.isVisible){
                     lifecycleScope.launch {
                         appyCloseAnimation()
                     }
                 }
-                bottomNavigationView.visibility = GONE
-                nav_icon.visibility = GONE
+                mBinding.bnvMainUi.visibility = GONE
+                mBinding.ivNavIconMainUi.visibility = GONE
 
                 if(trx.equals("Home")){
                     trx = "Go_Home"
@@ -208,15 +149,41 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                 }
             }
         }
-
-        // handle signOut click
-        var item: MenuItem = nav_drawer.menu.findItem(R.id.drawer_signOut)
+        val item: MenuItem = mBinding.navDrawer.menu.findItem(R.id.drawer_signOut)
         item.setOnMenuItemClickListener(this)
-
         lifecycleScope.launch() {
             setDataOnNavDrawer()
         }
+    }
 
+    private fun setEventListeners() {
+        mBinding.ivNavIconMainUi.setOnClickListener {
+            lifecycleScope.launch {
+                setDataOnNavDrawer()
+                appyAnimtionOnNavIcon()
+            }
+            applyOpenAnimation()
+        }
+        mBinding.navDrawer.getHeaderView(0).setOnClickListener {
+            Toast.makeText(this, "Header", Toast.LENGTH_SHORT).show()
+        }
+        mBinding.lLNavDrawerFeedback.setOnClickListener {
+            giveFeedBack()
+        }
+        mBinding.lLTellAFreind.setOnClickListener{
+            getLinkFromFirebase()
+        }
+//        lL_helpAndSupport.setOnClickListener {
+//            helpAndSupport()
+//        }
+        mBinding.lLPolicies.setOnClickListener {
+            val intent: Intent = Intent(this, PolicyActivity::class.java)
+            intent.putExtra("Details", "fromMainUi")
+            startActivity(intent)
+        }
+        mBinding.ivSettings.setOnClickListener {
+
+        }
     }
 
     // When signOut clicked
@@ -252,14 +219,13 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                 gotoLogninSignUi()
             }
         }
-    } // End of signOut method;
+    }
 
     private fun gotoLogninSignUi() {
         val intent = Intent(this, EntryActivity::class.java)
         startActivity(intent)
         Toast.makeText(this, "You are Logged Out...", Toast.LENGTH_SHORT).show()
     }
-
 
     private fun giveFeedBack() {
         val appPackageName: String = this.getPackageName() // getPackageName() from Context or Activity object
@@ -268,10 +234,11 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         } catch (anfe: ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
         }
-    }    // Give Feedback
+    }
+    
     private fun getLinkFromFirebase() {
-        lL_tell_aFreind.isEnabled = false
-        lL_tell_aFreind.isClickable = false
+        mBinding.lLTellAFreind.isEnabled = false
+        mBinding.lLTellAFreind.isClickable = false
         Toast.makeText(this, "mail us for any Querry!", Toast.LENGTH_SHORT).show()
         try {
             val docRef: DocumentReference = db.collection("ScreenDialog").document("playStore")
@@ -293,12 +260,13 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
             Log.i("expMain", e.message ?: "Error! ")
             onShareClicked("null")
         }
-    } // Tell a freind
+    }
+    
     private fun onShareClicked(link: String) {
         Log.i("link", "link: " + link)
 
-        lL_tell_aFreind.isEnabled = true
-        lL_tell_aFreind.isClickable = true
+        mBinding.lLTellAFreind.isEnabled = true
+        mBinding.lLTellAFreind.isClickable = true
 
         var link:String = link
 
@@ -314,14 +282,14 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         intent.putExtra(Intent.EXTRA_TITLE, "Recharge2me")
 
         startActivity(Intent.createChooser(intent, "Share Link"))
-    }    // play store link
+    }
+    
     private fun helpAndSupport() {
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "recharge2me.help@gmail.com", null))
         this.startActivity(Intent.createChooser(emailIntent, null))
-    } // Help and support
-
-
+    }
+    
     fun setDataOnNavDrawer(){
 
         val docRef = db.collection("USERS").document(auth.uid.toString())
@@ -335,8 +303,8 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                         val Name: String = user?.name ?:  "R2M Demo"
                         val Reward: String = user?.rewards ?: "0"
 
-                        val tv_navHeader_name  = nav_drawer.getHeaderView(0).findViewById<TextView>(R.id.tv_navHeader_name);
-                        val tv_navHeader_reward  = nav_drawer.getHeaderView(0).findViewById<TextView>(R.id.tv_navHeader_reward);
+                        val tv_navHeader_name  = mBinding.navDrawer.getHeaderView(0).findViewById<TextView>(R.id.tv_navHeader_name);
+                        val tv_navHeader_reward  = mBinding.navDrawer.getHeaderView(0).findViewById<TextView>(R.id.tv_navHeader_reward);
 
                         tv_navHeader_name.text = Name
                         tv_navHeader_reward.text = "₹ " + Reward + " rewards"
@@ -355,15 +323,14 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         super.onResume()
         navController.addOnDestinationChangedListener(listner)
     }
+    
     override fun onPause() {
         super.onPause()
         navController.removeOnDestinationChangedListener(listner)
     }
 
-//Animation
-    // Animate navIcon
     private suspend fun appyAnimtionOnNavIcon(){
-        nav_icon.apply {
+        mBinding.ivNavIconMainUi.apply {
             animate().
                 alpha(0f)
                 .duration = 100L
@@ -375,9 +342,9 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                 .duration = 100L
         }
     }
-    // Animation on navDrawer
+    
     private fun applyOpenAnimation(){
-        nav_drawer.apply {
+        mBinding.navDrawer.apply {
             alpha = 0f
             visibility = View.VISIBLE
 
@@ -388,8 +355,9 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
                     .setListener(null)
         }
     }
+    
     private suspend fun appyCloseAnimation(){
-        nav_drawer.apply {
+        mBinding.navDrawer.apply {
             animate()
                     .alpha(0f)
                     .setDuration(200L)
@@ -407,12 +375,11 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         }
     }
 
-    // onBackPressd and onTouch events
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         if (event != null) {
             if(event.action == MotionEvent.ACTION_UP){
-                if(nav_drawer.isVisible){
+                if(mBinding.navDrawer.isVisible){
                     if(onTouchFlag == 1){
                         onTouchFlag = 0
                         lifecycleScope.launch {
@@ -423,7 +390,7 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
             }
             else if(event.action == MotionEvent.ACTION_DOWN){
 
-                if(nav_drawer.isVisible){
+                if(mBinding.navDrawer.isVisible){
                     if(onTouchFlag == 1){
                         onTouchFlag = 0
                         lifecycleScope.launch {
@@ -436,11 +403,12 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
 
         return super.onTouchEvent(event)
     }
+    
     override fun onBackPressed() {
 
-        if(!nav_drawer.isVisible && (set.equals("Home") || set.equals("Profile"))
+        if(!mBinding.navDrawer.isVisible && (set.equals("Home") || set.equals("Profile"))
                                 && (trx.equals("Home") || trx.equals("Transactions"))   ){
-            if(nav_icon.isVisible){
+            if(mBinding.ivNavIconMainUi.isVisible){
                 if(backpressedTime + 2000 > System.currentTimeMillis())
                 {
                     backToast?.cancel()
@@ -456,7 +424,7 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
             }
         }
 
-        if(nav_drawer.isVisible){
+        if(mBinding.navDrawer.isVisible){
             if(onBackPressedFlag == 1){
                 onBackPressedFlag = 0
                 lifecycleScope.launch {
@@ -480,10 +448,6 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         }
 
     }
-
-
-
-
 
 }
 

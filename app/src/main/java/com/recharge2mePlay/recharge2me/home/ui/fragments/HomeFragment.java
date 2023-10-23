@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.recharge2mePlay.recharge2me.R;
+import com.recharge2mePlay.recharge2me.databinding.FragmentHomeBinding;
 import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 
 import java.util.ArrayList;
@@ -45,17 +47,7 @@ import com.recharge2mePlay.recharge2me.recharge.models.Order;
 
 public class HomeFragment extends Fragment {
 
-    View view;
-
-    ImageView iv_prePaid,
-              iv_postPaid;
-
-    ProgressBar pb_uiHome_transactions;
-
-    NestedScrollView ns_home;
-
-    RecyclerView rv_Home_Transaction;
-    TransactionAdapter transactionAdapter;
+    private FragmentHomeBinding mBinding;
 
     // SharedPreferences
     SharedPreferences sharedPreferences;
@@ -72,39 +64,24 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
+    // DATA
+    private TransactionAdapter transactionAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         // Inflate the layout for this fragment
-        view =  inflater.inflate(R.layout.fragment_home, container, false);
-
-
-        // ImageView
-        iv_postPaid = view.findViewById(R.id.iv_postPaid);
-        iv_prePaid = view.findViewById(R.id.iv_prePaid);
-
-        // RecyclerView
-        rv_Home_Transaction = view.findViewById(R.id.rv_home_transaction);
-
-        // NestedScrollView
-        ns_home = view.findViewById(R.id.ns_home);
-
-        // progressBar
-        pb_uiHome_transactions = view.findViewById(R.id.pb_uiHome_transactions);
-
-        // Init onClick Animation
+        mBinding = FragmentHomeBinding.inflate(inflater, container, false);
         animation = new MyAnimation();
-
-        // Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        // custom
         loadingDialog = new LoadingDialog(getActivity());
         toast = new CustomToast(getActivity());
 
@@ -113,23 +90,21 @@ public class HomeFragment extends Fragment {
         String check = sharedPreferences.getString("ProvidersData", "");
         Log.d("shardePrefrences", "msg" + check);
 
-
-        iv_prePaid.setOnClickListener(new View.OnClickListener() {
+        mBinding.llPrePaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prePaid(iv_prePaid);
+                prePaid(view);
             }
         });
-        iv_postPaid.setOnClickListener(new View.OnClickListener() {
+        mBinding.llPostPaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                prePaid(iv_postPaid);
+                prePaid(view);
             }
         });
-
 
         // These are for anime back the drawe if it is visible
-        ns_home.setOnTouchListener(new View.OnTouchListener() {
+        mBinding.nsHome.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -143,7 +118,7 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-        rv_Home_Transaction.setOnTouchListener(new View.OnTouchListener() {
+        mBinding.rvHomeTransaction.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -157,14 +132,11 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-
 
         getRechargeData();
 
-        return view;
-    }// End of onCreate()
-
-
+        return mBinding.getRoot();
+    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -202,7 +174,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void getRechargeData(){
+    private void getRechargeData() {
         CollectionReference colRef = db.collection("USERS").document(mAuth.getUid()).collection("Transactions");
 
         Query query = colRef.orderBy("orderId", Query.Direction.DESCENDING).limit(5);
@@ -216,12 +188,12 @@ public class HomeFragment extends Fragment {
                     list.add(q.toObject(Order.class));
                 }
                 setDataOnRecyclerView(list);
-                pb_uiHome_transactions.setVisibility(View.GONE);
+                mBinding.pbUiHomeTransactions.setVisibility(View.GONE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                pb_uiHome_transactions.setVisibility(View.GONE);
+                mBinding.pbUiHomeTransactions.setVisibility(View.GONE);
             }
         });
 
@@ -229,17 +201,13 @@ public class HomeFragment extends Fragment {
 
     // Set the data on RecyclerView
     private void setDataOnRecyclerView(List<Order> list){
-
-        transactionAdapter = new TransactionAdapter( (HomeActivity) requireActivity(), list, getActivity(), view, "Home");
-        rv_Home_Transaction.setAdapter(transactionAdapter);
-        rv_Home_Transaction.setLayoutManager(new LinearLayoutManager((HomeActivity) requireActivity()));
-
+        transactionAdapter = new TransactionAdapter( (HomeActivity) requireActivity(), list, getActivity(), mBinding.getRoot(), "Home");
+        mBinding.rvHomeTransaction.setAdapter(transactionAdapter);
+        mBinding.rvHomeTransaction.setLayoutManager(new LinearLayoutManager((HomeActivity) requireActivity()));
     }
-
 
     private void prePaid(View view){
         animation.onClickAnimation(view);
-
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -247,7 +215,6 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
             }
         }, 120);
-
-    }// End of prePaid method;
+    }
 
 }

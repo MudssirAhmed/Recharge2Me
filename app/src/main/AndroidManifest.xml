@@ -22,7 +22,8 @@
         <activity android:name=".recharge.ui.activities.ContactListActivity" />
         <activity android:name=".recharge.ui.activities.GetRechargePlanActivity" />
         <activity android:name=".recharge.ui.activities.RechargeUiActivity" />
-        <activity android:name=".home.ui.activities.HomeActivity" />
+        <activity android:name=".home.ui.activities.HomeActivity"
+            android:theme="@style/ThemeFullScreenTransparent"/>
         <activity android:name=".onboard.ui.activities.EntryActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -31,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Keep it false in production environment -->
+
         <meta-data
             android:name="com.phonepe.android.sdk.Debuggable"
             android:value="false" /> <!-- Keep it false in production environment -->

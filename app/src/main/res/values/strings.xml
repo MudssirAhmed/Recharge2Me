@@ -1,30 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY appname "Recharge2Me">
+    ]>
+
 <resources>
-    <string name="app_name">Recharge2Me</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="item">Item</string>
-    <string name="user">user</string>
-    <string name="forgot_password">Forgot Password?</string>
-    <string name="enter_the_email_address">Enter the email address</string>
-    <string name="associated_with_your_account">associated with your account.</string>
-    <string name="your_password">your password</string>
-    <string name="we_will_email_you_a_link_to_reset">we will email you a link to reset</string>
-    <string name="enter_email_address">Enter email address</string>
-    <string name="send_reset_link">Send Reset Link</string>
-    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="app_name" translatable="false">&appname;</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+    <string name="item" translatable="false">Item</string>
+    <string name="user" translatable="false">user</string>
+    <string name="forgot_password" translatable="false">Forgot Password?</string>
+    <string name="enter_the_email_address" translatable="false">Enter the email address</string>
+    <string name="associated_with_your_account" translatable="false">associated with your account.</string>
+    <string name="your_password" translatable="false">your password</string>
+    <string name="we_will_email_you_a_link_to_reset" translatable="false">we will email you a link to reset</string>
+    <string name="enter_email_address" translatable="false">Enter email address</string>
+    <string name="send_reset_link" translatable="false">Send Reset Link</string>
+    <string name="enter_mobile_number" translatable="false">Enter Mobile Number</string>
 
     // RechApi
-    <string name="token">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
-    <string name="baseUrl_rechApi">http://api.rechapi.com/</string>
-    <string name="login_or_create_account">You need to Login or create an account</string>
-    <string name="hello">Hello</string>
-    <string name="reset">Reset</string>
-    <string name="full_name">Full name</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="log_in">Log in</string>
-    <string name="create_account">Create Account</string>
-    <string name="browse_plans">Browse Plans</string>
-    <string name="something_went_wrong">Something went wrong, Please try again later</string>
+    <string name="token" translatable="false">rQYwTkpTDVkurPtyGQc7oD7CUaoGbA</string>
+    <string name="baseUrl_rechApi" translatable="false">http://api.rechapi.com/</string>
+    <string name="login_or_create_account" translatable="false">You need to Login or create an account</string>
+    <string name="hello" translatable="false">Hello</string>
+    <string name="reset" translatable="false">Reset</string>
+    <string name="full_name" translatable="false">Full name</string>
+    <string name="sign_up" translatable="false">Sign Up</string>
+    <string name="log_in" translatable="false">Log in</string>
+    <string name="create_account" translatable="false">Create Account</string>
+    <string name="browse_plans" translatable="false">Browse Plans</string>
+    <string name="something_went_wrong" translatable="false">Something went wrong, Please try again later</string>
+    <string name="special_offer">Special Offer!</string>
+    <string name="mobile_recharge_cashback">Flat 2% cashback on\nevery mobile recharge</string>
+    <string name="recharge_bill_payments"><![CDATA[Recharge & Bill Payments]]></string>
+    <string name="dth_nrecharge">Dth\nRecharge</string>
+    <string name="mobile_npostpaid">Mobile\nPostpaid</string>
+    <string name="recent_transactions">Recent Transactions</string>
 
 
     <string-array name="circle">
