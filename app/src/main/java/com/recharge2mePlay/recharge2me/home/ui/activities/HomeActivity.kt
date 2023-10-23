@@ -220,7 +220,7 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
     }
 
     // When signOut clicked
-    override fun onMenuItemClick(p0: MenuItem?): Boolean {
+    override fun onMenuItemClick(item: MenuItem): Boolean {
         lifecycleScope.launch {
             appyCloseAnimation()
             signOut()
@@ -259,7 +259,6 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         startActivity(intent)
         Toast.makeText(this, "You are Logged Out...", Toast.LENGTH_SHORT).show()
     }
-
 
     private fun giveFeedBack() {
         val appPackageName: String = this.getPackageName() // getPackageName() from Context or Activity object
@@ -480,10 +479,6 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
         }
 
     }
-
-
-
-
 
 }
 
