@@ -13,8 +13,8 @@ android {
         applicationId "com.recharge2mePlay.recharge2me"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 6
-        versionName "1.01.6"
+        versionCode 16
+        versionName "1.02.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
