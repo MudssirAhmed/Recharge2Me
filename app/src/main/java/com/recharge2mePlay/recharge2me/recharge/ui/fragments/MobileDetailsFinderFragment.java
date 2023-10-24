@@ -2,23 +2,10 @@ package com.recharge2mePlay.recharge2me.recharge.ui.fragments;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,23 +16,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.navigation.Navigation;
+
 import com.recharge2mePlay.recharge2me.R;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import com.recharge2mePlay.recharge2me.constants.AppConstants;
+import com.recharge2mePlay.recharge2me.database.models.numberViewModel;
+import com.recharge2mePlay.recharge2me.recharge.ui.activities.GetRechargePlanActivity;
 import com.recharge2mePlay.recharge2me.recharge.ui.activities.RechargeUiActivity;
 import com.recharge2mePlay.recharge2me.utils.AppBaseFragment;
 import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 import com.recharge2mePlay.recharge2me.utils.dialogs.proceedDialog;
-import com.recharge2mePlay.recharge2me.home.ui.activities.NotificationTransactionDetailsActivity;
-import com.recharge2mePlay.recharge2me.database.models.numberViewModel;
-import com.recharge2mePlay.recharge2me.recharge.ui.activities.GetRechargePlanActivity;
 
-import static com.google.android.gms.tasks.Tasks.await;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MobileDetailsFinderFragment extends AppBaseFragment {
@@ -255,50 +243,6 @@ public class MobileDetailsFinderFragment extends AppBaseFragment {
             }
         }
         return true;
-    }
-
-    private void sendNotification(){
-
-        Context contextNotification = getActivity().getApplicationContext();
-        final String CHANNEL_ID = "15";
-        final int notificationId = 123;
-        String Title = "Recharge2me";
-        String Subject = "prepaid recharge";
-        String ContentText = "recharge successful on +91 8477055721";
-
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(getActivity(), NotificationTransactionDetailsActivity.class);
-        intent.putExtra("OrderId", "order23234234");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.logo_transparent_background)
-                .setColor(R.color.perple)
-                .setContentTitle(Title)
-                .setContentText(ContentText)
-                .setFullScreenIntent(pendingIntent, true)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Recharge2me";
-            String description = "Prepaid recharge";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = contextNotification.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
-
-// notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notificationId, builder.build());
     }
 
     private void setOperatorTextAndImage(String operator){

@@ -15,16 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".recharge.ui.activities.StartPaymentPaytmActivity"></activity>
-        <activity android:name=".home.ui.activities.NotificationTransactionDetailsActivity" />
-        <activity android:name=".home.ui.activities.PolicyActivity" />
-        <activity android:name=".home.ui.activities.EditProfileActivity" />
-        <activity android:name=".recharge.ui.activities.ContactListActivity" />
-        <activity android:name=".recharge.ui.activities.GetRechargePlanActivity" />
-        <activity android:name=".recharge.ui.activities.RechargeUiActivity" />
-        <activity android:name=".home.ui.activities.HomeActivity" />
-        <activity android:name=".onboard.ui.activities.EntryActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".recharge.ui.activities.StartPaymentPaytmActivity" android:exported="true" />
+        <activity android:name=".home.ui.activities.NotificationTransactionDetailsActivity" android:exported="true" />
+        <activity android:name=".home.ui.activities.PolicyActivity" android:exported="true" />
+        <activity android:name=".home.ui.activities.EditProfileActivity" android:exported="true" />
+        <activity android:name=".recharge.ui.activities.ContactListActivity" android:exported="true" />
+        <activity android:name=".recharge.ui.activities.GetRechargePlanActivity" android:exported="true"/>
+        <activity android:name=".recharge.ui.activities.RechargeUiActivity" android:exported="true"/>
+        <activity android:name=".home.ui.activities.HomeActivity" android:exported="true"/>
+        <activity android:name=".onboard.ui.activities.EntryActivity" android:exported="true"/>
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

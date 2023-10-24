@@ -31,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.recharge2mePlay.recharge2me.R
 import com.recharge2mePlay.recharge2me.onboard.models.User_googleAndOwn
 import com.recharge2mePlay.recharge2me.onboard.ui.activities.EntryActivity
@@ -329,7 +328,7 @@ class HomeActivity : AppCompatActivity(), MenuItem.OnMenuItemClickListener {
             docRef.get()
                     .addOnSuccessListener { documentSnapshot ->
 
-                        val city = documentSnapshot.toObject<User_googleAndOwn>()
+                        val city = documentSnapshot.toObject(User_googleAndOwn::class.java)
                         val user = city?.user_details
                         val Name: String = user?.name ?:  "R2M Demo"
                         val Reward: String = user?.rewards ?: "0"
