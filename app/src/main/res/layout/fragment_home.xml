@@ -5,151 +5,220 @@
     android:id="@+id/ns_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ui_backGroundColor"
+    android:background="@color/backgroundColor"
     tools:context=".home.ui.fragments.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/ui_backGroundColor">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView9"
-            android:layout_width="619dp"
-            android:layout_height="343dp"
-            android:layout_marginBottom="116dp"
-            android:src="@drawable/upper_small_background"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="0dp"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rectangle_gradient"
+                android:layout_marginBottom="30dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="45dp"
+                    android:textSize="25sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginHorizontal="@dimen/dimen_20dp"
+                    android:background="@drawable/round_8">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/rewards"
+                        android:layout_marginStart="@dimen/dimen_10dp"
+                        android:layout_marginVertical="@dimen/dimen_15dp"/>
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:layout_gravity="center_vertical"
+                        tools:text="Total Rewards Earned: ₹850"
+                        android:layout_marginHorizontal="@dimen/dimen_16dp"
+                        android:textColor="@color/black_color_80"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/upper_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:layout_marginHorizontal="@dimen/dimen_20dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/special_offer"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen_16dp">
+
+                <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/special_offer"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black_color_90"
+                    android:textSize="@dimen/dimen_16sp"/>
+
+                <com.recharge2mePlay.recharge2me.utils.MontserratMediumTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mobile_recharge_cashback"
+                    android:textColor="@color/black_color_80"
+                    android:textSize="@dimen/dimen_12sp"/>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:background="@drawable/round_4"
+            android:layout_marginHorizontal="@dimen/dimen_20dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_yourBallance"
-                android:layout_width="wrap_content"
+            <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/comfortaa_light"
-                android:text="Total Rewards"
-                android:textColor="@color/perpleSecondary"
-                android:textSize="18sp" />
+                android:text="@string/recharge_bill_payments"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:layout_marginHorizontal="@dimen/dimen_16dp"
+                android:textColor="@color/black_color_80"
+                android:textSize="@dimen/dimen_16sp"/>
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/comfortaa_bold"
-                android:text="₹0"
-                android:textColor="@color/whiteText"
-                android:textSize="30sp" />
+                android:layout_marginVertical="@dimen/dimen_16dp"
+                android:layout_marginHorizontal="@dimen/dimen_16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llPrePaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/mobile"/>
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mobile\nPrepaid"
+                        android:textAlignment="center"
+                        android:layout_marginTop="@dimen/dimen_16dp"
+                        android:textColor="@color/black_color_80"
+                        android:textSize="@dimen/dimen_10sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPostPaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/mobile"/>
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mobile_npostpaid"
+                        android:textAlignment="center"
+                        android:layout_marginTop="@dimen/dimen_16dp"
+                        android:textColor="@color/black_color_80"
+                        android:textSize="@dimen/dimen_10sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDthRecharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/mobile"/>
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dth_nrecharge"
+                        android:textAlignment="center"
+                        android:layout_marginTop="@dimen/dimen_16dp"
+                        android:textColor="@color/black_color_80"
+                        android:textSize="@dimen/dimen_10sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/iv_prePaid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="95dp"
-            android:clickable="true"
-            android:src="@drawable/prepaid"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintStart_toStartOf="@+id/imageView5"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.451" />
-
-        <ImageView
-            android:id="@+id/iv_postPaid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="95dp"
-            android:layout_marginEnd="50dp"
-            android:clickable="true"
-            android:src="@drawable/postpaid"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.45" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/comfortaa_regular"
-            android:text="Postpaid"
-            android:textColor="@color/perple"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_postPaid"
-            app:layout_constraintStart_toStartOf="@+id/iv_postPaid"
-            app:layout_constraintTop_toTopOf="@+id/iv_postPaid"
-            app:layout_constraintVertical_bias="0.863" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/comfortaa_regular"
-            android:text="Prepaid"
-            android:textColor="@color/perple"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_prePaid"
-            app:layout_constraintStart_toStartOf="@+id/iv_prePaid"
-            app:layout_constraintTop_toTopOf="@+id/iv_prePaid"
-            app:layout_constraintVertical_bias="0.863" />
-
-        <TextView
-            android:id="@+id/tv_Home_Transactions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/comfortaa_bold"
-            android:text="Recents transact"
-            android:textColor="@color/perple"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_prePaid"
-            tools:ignore="OnClick" />
-
         <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Home_Transactions"
-            app:layout_constraintVertical_bias="0.0">
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:layout_marginHorizontal="@dimen/dimen_20dp">
+
+            <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                android:id="@+id/tv_Home_Transactions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/recent_transactions"
+                android:layout_marginHorizontal="@dimen/dimen_16dp"
+                android:textColor="@color/black_color_80"
+                android:textSize="@dimen/dimen_18sp" />
 
             <ProgressBar
                 android:id="@+id/pb_uiHome_transactions"
@@ -163,6 +232,9 @@
                 android:id="@+id/rv_home_transaction"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
 </androidx.core.widget.NestedScrollView>

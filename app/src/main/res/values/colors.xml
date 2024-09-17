@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primaryStart">#8B36FF</color>
+    <color name="primaryEnd">#C179FF</color>
     <color name="colorPrimary">#344955</color>
-    <color name="colorPrimaryDark">#8F4EFF
-    </color>
+    <color name="colorPrimaryDark">#8F4EFF</color>
     <color name="secondaryColor">#F9AA33</color>
     <color name="colorAccent">#FFC107</color>
     <color name="backgroundcolor">#FAF7F7</color>
     <color name="ui_backGroundColor">#F9F7FE</color>
+
+    <!-- Background-Colors -->
+    <color name="backgroundColor">#F6F8FF</color>
 
 <!--    Text colors:- -->
     <color name="whiteText">#ffffff</color>
@@ -15,6 +19,17 @@
     <color name="lightText">#9D9D9D</color>
     <color name="secondaryText">#9E9E9E</color>
 
+    <color name="black_color">#000000</color>
+    <color name="black_color_5">#0D000000</color>
+    <color name="black_color_10">#1A000000</color>
+    <color name="black_color_20">#33000000</color>
+    <color name="black_color_30">#4D000000</color>
+    <color name="black_color_40">#66000000</color>
+    <color name="black_color_50">#80000000</color>
+    <color name="black_color_60">#99000000</color>
+    <color name="black_color_70">#B3000000</color>
+    <color name="black_color_80">#CC000000</color>
+    <color name="black_color_90">#E6000000</color>
 
     <color name="buttons_color">#8F4EFF</color>
     <color name="perple">#8F4EFF</color>
