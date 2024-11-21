@@ -73,7 +73,7 @@
             android:layout_marginRight="50dp"
             android:backgroundTint="@color/whiteText"
             android:fontFamily="@font/bold"
-            android:text="SignIn"
+            android:text="Create Account"
             android:textAllCaps="false"
             android:textColor="@color/buttons_color"
             android:textSize="18sp"

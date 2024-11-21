@@ -7,14 +7,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.recharge2mePlay.recharge2me"
         minSdkVersion 24
-        targetSdkVersion 29
-        versionCode 6
-        versionName "1.01.6"
+        targetSdkVersion 33
+        versionCode 16
+        versionName "1.02.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,9 +48,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'androidx.work:work-runtime:2.3.4'
-    def nav_version = "2.3.0"
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.android.material:material:1.4.0'
@@ -58,7 +55,7 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
 
-    // it is Nav Graph dependencies :-
+    // Nav Graph
     implementation 'androidx.navigation:navigation-fragment:2.3.1'
     implementation 'androidx.navigation:navigation-ui:2.3.1'
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.1"
@@ -73,19 +70,14 @@ dependencies {
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.2.0')
-    implementation 'com.google.firebase:firebase-analytics:18.0.0'
-    implementation 'com.google.firebase:firebase-auth:20.0.0'
-    implementation platform('com.google.firebase:firebase-bom:25.12.0')
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.android.gms:play-services-auth:18.1.0'
-    implementation 'com.google.firebase:firebase-firestore'
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
-    implementation 'com.google.firebase:firebase-dynamic-links'
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-invites:10.0.1'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
     // This is custom Loading Dialog dependency:-
-    implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
+//    implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
     //Gson
     implementation 'com.google.code.gson:gson:2.8.6'
