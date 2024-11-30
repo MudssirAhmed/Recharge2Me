@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY appname "Recharge2Me">
-    ]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY appname "Recharge2Me">]>
 
 <resources>
     <string name="app_name" translatable="false">&appname;</string>
@@ -36,7 +33,11 @@
     <string name="dth_nrecharge">Dth\nRecharge</string>
     <string name="mobile_npostpaid">Mobile\nPostpaid</string>
     <string name="recent_transactions">Recent Transactions</string>
-
+    <string name="recent">Recent</string>
+    <string name="dummy_name">Mudssir Ahmed</string>
+    <string name="dummy_number">8477055724</string>
+    <string name="all_contacts">All Contacts</string>
+    <string name="contact_permission">Please grant contact permission</string>
 
     <string-array name="circle">
         <item>Andhra Pradesh</item>

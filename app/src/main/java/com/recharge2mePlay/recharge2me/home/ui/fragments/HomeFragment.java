@@ -1,6 +1,7 @@
 package com.recharge2mePlay.recharge2me.home.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,19 +34,24 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.recharge2mePlay.recharge2me.R;
+import com.recharge2mePlay.recharge2me.base.ui.AppBaseFragment;
+import com.recharge2mePlay.recharge2me.constants.AppConstants;
 import com.recharge2mePlay.recharge2me.databinding.FragmentHomeBinding;
 import com.recharge2mePlay.recharge2me.home.ui.activities.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.recharge2mePlay.recharge2me.recharge.ui.activities.EnterNumberActivity;
 import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;
 import com.recharge2mePlay.recharge2me.home.ui.adapters.TransactionAdapter;
 import com.recharge2mePlay.recharge2me.recharge.models.Order;
 
-public class HomeFragment extends Fragment {
+import easypay.listeners.AppCallbacks;
+
+public class HomeFragment extends AppBaseFragment {
 
     private FragmentHomeBinding mBinding;
 
@@ -90,47 +96,31 @@ public class HomeFragment extends Fragment {
         String check = sharedPreferences.getString("ProvidersData", "");
         Log.d("shardePrefrences", "msg" + check);
 
-        mBinding.llPrePaid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                prePaid(view);
-            }
-        });
-        mBinding.llPostPaid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                prePaid(view);
-            }
-        });
+        mBinding.llPrePaid.setOnClickListener(this::prePaid);
+        mBinding.llPostPaid.setOnClickListener(this::postPaid);
 
         // These are for anime back the drawe if it is visible
-        mBinding.nsHome.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+        mBinding.nsHome.setOnTouchListener((view, motionEvent) -> {
 
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    animateNavDrawer();
-                }
-                else if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                    animateNavDrawer();
-                }
-
-                return false;
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                animateNavDrawer();
             }
+            else if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                animateNavDrawer();
+            }
+
+            return false;
         });
-        mBinding.rvHomeTransaction.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+        mBinding.rvHomeTransaction.setOnTouchListener((view, motionEvent) -> {
 
-                if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                    animateNavDrawer();
-                }
-                else if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                    animateNavDrawer();
-                }
-
-                return false;
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                animateNavDrawer();
             }
+            else if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                animateNavDrawer();
+            }
+
+            return false;
         });
 
         getRechargeData();
@@ -206,15 +196,18 @@ public class HomeFragment extends Fragment {
         mBinding.rvHomeTransaction.setLayoutManager(new LinearLayoutManager((HomeActivity) requireActivity()));
     }
 
-    private void prePaid(View view){
+    private void prePaid(View view) {
         animation.onClickAnimation(view);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui);
-            }
-        }, 120);
+//        final Handler handler = new Handler();
+//        handler.postDelayed(() -> Navigation.findNavController(view).navigate(R.id.action_ui_Home_to_recahrge_ui), 120);
+
+        Intent intent = new Intent(requireContext(), EnterNumberActivity.class);
+        intent.putExtra(AppConstants.RECHARGE_TYPE, AppConstants.RECHARGE_TYPE_PREPAID);
+        startActivity(intent);
+    }
+
+    private void postPaid(View view) {
+        showSnackBar("Coming soon...", mBinding.getRoot());
     }
 
 }

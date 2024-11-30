@@ -26,7 +26,7 @@ import com.recharge2mePlay.recharge2me.constants.AppConstants;
 import com.recharge2mePlay.recharge2me.database.models.numberViewModel;
 import com.recharge2mePlay.recharge2me.recharge.ui.activities.GetRechargePlanActivity;
 import com.recharge2mePlay.recharge2me.recharge.ui.activities.RechargeUiActivity;
-import com.recharge2mePlay.recharge2me.utils.AppBaseFragment;
+import com.recharge2mePlay.recharge2me.base.ui.AppBaseFragment;
 import com.recharge2mePlay.recharge2me.utils.MyAnimation;
 import com.recharge2mePlay.recharge2me.utils.dialogs.CustomToast;
 import com.recharge2mePlay.recharge2me.utils.dialogs.LoadingDialog;

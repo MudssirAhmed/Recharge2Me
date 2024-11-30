@@ -11,5 +11,17 @@ object AppConstants {
 
     // Api
     const val GET_MOBILE_RECHARGE_PLANS = "api/app/recharge/get-recharge-plans"
+    const val GET_OPERATOR_LOOKUP = "api/app/recharge/get-operator-lookup"
 
+    // Messages
+    const val SOMETHING_WENT_WRONG = "Something went wrong please try again";
+
+    // Values
+    const val RECHARGE_TYPE_PREPAID = 1
+    const val RECHARGE_TYPE_POSTPAID = 2
+
+    // Fields
+    const val NAME = "NAME"
+    const val NUMBER = "NUMBER"
+    const val RECHARGE_TYPE = "NUMBER"
 }

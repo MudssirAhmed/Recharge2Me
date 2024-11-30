@@ -67,42 +67,12 @@
 
         </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_20dp"
-            android:layout_marginHorizontal="@dimen/dimen_20dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/special_offer"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/dimen_16dp">
-
-                <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/special_offer"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black_color_90"
-                    android:textSize="@dimen/dimen_16sp"/>
-
-                <com.recharge2mePlay.recharge2me.utils.MontserratMediumTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mobile_recharge_cashback"
-                    android:textColor="@color/black_color_80"
-                    android:textSize="@dimen/dimen_12sp"/>
-
-            </LinearLayout>
-
-        </FrameLayout>
+        <include
+            android:id="@+id/offer"
+            layout="@layout/offer_layout"
+            android:layout_marginHorizontal="@dimen/dimen_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"

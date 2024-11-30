@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".recharge.ui.activities.EnterNumberActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include android:id="@+id/header" layout="@layout/back_header"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="13dp"
+                android:orientation="vertical">
+
+                <include android:id="@+id/offer" layout="@layout/offer_layout" />
+
+                <com.recharge2mePlay.recharge2me.utils.MontserratMediumEditText
+                    android:id="@+id/etNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="16dp"
+                    android:drawablePadding="12dp"
+                    android:hint="@string/enter_mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:drawableStart="@drawable/phone_24"
+                    android:drawableEnd="@drawable/arrow_forward_24"
+                    android:drawableTint="@color/black_color_40"
+                    android:background="@drawable/round_4"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:padding="@dimen/dimen_14dp"
+                    android:background="@drawable/round_4"
+                    android:orientation="vertical">
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_16sp"
+                        android:textColor="@color/black_color_80"
+                        android:text="@string/recent"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvRecent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_16dp"
+                    android:padding="@dimen/dimen_14dp"
+                    android:background="@drawable/round_4"
+                    android:orientation="vertical">
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratSemiBoldTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen_16sp"
+                        android:textColor="@color/black_color_80"
+                        android:text="@string/all_contacts"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvContacts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.recharge2mePlay.recharge2me.utils.MontserratMediumTextView
+                        android:id="@+id/tvContactError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contact_permission"
+                        android:textColor="@color/black_color_40"
+                        android:textAlignment="center"
+                        android:padding="16dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+
+    <include android:id="@+id/loader" layout="@layout/loader"/>
+
+</FrameLayout>
